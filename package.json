@@ -1,0 +1,26 @@
+{
+  "name": "bazaar",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "db:reset": "node -e \"const fs=require('fs');for(const f of ['data/marketplace.db','data/marketplace.db-wal','data/marketplace.db-shm']){try{fs.unlinkSync(f)}catch{}}console.log('database reset')\""
+  },
+  "dependencies": {
+    "country-state-city": "^3.2.1",
+    "country-to-currency": "^3.0.2",
+    "next": "^16.4.6",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.5",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tailwindcss": "^4.3.5",
+    "typescript": "^5.6.0"
+  }
+}

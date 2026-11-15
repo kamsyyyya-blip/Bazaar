@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #faf7f2;
+  --color-paper-2: #f2ece2;
+  --color-ink: #191714;
+  --color-ink-soft: #5f574d;
+  --color-line: #e6ded1;
+  --color-clay: #b04f31;
+  --color-clay-dark: #9d4526;
+  --color-olive: #5f6b45;
+
+  --shadow-soft: 0 18px 40px -24px rgb(25 23 20 / 0.45);
+  --shadow-lift: 0 28px 60px -28px rgb(25 23 20 / 0.5);
+
+  /* Heavier weights so body copy and labels read bolder everywhere. */
+  --font-weight-medium: 600;
+  --font-weight-semibold: 700;
+  --font-weight-bold: 800;
+
+  /* A slightly larger type scale across every page. */
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.125rem;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.375rem;
+  --text-base: 1.0625rem;
+  --text-base--line-height: 1.625rem;
+  --text-lg: 1.1875rem;
+  --text-lg--line-height: 1.75rem;
+  --text-xl: 1.375rem;
+  --text-xl--line-height: 1.875rem;
+  --text-2xl: 1.625rem;
+  --text-2xl--line-height: 2.125rem;
+  --text-3xl: 2rem;
+  --text-3xl--line-height: 2.375rem;
+  --text-4xl: 2.5rem;
+  --text-4xl--line-height: 2.75rem;
+  --text-5xl: 3.25rem;
+  --text-5xl--line-height: 1.1;
+  --text-6xl: 4rem;
+  --text-6xl--line-height: 1.05;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-fraunces), ui-serif, Georgia, "Times New Roman", serif;
+}
+
+:root {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-paper: #141210;
+  --color-paper-2: #1e1a16;
+  --color-ink: #f4eee4;
+  --color-ink-soft: #b6aa9b;
+  --color-line: #3a322a;
+  --color-clay: #dd7d5c;
+  --color-clay-dark: #ec9879;
+  --color-olive: #a3b584;
+  --color-white: #211d18;
+  --shadow-soft: 0 18px 40px -24px rgb(0 0 0 / 0.7);
+  --shadow-lift: 0 28px 60px -28px rgb(0 0 0 / 0.75);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+
+  ::selection {
+    background-color: #f2d8ca;
+    color: var(--color-ink);
+  }
+
+  /* The form has its own submit button; hide Chromium's overlapping clear icon. */
+  input[type="search"]::-webkit-search-cancel-button,
+  input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-clay);
+    outline-offset: 3px;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rise {
+  animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.rise-1 {
+  animation-delay: 0.06s;
+}
+.rise-2 {
+  animation-delay: 0.14s;
+}
+.rise-3 {
+  animation-delay: 0.22s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .rise,
+  .rise-1,
+  .rise-2,
+  .rise-3 {
+    animation: none;
+  }
+}
