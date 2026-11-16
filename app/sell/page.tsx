@@ -21,7 +21,7 @@ export default async function SellPage() {
     <>
       <SiteHeader />
 
-      <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+      <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
         <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-sm text-ink-soft">
           <Link href="/" className="transition hover:text-ink">
             Home
@@ -30,18 +30,18 @@ export default async function SellPage() {
           <span className="text-ink">Sell an item</span>
         </nav>
 
-        <div className="mt-6 max-w-2xl">
+        <div className="mt-5 max-w-2xl sm:mt-6">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-clay">For sellers</p>
-          <h1 className="mt-2 text-3xl leading-tight sm:text-4xl">List something for your area.</h1>
+        <h1 className="mt-2 text-2xl leading-tight sm:text-4xl">List something for your area.</h1>
           <p className="mt-3 text-sm leading-relaxed text-ink-soft">
             Add a few honest details and your listing goes live immediately. Buyers message you through Bazaar, so your
             email stays private.
           </p>
         </div>
 
-        <div className="mt-8 grid gap-7 lg:grid-cols-[minmax(0,1fr)_300px]">
-          <section className="rounded-2xl border border-line bg-white p-6 sm:p-7">
-            <h2 className="font-display text-2xl">Your listing</h2>
+        <div className="mt-6 grid gap-4 sm:mt-8 sm:gap-7 lg:grid-cols-[minmax(0,1fr)_300px]">
+          <section className="rounded-2xl border border-line bg-white p-4 sm:p-6 lg:p-7">
+            <h2 className="font-display text-xl sm:text-2xl">Your listing</h2>
             <p className="mt-1 text-xs text-ink-soft">
               Selling as <span className="font-medium text-ink">{user.name}</span>
               {user.county ? ` · ${user.county}` : ""}.
@@ -52,7 +52,7 @@ export default async function SellPage() {
           </section>
 
           <aside className="space-y-5">
-            <div className="rounded-2xl border border-line bg-white p-6">
+            <div className="rounded-2xl border border-line bg-white p-4 sm:p-6">
               <h2 className="font-display text-xl">How it works</h2>
               <ol className="mt-4 space-y-4 text-sm text-ink-soft">
                 {[

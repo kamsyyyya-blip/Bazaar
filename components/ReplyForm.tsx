@@ -46,12 +46,12 @@ export default function ReplyForm({ conversationId }: { conversationId: number }
         </p>
       ) : null}
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="flex flex-col items-stretch justify-between gap-2 sm:flex-row sm:items-center sm:gap-3">
         <p className="text-xs text-ink-soft">Keep the conversation in Bazaar so it&rsquo;s easy to find.</p>
         <button
           type="submit"
           disabled={pending}
-          className="flex h-10 items-center justify-center gap-2 rounded-full bg-ink px-5 text-sm font-medium text-paper transition hover:bg-clay disabled:cursor-wait disabled:opacity-60"
+          className="flex h-11 w-full items-center justify-center gap-2 rounded-full bg-ink px-5 text-sm font-medium text-paper transition hover:bg-clay disabled:cursor-wait disabled:opacity-60 sm:w-auto"
         >
           {pending ? "Sending…" : "Send reply"}
           {!pending ? <span aria-hidden="true">→</span> : null}

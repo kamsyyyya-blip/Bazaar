@@ -27,7 +27,7 @@ export default async function ProfilePage() {
     <>
       <SiteHeader />
 
-      <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+      <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
         <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-sm text-ink-soft">
           <Link href="/" className="transition hover:text-ink">
             Home
@@ -36,26 +36,26 @@ export default async function ProfilePage() {
           <span className="text-ink">Your profile</span>
         </nav>
 
-        <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
+        <div className="mt-5 flex flex-col items-start justify-between gap-3 sm:mt-6 sm:flex-row sm:items-end sm:gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-clay">Account</p>
-            <h1 className="mt-2 text-3xl leading-tight sm:text-4xl">Hi, {user.name.split(" ")[0]}.</h1>
+            <h1 className="mt-2 text-2xl leading-tight sm:text-4xl">Hi, {user.name.split(" ")[0]}.</h1>
             <p className="mt-2 text-sm text-ink-soft">
               Keep your details current so buyers and sellers know where you are.
             </p>
           </div>
           <Link
             href="/#trending"
-            className="inline-flex h-10 items-center gap-2 rounded-full border border-line bg-white px-4 text-sm font-medium transition hover:border-ink/25"
+            className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-full border border-line bg-white px-4 text-sm font-medium transition hover:border-ink/25 sm:w-auto"
           >
             Keep browsing
             <span aria-hidden="true">→</span>
           </Link>
         </div>
 
-        <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-          <section id="settings" className="scroll-mt-24 rounded-2xl border border-line bg-white p-6 sm:p-7">
-            <h2 className="font-display text-2xl">Profile &amp; settings</h2>
+        <div className="mt-6 grid gap-4 sm:mt-8 sm:gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+          <section id="settings" className="scroll-mt-24 rounded-2xl border border-line bg-white p-4 sm:p-6 lg:p-7">
+            <h2 className="font-display text-xl sm:text-2xl">Profile &amp; settings</h2>
             <p className="mt-1 text-xs text-ink-soft">
               Your country and state are used to surface nearby listings and sellers.
             </p>
@@ -65,7 +65,7 @@ export default async function ProfilePage() {
           </section>
 
           <aside className="space-y-5">
-            <div className="rounded-2xl border border-line bg-white p-6">
+            <div className="rounded-2xl border border-line bg-white p-4 sm:p-6">
               <div className="flex items-center gap-3.5">
                 <span
                   aria-hidden="true"

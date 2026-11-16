@@ -20,7 +20,7 @@ export default async function CartPage() {
     <>
       <SiteHeader />
 
-      <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+      <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
         <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-sm text-ink-soft">
           <Link href="/" className="transition hover:text-ink">
             Home
@@ -29,10 +29,10 @@ export default async function CartPage() {
           <span className="text-ink">Cart</span>
         </nav>
 
-        <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
+        <div className="mt-5 flex flex-col items-start justify-between gap-3 sm:mt-6 sm:flex-row sm:items-end sm:gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-clay">Cart</p>
-            <h1 className="mt-2 text-3xl leading-tight sm:text-4xl">Your cart</h1>
+            <h1 className="mt-2 text-2xl leading-tight sm:text-4xl">Your cart</h1>
             <p className="mt-2 text-sm text-ink-soft">
               {items.length > 0
                 ? `${pluralize(items.length, "item")} saved. Message each seller to agree on payment and pickup.`
@@ -43,7 +43,7 @@ export default async function CartPage() {
           </div>
           <Link
             href="/#trending"
-            className="inline-flex h-10 items-center gap-2 rounded-full border border-line bg-white px-4 text-sm font-semibold transition hover:border-ink/25"
+            className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-full border border-line bg-white px-4 text-sm font-semibold transition hover:border-ink/25 sm:w-auto"
           >
             Keep browsing
             <span aria-hidden="true">→</span>
@@ -57,11 +57,11 @@ export default async function CartPage() {
                 {items.map((product) => (
                   <li
                     key={product.slug}
-                    className="flex gap-4 rounded-2xl border border-line bg-white p-4 transition hover:border-ink/20"
+                    className="flex gap-3 rounded-2xl border border-line bg-white p-3 transition hover:border-ink/20 sm:gap-4 sm:p-4"
                   >
                     <Link
                       href={`/listing/${product.slug}`}
-                      className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl ring-1 ring-black/5"
+                      className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl ring-1 ring-black/5 sm:h-24 sm:w-24"
                       style={{
                         backgroundImage: `linear-gradient(135deg, ${product.tintFrom}, ${product.tintTo})`,
                       }}
@@ -122,7 +122,7 @@ export default async function CartPage() {
             </section>
 
             <aside className="space-y-4">
-              <div className="rounded-2xl border border-line bg-white p-5">
+              <div className="rounded-2xl border border-line bg-white p-4 sm:p-5">
                 <h2 className="font-display text-xl">Summary</h2>
                 <dl className="mt-4 space-y-3 text-sm">
                   <div className="flex items-center justify-between gap-3">
@@ -145,7 +145,7 @@ export default async function CartPage() {
             </aside>
           </div>
         ) : (
-          <section className="mt-8 rounded-2xl border border-line bg-white p-8 text-center sm:p-12">
+          <section className="mt-6 rounded-2xl border border-line bg-white p-5 text-center sm:mt-8 sm:p-12">
             <span
               aria-hidden="true"
               className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-paper-2 text-ink-soft"

@@ -267,11 +267,11 @@ export default function SellForm({ categories, defaultCountry = HOME_COUNTRY, de
         </p>
       ) : null}
 
-      <div className="flex flex-wrap items-center gap-3">
+      <div className="flex flex-col items-stretch gap-2 sm:flex-row sm:items-center sm:gap-3">
         <button
           type="submit"
           disabled={pending}
-          className="flex h-12 items-center justify-center gap-2 rounded-full bg-ink px-7 text-sm font-medium text-paper transition hover:bg-clay disabled:cursor-wait disabled:opacity-60"
+          className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-ink px-7 text-sm font-medium text-paper transition hover:bg-clay disabled:cursor-wait disabled:opacity-60 sm:w-auto"
         >
           {pending ? "Publishing…" : "Publish listing"}
           {!pending ? <span aria-hidden="true">→</span> : null}

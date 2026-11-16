@@ -36,11 +36,11 @@ export default async function SignInPage({
     <>
       <SiteHeader />
 
-      <main className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-16">
+      <main className="mx-auto max-w-5xl px-4 py-7 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
+        <div className="grid gap-7 sm:gap-10 lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-16">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-clay">Welcome to Bazaar</p>
-            <h1 className="mt-3 text-3xl leading-tight sm:text-4xl">Sign in to buy and sell locally.</h1>
+            <h1 className="mt-3 text-2xl leading-tight sm:text-4xl">Sign in to buy and sell locally.</h1>
             <p className="mt-4 max-w-md text-[16px] leading-relaxed text-ink-soft">
               Create an account to save your location, message sellers and leave reviews. Sign in securely with your email
               and password.
@@ -73,7 +73,7 @@ export default async function SignInPage({
             </p>
           </div>
 
-          <div className="rounded-2xl border border-line bg-white p-6 shadow-soft sm:p-7">
+          <div className="rounded-2xl border border-line bg-white p-4 shadow-soft sm:p-7">
             {nextLabel ? (
               <p className="mb-4 rounded-xl border border-line bg-paper-2/60 px-3.5 py-2.5 text-xs leading-relaxed text-ink-soft">
                 Sign in to continue to <span className="font-medium text-ink">{nextLabel}</span>. After signing in, you’ll

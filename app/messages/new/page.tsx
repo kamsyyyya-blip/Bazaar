@@ -39,7 +39,7 @@ export default async function NewMessagePage({
     <>
       <SiteHeader />
 
-      <main className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+      <main className="mx-auto max-w-4xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
         <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-sm text-ink-soft">
           <Link href="/" className="transition hover:text-ink">
             Home
@@ -52,13 +52,13 @@ export default async function NewMessagePage({
           <span className="text-ink">Message seller</span>
         </nav>
 
-        <h1 className="mt-6 text-3xl leading-tight sm:text-4xl">Message {product.seller}</h1>
+        <h1 className="mt-5 text-2xl leading-tight sm:mt-6 sm:text-4xl">Message {product.seller}</h1>
         <p className="mt-2 max-w-xl text-sm text-ink-soft">
           Ask about condition, measurements or a pickup time. Your email stays private and replies land in your Bazaar
           inbox.
         </p>
 
-        <div className="mt-7 flex flex-col gap-4 rounded-2xl border border-line bg-white p-4 sm:flex-row sm:items-center">
+        <div className="mt-5 flex flex-col gap-3 rounded-2xl border border-line bg-white p-3 sm:mt-7 sm:gap-4 sm:p-4 sm:flex-row sm:items-center">
           <span
             aria-hidden="true"
             className="grid h-20 w-20 shrink-0 place-items-center rounded-xl text-4xl ring-1 ring-black/5"
@@ -84,13 +84,13 @@ export default async function NewMessagePage({
           </div>
           <Link
             href={`/listing/${product.slug}`}
-            className="inline-flex h-10 shrink-0 items-center justify-center rounded-full border border-line px-4 text-sm font-medium text-ink-soft transition hover:border-ink/25 hover:text-ink"
+            className="inline-flex h-10 w-full shrink-0 items-center justify-center rounded-full border border-line px-4 text-sm font-medium text-ink-soft transition hover:border-ink/25 hover:text-ink sm:w-auto"
           >
             Back to listing
           </Link>
         </div>
 
-        <section className="mt-6 rounded-2xl border border-line bg-white p-6 sm:p-7">
+        <section className="mt-5 rounded-2xl border border-line bg-white p-4 sm:mt-6 sm:p-7">
           {ownListing ? (
             <div className="rounded-xl border border-dashed border-line bg-paper-2/40 px-5 py-8 text-center">
               <p className="text-2xl" aria-hidden="true">

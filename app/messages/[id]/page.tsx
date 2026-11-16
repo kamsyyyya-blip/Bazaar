@@ -39,7 +39,7 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
     <>
       <SiteHeader />
 
-      <main className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+      <main className="mx-auto max-w-4xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
         <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-sm text-ink-soft">
           <Link href="/" className="transition hover:text-ink">
             Home
@@ -52,7 +52,7 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
           <span className="max-w-[18rem] truncate text-ink">{conversation.productTitle}</span>
         </nav>
 
-        <div className="mt-6 flex flex-wrap items-end justify-between gap-3">
+        <div className="mt-5 flex flex-col items-start justify-between gap-3 sm:mt-6 sm:flex-row sm:items-end">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-clay">Conversation</p>
             <h1 className="mt-2 text-2xl leading-tight sm:text-3xl">{conversation.seller}</h1>
@@ -62,7 +62,7 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
           </div>
           <Link
             href="/messages"
-            className="inline-flex h-10 items-center gap-2 rounded-full border border-line bg-white px-4 text-sm font-medium transition hover:border-ink/25"
+            className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-full border border-line bg-white px-4 text-sm font-medium transition hover:border-ink/25 sm:w-auto"
           >
             <span aria-hidden="true">←</span>
             All messages
@@ -72,11 +72,11 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
         {product ? (
           <Link
             href={`/listing/${product.slug}`}
-            className="mt-6 flex items-center gap-4 rounded-2xl border border-line bg-white p-4 transition hover:border-ink/20 hover:shadow-soft"
+            className="mt-5 flex items-center gap-3 rounded-2xl border border-line bg-white p-3 transition hover:border-ink/20 hover:shadow-soft sm:mt-6 sm:gap-4 sm:p-4"
           >
             <span
               aria-hidden="true"
-              className="grid h-16 w-16 shrink-0 place-items-center rounded-xl text-3xl ring-1 ring-black/5"
+              className="grid h-14 w-14 shrink-0 place-items-center rounded-xl text-3xl ring-1 ring-black/5 sm:h-16 sm:w-16"
               style={{
                 backgroundImage: `linear-gradient(135deg, ${product.tintFrom}, ${product.tintTo})`,
               }}
@@ -95,13 +95,13 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
           </Link>
         ) : null}
 
-        <section aria-label="Messages" className="mt-6 rounded-2xl border border-line bg-paper-2/30 p-4 sm:p-6">
+        <section aria-label="Messages" className="mt-5 rounded-2xl border border-line bg-paper-2/30 p-3 sm:mt-6 sm:p-6">
           <ol className="space-y-4">
             {messages.map((message) => {
               const mine = message.senderRole === "buyer";
               return (
                 <li key={message.id} className={`flex ${mine ? "justify-end" : "justify-start"}`}>
-                  <div className="max-w-[88%] sm:max-w-[78%]">
+                  <div className="max-w-[94%] sm:max-w-[78%]">
                     <div className={`flex items-center gap-2 ${mine ? "justify-end" : ""}`}>
                       <span
                         aria-hidden="true"
@@ -109,7 +109,7 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
                       >
                         {initials(mine ? user.name : message.senderName)}
                       </span>
-                      <span className="text-[12px] text-ink-soft">
+                      <span className="text-[11px] leading-tight text-ink-soft sm:text-[12px]">
                         {mine ? "You" : message.senderName} · {formatDateTime(message.createdAt)}
                       </span>
                     </div>

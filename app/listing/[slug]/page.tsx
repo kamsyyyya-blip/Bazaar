@@ -47,7 +47,7 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
     <>
       <SiteHeader />
 
-      <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
         <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-sm text-ink-soft">
           <Link href="/" className="transition hover:text-ink">
             Home
@@ -63,10 +63,10 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
           <span className="text-ink">{product.title}</span>
         </nav>
 
-        <div className="mt-8 grid gap-10 lg:grid-cols-2 lg:gap-14">
+        <div className="mt-5 grid gap-6 sm:mt-8 sm:gap-10 lg:grid-cols-2 lg:gap-14">
           <div>
             <div
-              className="relative aspect-square overflow-hidden rounded-3xl ring-1 ring-black/5"
+              className="relative aspect-[4/3] overflow-hidden rounded-2xl ring-1 ring-black/5 sm:aspect-square sm:rounded-3xl"
               style={{
                 backgroundImage: `linear-gradient(135deg, ${product.tintFrom}, ${product.tintTo})`,
               }}
@@ -82,7 +82,7 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
               ) : (
                 <span
                   aria-hidden="true"
-                  className="absolute inset-0 grid place-items-center text-[150px] drop-shadow-[0_16px_30px_rgba(25,23,20,0.18)] sm:text-[190px]"
+                  className="absolute inset-0 grid place-items-center text-[112px] drop-shadow-[0_16px_30px_rgba(25,23,20,0.18)] sm:text-[190px]"
                 >
                   {product.emoji}
                 </span>
@@ -118,7 +118,7 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
 
           <div className="flex flex-col">
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-clay">{product.categoryName}</p>
-            <h1 className="mt-3 text-3xl leading-tight sm:text-4xl">{product.title}</h1>
+            <h1 className="mt-2 text-2xl leading-tight sm:mt-3 sm:text-4xl">{product.title}</h1>
 
             <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-ink-soft">
               {product.reviews > 0 ? (
@@ -163,7 +163,7 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
               {product.description}
             </p>
 
-            <dl className="mt-7 grid grid-cols-2 gap-x-6 gap-y-4 border-t border-line pt-7 text-sm">
+            <dl className="mt-6 grid grid-cols-2 gap-x-4 gap-y-4 border-t border-line pt-5 text-sm sm:mt-7 sm:gap-x-6 sm:pt-7">
               <div>
                 <dt className="text-xs uppercase tracking-[0.1em] text-ink-soft">Sold by</dt>
                 <dd className="mt-1 font-medium">
@@ -249,14 +249,14 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
         </div>
 
         {seller ? (
-          <section className="mt-16 border-t border-line pt-10">
+          <section className="mt-10 border-t border-line pt-7 sm:mt-16 sm:pt-10">
             <h2 className="mb-4 text-2xl">About the seller</h2>
             <SellerWidget seller={seller} />
           </section>
         ) : null}
 
-        <section id="reviews" className="mt-12 scroll-mt-24">
-          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <section id="reviews" className="mt-10 scroll-mt-24 sm:mt-12">
+          <div className="grid gap-5 sm:gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
             <div>
               <div className="border-b border-line pb-4">
                 <h2 className="text-2xl">Reviews</h2>
@@ -301,7 +301,7 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
         </section>
 
         {related.length > 0 ? (
-          <section className="mt-20">
+          <section className="mt-12 sm:mt-20">
             <div className="flex items-end justify-between gap-4">
               <h2 className="text-2xl sm:text-3xl">More in {product.categoryName}</h2>
               <Link

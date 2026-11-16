@@ -22,7 +22,7 @@ export default async function MessagesPage() {
     <>
       <SiteHeader />
 
-      <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+      <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
         <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-sm text-ink-soft">
           <Link href="/" className="transition hover:text-ink">
             Home
@@ -31,10 +31,10 @@ export default async function MessagesPage() {
           <span className="text-ink">Messages</span>
         </nav>
 
-        <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
+        <div className="mt-5 flex flex-col items-start justify-between gap-3 sm:mt-6 sm:flex-row sm:items-end sm:gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-clay">Inbox</p>
-            <h1 className="mt-2 text-3xl leading-tight sm:text-4xl">Your messages</h1>
+            <h1 className="mt-2 text-2xl leading-tight sm:text-4xl">Your messages</h1>
             <p className="mt-2 text-sm text-ink-soft">
               {conversations.length === 0
                 ? "Conversations with sellers will appear here."
@@ -43,14 +43,14 @@ export default async function MessagesPage() {
           </div>
           <Link
             href="/#trending"
-            className="inline-flex h-10 items-center gap-2 rounded-full border border-line bg-white px-4 text-sm font-medium transition hover:border-ink/25"
+            className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-full border border-line bg-white px-4 text-sm font-medium transition hover:border-ink/25 sm:w-auto"
           >
             Find something to ask about
             <span aria-hidden="true">→</span>
           </Link>
         </div>
 
-        <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
+        <div className="mt-6 grid gap-4 sm:mt-8 sm:gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
           <section aria-label="Conversations">
             {conversations.length > 0 ? (
               <ul className="space-y-3">
@@ -58,11 +58,11 @@ export default async function MessagesPage() {
                   <li key={conversation.id}>
                     <Link
                       href={`/messages/${conversation.id}`}
-                      className="group flex gap-4 rounded-2xl border border-line bg-white p-4 transition hover:border-ink/20 hover:shadow-soft"
+                      className="group flex gap-3 rounded-2xl border border-line bg-white p-3 transition hover:border-ink/20 hover:shadow-soft sm:gap-4 sm:p-4"
                     >
                       <span
                         aria-hidden="true"
-                        className="grid h-14 w-14 shrink-0 place-items-center rounded-xl text-2xl ring-1 ring-black/5"
+                        className="grid h-12 w-12 shrink-0 place-items-center rounded-xl text-2xl ring-1 ring-black/5 sm:h-14 sm:w-14"
                         style={{
                           backgroundImage: `linear-gradient(135deg, ${conversation.productTintFrom}, ${conversation.productTintTo})`,
                         }}
@@ -71,7 +71,7 @@ export default async function MessagesPage() {
                       </span>
 
                       <span className="min-w-0 flex-1">
-                        <span className="flex items-start justify-between gap-3">
+                          <span className="flex flex-col gap-0.5 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
                           <span className="min-w-0">
                             <span className="flex items-center gap-2">
                               <span className="truncate text-sm font-semibold">{conversation.productTitle}</span>
@@ -85,7 +85,7 @@ export default async function MessagesPage() {
                               with {conversation.seller}
                             </span>
                           </span>
-                          <span className="shrink-0 text-[12px] text-ink-soft">
+                          <span className="shrink-0 text-[11px] text-ink-soft sm:text-[12px]">
                             {formatDateTime(conversation.lastMessageAt)}
                           </span>
                         </span>
@@ -127,7 +127,7 @@ export default async function MessagesPage() {
           </section>
 
           <aside className="space-y-5">
-            <div className="rounded-2xl border border-line bg-white p-6">
+              <div className="rounded-2xl border border-line bg-white p-4 sm:p-6">
               <div className="flex items-center gap-3">
                 <span
                   aria-hidden="true"
@@ -153,7 +153,7 @@ export default async function MessagesPage() {
               </dl>
             </div>
 
-            <div className="rounded-2xl border border-line bg-paper-2/50 p-5 text-sm">
+            <div className="rounded-2xl border border-line bg-paper-2/50 p-4 text-sm sm:p-5">
               <p className="font-medium">Messaging safety</p>
               <ul className="mt-2 space-y-2 text-xs leading-relaxed text-ink-soft">
                 <li>Keep payments on Bazaar so both sides are covered.</li>

@@ -33,7 +33,7 @@ export default async function SellerPage({ params }: { params: Promise<{ slug: s
     <>
       <SiteHeader />
 
-      <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
         <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-sm text-ink-soft">
           <Link href="/" className="transition hover:text-ink">
             Home
@@ -42,7 +42,7 @@ export default async function SellerPage({ params }: { params: Promise<{ slug: s
           <span className="text-ink">{seller.name}</span>
         </nav>
 
-        <section className="mt-6 overflow-hidden rounded-3xl border border-line bg-white">
+        <section className="mt-5 overflow-hidden rounded-2xl border border-line bg-white sm:mt-6 sm:rounded-3xl">
           <div
             className="h-24 sm:h-28"
             style={{
@@ -50,19 +50,19 @@ export default async function SellerPage({ params }: { params: Promise<{ slug: s
             }}
           />
 
-          <div className="px-5 pb-6 sm:px-8 sm:pb-8">
+          <div className="px-4 pb-5 sm:px-8 sm:pb-8">
             <div className="-mt-10 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-              <div className="flex items-end gap-4">
+              <div className="flex min-w-0 items-end gap-3 sm:gap-4">
                 <span
                   aria-hidden="true"
-                  className="grid h-20 w-20 shrink-0 place-items-center rounded-2xl border-4 border-white text-2xl font-semibold text-paper shadow-soft"
+                  className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl border-4 border-white text-xl font-semibold text-paper shadow-soft sm:h-20 sm:w-20 sm:text-2xl"
                   style={{ backgroundColor: seller.avatarColor }}
                 >
                   {initials(seller.name)}
                 </span>
                 <div className="min-w-0 pb-0.5">
                   <div className="flex flex-wrap items-center gap-2">
-                    <h1 className="text-3xl leading-tight sm:text-4xl">{seller.name}</h1>
+                    <h1 className="text-2xl leading-tight sm:text-4xl">{seller.name}</h1>
                     {seller.verified ? (
                       <span className="inline-flex items-center gap-1 rounded-full bg-olive/10 px-2 py-0.5 text-[11px] font-medium text-olive">
                         <span aria-hidden="true">✓</span> Verified seller
@@ -81,7 +81,7 @@ export default async function SellerPage({ params }: { params: Promise<{ slug: s
 
               <Link
                 href={`/messages/new?listing=${seller.products[0].slug}`}
-                className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-ink px-6 text-sm font-medium text-paper transition hover:bg-clay"
+                className="inline-flex h-11 w-full shrink-0 items-center justify-center gap-2 rounded-full bg-ink px-6 text-sm font-medium text-paper transition hover:bg-clay sm:w-auto"
               >
                 Message seller
                 <span aria-hidden="true">→</span>
@@ -90,7 +90,7 @@ export default async function SellerPage({ params }: { params: Promise<{ slug: s
 
             <p className="mt-5 max-w-2xl text-sm leading-relaxed text-ink-soft">{seller.bio}</p>
 
-            <dl className="mt-6 grid grid-cols-2 gap-4 border-t border-line pt-5 sm:grid-cols-4">
+            <dl className="mt-5 grid grid-cols-2 gap-x-3 gap-y-4 border-t border-line pt-4 sm:mt-6 sm:gap-4 sm:pt-5 sm:grid-cols-4">
               <div>
                 <dt className="text-[12px] uppercase tracking-[0.1em] text-ink-soft">Seller rating</dt>
                 <dd className="mt-1 flex items-center gap-1.5 text-sm font-medium">
@@ -132,10 +132,10 @@ export default async function SellerPage({ params }: { params: Promise<{ slug: s
           </div>
         </section>
 
-        <section className="mt-12">
+        <section className="mt-9 sm:mt-12">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
-              <h2 className="text-2xl sm:text-3xl">Listings from {seller.name}</h2>
+              <h2 className="text-xl sm:text-3xl">Listings from {seller.name}</h2>
               <p className="mt-1 text-xs text-ink-soft">
                 {seller.listings} active {seller.listings === 1 ? "listing" : "listings"} · {seller.county}
               </p>
@@ -155,7 +155,7 @@ export default async function SellerPage({ params }: { params: Promise<{ slug: s
           </div>
         </section>
 
-        <section className="mt-14">
+        <section className="mt-10 sm:mt-14">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
               <h2 className="text-2xl sm:text-3xl">Reviews for this seller</h2>

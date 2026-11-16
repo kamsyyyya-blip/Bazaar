@@ -116,7 +116,7 @@
   grid-template-columns: repeat(5, minmax(0, 1fr));
   align-items: end;
   min-height: 4.35rem;
-  padding: 0.45rem max(0.4rem, env(safe-area-inset-left)) calc(0.45rem + env(safe-area-inset-bottom)) max(0.4rem, env(safe-area-inset-right));
+  padding: 0.45rem max(0.4rem, env(safe-area-inset-right)) calc(0.45rem + env(safe-area-inset-bottom)) max(0.4rem, env(safe-area-inset-left));
   border-top: 1px solid color-mix(in srgb, var(--color-line) 85%, transparent);
   background: color-mix(in srgb, var(--color-paper) 94%, transparent);
   -webkit-backdrop-filter: blur(18px);
