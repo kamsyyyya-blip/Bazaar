@@ -32,7 +32,7 @@ Requires **Node 22.5+** for `node:sqlite` (developed on Node 26).
 - **Sell flow** (`/sell`) — a signed-in user can publish a real listing (title, category, condition, price, city, country, state/province, description) that immediately appears in browse, search and their own listing page.
 - **Listing pages** (`/listing/[slug]`) — big product view, condition, verified status, country in “Ships from”, a “Message seller” CTA that opens the in-app composer, an about-the-seller widget and a full review feed.
 - **Seller pages** (`/seller/[slug]`) — profile header, seller stats, all active listings and recent buyer reviews.
-- **Passwordless demo accounts** (`/signin`, `/profile`) — sign in with an email (a name is only needed the first time) and pick your country plus its state/province from dependent pickers, detected from your browser by default. DB-backed sessions in an httpOnly cookie, editable country/state/phone/bio, message counts, and a sign-out action.
+- **Password accounts** (`/signin`, `/profile`) — create an account with an email and password, then sign in with a salted scrypt password hash and an httpOnly session cookie. Profiles include country/state, phone, bio, message counts, and sign out.
 - **Appearance** (`/profile`) — light, dark or system theme, saved in `localStorage` and applied before first paint with no flash.
 - **Reviews** — signed-in buyers can leave a 1–5 star review with text, which updates both the listing and seller pages.
 - **Empty states + 404**, responsive layout, reduced-motion support, accessible names on cards and controls.
@@ -50,7 +50,7 @@ No product photography yet — each tile is a deterministic gradient + emoji pla
 | `app/messages/[id]/page.tsx` | Conversation thread + reply form |
 | `app/messages/new/page.tsx` | Start a conversation from a listing |
 | `app/sell/page.tsx` | Publish-a-listing flow |
-| `app/signin/page.tsx` | Passwordless demo sign-in |
+| `app/signin/page.tsx` | Password sign-in and account creation |
 | `app/profile/page.tsx` | Profile, settings and sign out |
 | `app/actions/` | Server actions for auth, reviews, messaging and listings |
 | `lib/auth.ts` | Session cookie helpers |
@@ -65,12 +65,12 @@ No product photography yet — each tile is a deterministic gradient + emoji pla
 
 ## Deliberately not built yet
 
-Cart, checkout, payments, seller dashboards, real product images and password authentication. Sign-in is a demo-only passwordless email flow; the detail page's "Add to cart" button is disabled and labeled as next. Messaging is buyer-side only: the seller's first reply is simulated, and there is no seller inbox yet.
+Cart, checkout, payments, seller dashboards, real product images, email verification, password reset and login rate limiting. The Vercel SQLite database is stored under `/tmp` and can reset; connect a persistent database before using accounts with real users. The detail page's "Add to cart" button is disabled and labeled as next. Messaging is buyer-side only: the seller's first reply is simulated, and there is no seller inbox yet.
 
 ## Next steps that fit the current structure
 
 1. **Cart** — a `cart` cookie + server actions, line items in SQLite.
-2. **Real auth** — swap the demo sign-in for email magic links or OAuth while keeping the existing `users`/`sessions` tables.
+2. **Persistent auth storage** — move users and hashed session tokens from temporary SQLite to a hosted database, then add verification and password-reset email flows.
 3. **Seller uploads** — real images in `public/uploads` or object storage, replacing the gradient tiles.
 4. **Checkout** — Stripe Checkout with a webhook writing orders to the DB.
 5. **Pagination / infinite scroll** — the grid currently renders all matches; add `LIMIT/OFFSET` to `listProducts`.

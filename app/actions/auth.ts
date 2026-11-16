@@ -2,9 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createUser, getUserByEmail, updateUser } from "@/lib/db";
+import { createUser, getPasswordHashByEmail, getUserByEmail, updateUser } from "@/lib/db";
 import { HOME_COUNTRY, isCountryCode } from "@/lib/countries";
 import { endSession, getCurrentUser, safeNext, startSession } from "@/lib/auth";
+import { hashPassword, verifyPassword } from "@/lib/password";
 
 export type AuthState = { error?: string };
 export type ProfileState = { error?: string; success?: string };
@@ -12,19 +13,24 @@ export type ProfileState = { error?: string; success?: string };
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function signInAction(_state: AuthState, formData: FormData): Promise<AuthState> {
+  const mode = String(formData.get("mode") ?? "signin");
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
+  const password = String(formData.get("password") ?? "");
   const name = String(formData.get("name") ?? "").trim();
   const rawCountry = String(formData.get("country") ?? "").trim().toUpperCase();
   const country = isCountryCode(rawCountry) ? rawCountry : HOME_COUNTRY;
   const county = String(formData.get("county") ?? "").trim();
   const next = safeNext(formData.get("next"));
 
-  if (!EMAIL_RE.test(email)) {
-    return { error: "Enter a valid email address." };
-  }
+  if (mode !== "signin" && mode !== "signup") return { error: "Choose sign in or create account." };
+  if (!EMAIL_RE.test(email)) return { error: "Enter a valid email address." };
+  if (!password || Buffer.byteLength(password, "utf8") > 1024) return { error: "Enter a valid password." };
 
   let user = getUserByEmail(email);
-  if (!user) {
+  if (mode === "signup") {
+    if (password.length < 12) return { error: "Use a password with at least 12 characters." };
+    if (password.length > 128) return { error: "Keep your password under 128 characters." };
+    if (user) return { error: "An account with this email already exists. Sign in instead." };
     if (name.length < 2) {
       return { error: "Add your name so sellers know who is asking." };
     }
@@ -34,9 +40,21 @@ export async function signInAction(_state: AuthState, formData: FormData): Promi
     if (county.length > 90) {
       return { error: "Keep your state or province under 90 characters." };
     }
-    user = createUser({ email, name, country, county });
-  } else if (user.country !== country) {
-    updateUser(user.id, { country });
+    const passwordHash = await hashPassword(password);
+    try {
+      user = createUser({ email, name, country, county, passwordHash });
+    } catch {
+      return { error: "We couldn’t create that account. Check the email and try again." };
+    }
+  } else {
+    const passwordHash = getPasswordHashByEmail(email);
+    if (!user) return { error: "Email or password is incorrect." };
+    if (!passwordHash) {
+      return { error: "This old demo account has no password. Create a new account with a different email." };
+    }
+    if (!(await verifyPassword(password, passwordHash))) {
+      return { error: "Email or password is incorrect." };
+    }
   }
 
   await startSession(user.id);

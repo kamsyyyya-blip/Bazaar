@@ -17,6 +17,7 @@ const field =
 export default function SignInForm({ defaultCountry = "", next = "/profile" }: Props) {
   const [state, action, pending] = useActionState(signInAction, {} as AuthState);
   const [country, setCountry] = useState(defaultCountry || HOME_COUNTRY);
+  const [mode, setMode] = useState<"signin" | "signup">("signup");
 
   useEffect(() => {
     if (defaultCountry) return;
@@ -27,6 +28,26 @@ export default function SignInForm({ defaultCountry = "", next = "/profile" }: P
   return (
     <form action={action} className="space-y-4">
       <input type="hidden" name="next" value={next} />
+      <input type="hidden" name="mode" value={mode} />
+
+      <div className="grid grid-cols-2 rounded-xl bg-paper-2/70 p-1">
+        <button
+          type="button"
+          onClick={() => setMode("signin")}
+          aria-pressed={mode === "signin"}
+          className={`rounded-lg px-3 py-2 text-sm font-semibold transition ${mode === "signin" ? "bg-white text-ink shadow-sm" : "text-ink-soft hover:text-ink"}`}
+        >
+          Sign in
+        </button>
+        <button
+          type="button"
+          onClick={() => setMode("signup")}
+          aria-pressed={mode === "signup"}
+          className={`rounded-lg px-3 py-2 text-sm font-semibold transition ${mode === "signup" ? "bg-white text-ink shadow-sm" : "text-ink-soft hover:text-ink"}`}
+        >
+          Create account
+        </button>
+      </div>
 
       <div>
         <label htmlFor="signin-email" className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">
@@ -43,46 +64,67 @@ export default function SignInForm({ defaultCountry = "", next = "/profile" }: P
         />
       </div>
 
+      {mode === "signup" ? (
+        <>
+          <div>
+            <label htmlFor="signin-name" className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">
+              Full name
+            </label>
+            <input
+              id="signin-name"
+              name="name"
+              type="text"
+              autoComplete="name"
+              placeholder="Alex Rivera"
+              required
+              minLength={2}
+              maxLength={60}
+              className={`${field} mt-1.5`}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="signin-country" className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">
+              Country
+            </label>
+            <CountrySelect
+              id="signin-country"
+              name="country"
+              value={country}
+              onChange={setCountry}
+              className={`${field} mt-1.5`}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="signin-state" className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">
+              State / province
+            </label>
+            <StateSelect
+              id="signin-state"
+              name="county"
+              country={country}
+              className={`${field} mt-1.5`}
+            />
+          </div>
+        </>
+      ) : null}
+
       <div>
-        <label htmlFor="signin-name" className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">
-          Full name
+        <label htmlFor="signin-password" className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">
+          Password
         </label>
         <input
-          id="signin-name"
-          name="name"
-          type="text"
-          autoComplete="name"
-          placeholder="Alex Rivera"
+          id="signin-password"
+          name="password"
+          type="password"
+          required
+          minLength={mode === "signup" ? 12 : undefined}
+          maxLength={128}
+          autoComplete={mode === "signup" ? "new-password" : "current-password"}
           className={`${field} mt-1.5`}
         />
-        <p className="mt-1.5 text-xs text-ink-soft">Only needed the first time — it&rsquo;s the name sellers will see.</p>
-      </div>
-
-      <div>
-        <label htmlFor="signin-country" className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">
-          Country
-        </label>
-        <CountrySelect
-          id="signin-country"
-          name="country"
-          value={country}
-          onChange={setCountry}
-          className={`${field} mt-1.5`}
-        />
-        <p className="mt-1.5 text-xs text-ink-soft">Detected from your browser — change it if needed.</p>
-      </div>
-
-      <div>
-        <label htmlFor="signin-state" className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">
-          State / province
-        </label>
-        <StateSelect
-          id="signin-state"
-          name="county"
-          country={country}
-          className={`${field} mt-1.5`}
-        />
-        <p className="mt-1.5 text-xs text-ink-soft">Shown on your profile so buyers know your region.</p>
+        {mode === "signup" ? <p className="mt-1.5 text-xs text-ink-soft">Use at least 12 characters.</p> : null}
       </div>
 
       {state.error ? (
@@ -96,11 +138,11 @@ export default function SignInForm({ defaultCountry = "", next = "/profile" }: P
         disabled={pending}
         className="flex h-12 w-full items-center justify-center rounded-full bg-ink px-6 text-sm font-medium text-paper transition hover:bg-clay disabled:cursor-wait disabled:opacity-60"
       >
-        {pending ? "Signing in…" : "Continue"}
+        {pending ? "Please wait…" : mode === "signup" ? "Create account" : "Sign in"}
       </button>
 
       <p className="text-center text-xs leading-relaxed text-ink-soft">
-        Demo sign-in — no password required. A new account is created automatically the first time you continue.
+        Passwords are stored as salted hashes. Never reuse a password from another account.
       </p>
     </form>
   );

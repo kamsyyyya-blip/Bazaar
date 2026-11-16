@@ -42,8 +42,8 @@ export default async function SignInPage({
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-clay">Welcome to Bazaar</p>
             <h1 className="mt-3 text-3xl leading-tight sm:text-4xl">Sign in to buy and sell locally.</h1>
             <p className="mt-4 max-w-md text-[16px] leading-relaxed text-ink-soft">
-              Save your country and state, message sellers and leave reviews. No password to remember — this demo signs you in
-              with just your email.
+              Create an account to save your location, message sellers and leave reviews. Sign in securely with your email
+              and password.
             </p>
 
             <ul className="mt-8 space-y-4 text-sm text-ink-soft">
@@ -76,12 +76,12 @@ export default async function SignInPage({
           <div className="rounded-2xl border border-line bg-white p-6 shadow-soft sm:p-7">
             {nextLabel ? (
               <p className="mb-4 rounded-xl border border-line bg-paper-2/60 px-3.5 py-2.5 text-xs leading-relaxed text-ink-soft">
-                Sign in to continue to <span className="font-medium text-ink">{nextLabel}</span>. If you were already
-                signed in, your demo session may have expired — this form takes you straight back.
+                Sign in to continue to <span className="font-medium text-ink">{nextLabel}</span>. After signing in, you’ll
+                return to that page.
               </p>
             ) : null}
             <h2 className="font-display text-2xl">Sign in or create an account</h2>
-            <p className="mt-1 text-xs text-ink-soft">One form for both — we&rsquo;ll find your account by email.</p>
+            <p className="mt-1 text-xs text-ink-soft">Sign in to an existing account or create a new one.</p>
             <div className="mt-5">
               <SignInForm defaultCountry={defaultCountry} next={next} />
             </div>

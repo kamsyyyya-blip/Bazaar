@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { randomUUID } from "node:crypto";
+import { createHash, randomBytes } from "node:crypto";
 import { DatabaseSync } from "node:sqlite";
 import type { SortKey } from "./filters";
 import { CATEGORIES } from "./seed-data";
@@ -197,6 +197,7 @@ type UserRow = {
   bio: string;
   avatar_color: string;
   created_at: string;
+  password_hash: string;
 };
 
 const SCHEMA = `
@@ -250,6 +251,7 @@ CREATE TABLE IF NOT EXISTS users (
   phone        TEXT NOT NULL DEFAULT '',
   bio          TEXT NOT NULL DEFAULT '',
   avatar_color TEXT NOT NULL DEFAULT '#b04f31',
+  password_hash TEXT NOT NULL DEFAULT '',
   created_at   TEXT NOT NULL
 );
 
@@ -359,6 +361,9 @@ function initDb(): DatabaseSync {
   const userColumns = db.prepare("PRAGMA table_info(users)").all() as Array<{ name: string }>;
   if (!userColumns.some((column) => column.name === "country")) {
     db.exec("ALTER TABLE users ADD COLUMN country TEXT NOT NULL DEFAULT 'US'");
+  }
+  if (!userColumns.some((column) => column.name === "password_hash")) {
+    db.exec("ALTER TABLE users ADD COLUMN password_hash TEXT NOT NULL DEFAULT ''");
   }
 
   const { n } = db.prepare("SELECT COUNT(*) AS n FROM categories").get() as { n: number };
@@ -914,15 +919,22 @@ export function getUserById(id: number): User | null {
   return row ? mapUser(row) : null;
 }
 
-export function createUser(input: { email: string; name: string; country?: string; county?: string }): User {
+export function getPasswordHashByEmail(email: string): string | null {
+  const row = getDb().prepare("SELECT password_hash FROM users WHERE email = ? COLLATE NOCASE").get(email) as
+    | { password_hash: string }
+    | undefined;
+  return row?.password_hash || null;
+}
+
+export function createUser(input: { email: string; name: string; country?: string; county?: string; passwordHash: string }): User {
   const avatarColor = AVATAR_COLORS[input.name.length % AVATAR_COLORS.length];
   const createdAt = new Date().toISOString();
   const result = getDb()
     .prepare(
-      `INSERT INTO users (name, email, country, county, avatar_color, created_at)
-       VALUES (?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO users (name, email, country, county, avatar_color, password_hash, created_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
     )
-    .run(input.name, input.email, input.country ?? "US", input.county ?? "", avatarColor, createdAt);
+    .run(input.name, input.email, input.country ?? "US", input.county ?? "", avatarColor, input.passwordHash, createdAt);
 
   return getUserById(Number(result.lastInsertRowid)) as User;
 }
@@ -953,29 +965,32 @@ export function updateUser(
 const SESSION_DAYS = 30;
 
 export function createSession(userId: number): { token: string; expiresAt: string } {
-  const token = randomUUID();
+  const token = randomBytes(32).toString("base64url");
+  const tokenHash = createHash("sha256").update(token).digest("hex");
   const createdAt = new Date();
   const expiresAt = new Date(createdAt.getTime() + SESSION_DAYS * 24 * 60 * 60 * 1000).toISOString();
 
   getDb()
     .prepare("INSERT INTO sessions (token, user_id, created_at, expires_at) VALUES (?, ?, ?, ?)")
-    .run(token, userId, createdAt.toISOString(), expiresAt);
+    .run(tokenHash, userId, createdAt.toISOString(), expiresAt);
 
   return { token, expiresAt };
 }
 
 export function deleteSession(token: string): void {
-  getDb().prepare("DELETE FROM sessions WHERE token = ?").run(token);
+  const tokenHash = createHash("sha256").update(token).digest("hex");
+  getDb().prepare("DELETE FROM sessions WHERE token = ?").run(tokenHash);
 }
 
 export function getUserBySession(token: string): User | null {
+  const tokenHash = createHash("sha256").update(token).digest("hex");
   const row = getDb()
     .prepare(
       `SELECT u.* FROM sessions s
        JOIN users u ON u.id = s.user_id
        WHERE s.token = ? AND s.expires_at > ?`,
     )
-    .get(token, new Date().toISOString()) as UserRow | undefined;
+    .get(tokenHash, new Date().toISOString()) as UserRow | undefined;
   return row ? mapUser(row) : null;
 }
 
