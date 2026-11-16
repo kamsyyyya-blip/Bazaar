@@ -21,13 +21,6 @@ import { detectCountry } from "@/lib/geo";
 
 export const dynamic = "force-dynamic";
 
-function chipClass(active: boolean): string {
-  return [
-    "shrink-0 rounded-full px-3.5 py-1.5 text-xs font-medium transition",
-    active ? "bg-ink text-paper" : "border border-line bg-white text-ink-soft hover:border-ink/25 hover:text-ink",
-  ].join(" ");
-}
-
 function Tab({ href, active, children }: { href: string; active: boolean; children: React.ReactNode }) {
   return (
     <Link
@@ -214,32 +207,16 @@ export default async function HomePage({
             </aside>
 
             <div className="min-w-0">
-              {/* Keep the category and price controls compact on phones. */}
+              {/* Keep price and sort controls compact on phones. */}
               <details className="mb-6 rounded-xl border border-line bg-white lg:hidden">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-semibold text-ink marker:hidden">
-                  <span>Categories &amp; filters</span>
+                  <span>Filters</span>
                   <svg aria-hidden="true" className="shrink-0 transition-transform [details[open]_&]:rotate-180" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="m6 9 6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </summary>
                 <div className="border-t border-line px-3 py-3">
-                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-ink-soft">Category</p>
-                  <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-2">
-                  <Link href={browseHref(filters, { category: "" })} className={chipClass(!filters.category)}>
-                    All
-                  </Link>
-                  {categories.map((item) => (
-                    <Link
-                      key={item.slug}
-                      href={browseHref(filters, { category: item.slug })}
-                      className={chipClass(filters.category === item.slug)}
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
-                </div>
-                <p className="mb-2 mt-3 text-xs font-semibold uppercase tracking-wide text-ink-soft">Filters</p>
-                <div className="flex flex-wrap items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                   {priceOptions.map((option) => (
                     <Link
                       key={option.value}
