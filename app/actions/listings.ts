@@ -7,7 +7,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { CONDITIONS } from "@/lib/filters";
 import { HOME_COUNTRY, isCountryCode } from "@/lib/countries";
 import { currencyForCountry, toMinorUnits } from "@/lib/currency";
-import { MAX_PHOTOS, MAX_PHOTO_BYTES, isAllowedPhotoType } from "@/lib/photos";
+import { MAX_PHOTOS, MAX_PHOTO_BYTES, MAX_PHOTO_TOTAL_BYTES, isAllowedPhotoType } from "@/lib/photos";
 import { saveProductImages } from "@/lib/uploads";
 
 export type SellState = { error?: string };
@@ -63,6 +63,9 @@ export async function createListingAction(_state: SellState, formData: FormData)
   if (photos.length > MAX_PHOTOS) {
     return { error: `Add up to ${MAX_PHOTOS} photos per listing.` };
   }
+  if (photos.reduce((total, photo) => total + photo.size, 0) > MAX_PHOTO_TOTAL_BYTES) {
+    return { error: "Keep all photos together under 4 MB so the listing can upload successfully." };
+  }
   for (const photo of photos) {
     if (!isAllowedPhotoType(photo.type)) {
       return { error: "Photos must be JPG, PNG, WebP or GIF images." };
@@ -79,23 +82,28 @@ export async function createListingAction(_state: SellState, formData: FormData)
     return { error: "We couldn't save those photos. Try smaller JPG or PNG files." };
   }
 
-  const product = createProduct({
-    title,
-    description,
-    price,
-    category: category.slug,
-    seller: user.name,
-    location,
-    county,
-    country,
-    condition,
-    emoji: category.emoji,
-    tintFrom: category.tintFrom,
-    tintTo: category.tintTo,
-    images: imageNames,
-  });
+  let product: ReturnType<typeof createProduct>;
+  try {
+    product = createProduct({
+      title,
+      description,
+      price,
+      category: category.slug,
+      seller: user.name,
+      location,
+      county,
+      country,
+      condition,
+      emoji: category.emoji,
+      tintFrom: category.tintFrom,
+      tintTo: category.tintTo,
+      images: imageNames,
+    });
+  } catch (error) {
+    console.error("Failed to create listing", error);
+    return { error: "Your listing could not be saved. Please try again in a moment." };
+  }
 
   revalidatePath("/", "layout");
-  revalidatePath("/#trending");
   redirect(`/listing/${product.slug}`);
 }

@@ -8,7 +8,7 @@ import { CONDITIONS } from "@/lib/filters";
 import type { Category } from "@/lib/db";
 import { HOME_COUNTRY, countryName } from "@/lib/countries";
 import { currencyForCountry, currencyName } from "@/lib/currency";
-import { MAX_PHOTOS, PHOTO_ACCEPT } from "@/lib/photos";
+import { MAX_PHOTOS, MAX_PHOTO_TOTAL_BYTES, PHOTO_ACCEPT } from "@/lib/photos";
 
 type Props = {
   categories: Category[];
@@ -54,6 +54,14 @@ export default function SellForm({ categories, defaultCountry = HOME_COUNTRY, de
   function handlePhotos(event: ChangeEvent<HTMLInputElement>) {
     const picked = Array.from(event.target.files ?? []);
     const next = picked.slice(0, MAX_PHOTOS);
+    const totalBytes = next.reduce((total, file) => total + file.size, 0);
+    if (totalBytes > MAX_PHOTO_TOTAL_BYTES) {
+      replacePhotos([]);
+      syncInput([]);
+      event.target.value = "";
+      setPhotoError("Your photos are too large to upload together. Choose smaller images with a combined size under 4 MB.");
+      return;
+    }
     setPhotoError(
       picked.length > MAX_PHOTOS
         ? `You can add up to ${MAX_PHOTOS} photos. The extra files were ignored.`
@@ -203,7 +211,7 @@ export default function SellForm({ categories, defaultCountry = HOME_COUNTRY, de
           className="mt-1.5 w-full cursor-pointer rounded-xl border border-dashed border-line bg-white px-3.5 py-3 text-sm text-ink-soft outline-none transition file:mr-3 file:cursor-pointer file:rounded-full file:border-0 file:bg-ink file:px-4 file:py-2 file:text-xs file:font-semibold file:text-paper hover:border-ink/30 focus:border-ink/35"
         />
         <p className="mt-1.5 text-xs text-ink-soft">
-          Add up to {MAX_PHOTOS} pictures — JPG, PNG, WebP or GIF, 6 MB each. The first photo becomes the cover.
+          Add up to {MAX_PHOTOS} pictures — JPG, PNG, WebP or GIF, 6 MB each and 4 MB combined. The first photo becomes the cover.
         </p>
         {photoError ? (
           <p role="alert" className="mt-2 text-xs font-medium text-clay-dark">
