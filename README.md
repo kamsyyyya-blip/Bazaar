@@ -55,6 +55,7 @@ No product photography yet — each tile is a deterministic gradient + emoji pla
 | `app/actions/` | Server actions for auth, reviews, messaging and listings |
 | `lib/auth.ts` | Session cookie helpers |
 | `lib/db.ts` | Schema (v7), seeding, users/sessions, listings, reviews, conversations/messages |
+| `lib/durable-products.ts` | Durable listing records in Vercel Blob |
 | `lib/countries.ts` | All ISO countries, flags, popular 30 and detection helpers |
 | `lib/currency.ts` | Country → currency mapping, minor-unit and symbol helpers |
 | `lib/geo.ts` | Server-side country detection from request headers |
@@ -65,9 +66,9 @@ No product photography yet — each tile is a deterministic gradient + emoji pla
 
 ## Deliberately not built yet
 
-Cart, checkout, payments, seller dashboards, real product images, email verification, password reset and login rate limiting. The Vercel SQLite database is stored under `/tmp` and can reset; connect a persistent database before using accounts with real users. The detail page's "Add to cart" button is disabled and labeled as next. Messaging is buyer-side only: the seller's first reply is simulated, and there is no seller inbox yet.
+Checkout, payments, seller dashboards, email verification, password reset and login rate limiting. Listing records and uploaded photos are saved to the connected Vercel Blob store. Other account and marketplace data still uses SQLite under `/tmp`, so profiles, carts, messages and reviews can reset when Vercel starts a new function instance. Messaging is buyer-side only: the seller's first reply is simulated, and there is no seller inbox yet.
 
-For production sign-in, set `AUTH_SECRET` in the Vercel project environment to a random secret of at least 32 characters, then redeploy. Generate one locally with `node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"`. User profiles and marketplace data still need a persistent database; the encrypted cookie keeps the login session valid across Vercel function instances.
+For production sign-in, set `AUTH_SECRET` in the Vercel project environment to a random secret of at least 32 characters, then redeploy. Generate one locally with `node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"`. The Bazaar project also needs a connected Vercel Blob store with `BLOB_READ_WRITE_TOKEN` for persistent listings and photos. The encrypted cookie keeps a login session valid across Vercel function instances, though account records and other non-listing data still need a persistent database.
 
 ## Next steps that fit the current structure
 

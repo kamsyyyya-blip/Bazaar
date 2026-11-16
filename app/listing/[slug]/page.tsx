@@ -12,6 +12,7 @@ import { countReviews, getProduct, getSellerByName, isInCart, listProducts, list
 import { countryName, flagFor } from "@/lib/countries";
 import { currencyForCountry } from "@/lib/currency";
 import { formatDate, formatPrice, initials } from "@/lib/format";
+import { getDurableProduct } from "@/lib/durable-products";
 
 export async function generateMetadata({
   params,
@@ -19,7 +20,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const product = getProduct(slug) ?? (await getDurableProduct(slug));
   if (!product) return { title: "Listing not found" };
   return {
     title: product.title,
@@ -29,7 +30,7 @@ export async function generateMetadata({
 
 export default async function ListingPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const product = getProduct(slug) ?? (await getDurableProduct(slug));
   if (!product) notFound();
 
   const related = listProducts({ category: product.category })

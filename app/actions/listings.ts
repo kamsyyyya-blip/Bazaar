@@ -9,6 +9,7 @@ import { HOME_COUNTRY, isCountryCode } from "@/lib/countries";
 import { currencyForCountry, toMinorUnits } from "@/lib/currency";
 import { MAX_PHOTOS, MAX_PHOTO_BYTES, MAX_PHOTO_TOTAL_BYTES, isAllowedPhotoType } from "@/lib/photos";
 import { saveProductImages } from "@/lib/uploads";
+import { saveDurableProduct } from "@/lib/durable-products";
 
 export type SellState = { error?: string };
 
@@ -102,6 +103,13 @@ export async function createListingAction(_state: SellState, formData: FormData)
   } catch (error) {
     console.error("Failed to create listing", error);
     return { error: "Your listing could not be saved. Please try again in a moment." };
+  }
+
+  try {
+    await saveDurableProduct(product);
+  } catch (error) {
+    console.error("Failed to save listing to durable storage", error);
+    return { error: "We couldn't keep this listing online. Please try again in a moment." };
   }
 
   revalidatePath("/", "layout");

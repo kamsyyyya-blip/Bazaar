@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
+import { put } from "@vercel/blob";
 import { photoExtension } from "./photos";
 
 // Vercel functions can write only to temporary storage. This makes uploaded
@@ -12,6 +13,24 @@ export const UPLOAD_DIR = process.env.VERCEL === "1"
 /** Writes validated photos to disk and returns their stored filenames. */
 export async function saveProductImages(files: File[]): Promise<string[]> {
   if (files.length === 0) return [];
+
+  if (process.env.BLOB_READ_WRITE_TOKEN) {
+    const urls: string[] = [];
+    for (const file of files) {
+      const extension = photoExtension(file.type);
+      if (!extension) throw new Error(`Unsupported photo type: ${file.type}`);
+      const blob = await put(`bazaar/product-images/${randomUUID()}.${extension}`, file, {
+        access: "public",
+        contentType: file.type,
+      });
+      urls.push(blob.url);
+    }
+    return urls;
+  }
+
+  if (process.env.VERCEL === "1") {
+    throw new Error("BLOB_READ_WRITE_TOKEN must be connected to store listing photos on Vercel.");
+  }
 
   await fs.mkdir(UPLOAD_DIR, { recursive: true });
 

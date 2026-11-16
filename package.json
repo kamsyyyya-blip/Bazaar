@@ -12,6 +12,7 @@
     "db:reset": "node -e \"const fs=require('fs');for(const f of ['data/marketplace.db','data/marketplace.db-wal','data/marketplace.db-shm']){try{fs.unlinkSync(f)}catch{}}console.log('database reset')\""
   },
   "dependencies": {
+    "@vercel/blob": "^2.9.0",
     "country-state-city": "^3.2.1",
     "country-to-currency": "^3.0.2",
     "next": "^16.4.6",

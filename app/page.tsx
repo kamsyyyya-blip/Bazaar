@@ -18,6 +18,7 @@ import { browseHref, hasActiveFilters, parseFilters, priceFilters } from "@/lib/
 import { currencyForCountry } from "@/lib/currency";
 import { pluralize } from "@/lib/format";
 import { detectCountry } from "@/lib/geo";
+import { listDurableProducts } from "@/lib/durable-products";
 
 export const dynamic = "force-dynamic";
 
@@ -53,7 +54,36 @@ export default async function HomePage({
   ) as Record<string, number>;
   const stats = getStats();
   const featured = listFeatured(4);
-  const products = listProducts({ ...filters, maxPrice: filters.max });
+  const productsFromDb = listProducts({ ...filters, maxPrice: filters.max });
+  const databaseSlugs = new Set(productsFromDb.map((product) => product.slug));
+  const durableProducts = await listDurableProducts();
+  const query = filters.q.toLowerCase();
+  const products = [
+    ...productsFromDb,
+    ...durableProducts.filter((product) => {
+      if (databaseSlugs.has(product.slug)) return false;
+      if (filters.category && product.category !== filters.category) return false;
+      if (filters.county && product.county !== filters.county) return false;
+      if (filters.country && product.country !== filters.country) return false;
+      if (filters.max && product.price > filters.max) return false;
+      if (
+        query &&
+        ![product.title, product.description, product.seller, product.location, product.county, product.categoryName, product.country]
+          .join(" ")
+          .toLowerCase()
+          .includes(query)
+      ) return false;
+      return true;
+    }),
+  ].sort((a, b) => {
+    switch (filters.sort) {
+      case "newest": return b.createdAt.localeCompare(a.createdAt);
+      case "price-asc": return a.price - b.price;
+      case "price-desc": return b.price - a.price;
+      case "rating": return b.rating - a.rating || b.reviews - a.reviews;
+      default: return Number(Boolean(b.badge)) - Number(Boolean(a.badge)) || b.rating - a.rating || b.reviews - a.reviews;
+    }
+  });
   const categoryTotal = categories.reduce((total, category) => total + category.count, 0);
   const countryEmpty = Boolean(filters.country) && (countryCounts[filters.country] ?? 0) === 0;
   const marketplaceEmpty = stats.products === 0;
