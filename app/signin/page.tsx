@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import SignInForm from "@/components/SignInForm";
-import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import { getCurrentUser, safeNext } from "@/lib/auth";
 import { detectCountry } from "@/lib/geo";
@@ -90,7 +89,6 @@ export default async function SignInPage({
         </div>
       </main>
 
-      <SiteFooter />
     </>
   );
 }

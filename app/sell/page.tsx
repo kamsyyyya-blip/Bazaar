@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import SellForm from "@/components/SellForm";
-import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import { getCurrentUser } from "@/lib/auth";
 import { listCategories } from "@/lib/db";
@@ -87,7 +86,6 @@ export default async function SellPage() {
         </div>
       </main>
 
-      <SiteFooter />
     </>
   );
 }

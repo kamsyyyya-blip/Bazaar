@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import ReplyForm from "@/components/ReplyForm";
-import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import { getCurrentUser } from "@/lib/auth";
 import {
@@ -140,7 +139,6 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
         </p>
       </main>
 
-      <SiteFooter />
     </>
   );
 }

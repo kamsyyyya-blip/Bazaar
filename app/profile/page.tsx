@@ -4,7 +4,6 @@ import { redirect } from "next/navigation";
 import { signOutAction } from "@/app/actions/auth";
 import AppearanceSettings from "@/components/AppearanceSettings";
 import ProfileForm from "@/components/ProfileForm";
-import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import { getCurrentUser } from "@/lib/auth";
 import { countryName } from "@/lib/countries";
@@ -166,7 +165,6 @@ export default async function ProfilePage() {
         </div>
       </main>
 
-      <SiteFooter />
     </>
   );
 }

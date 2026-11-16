@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import MessageComposer from "@/components/MessageComposer";
-import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import { getCurrentUser } from "@/lib/auth";
 import { currencyForCountry } from "@/lib/currency";
@@ -119,7 +118,6 @@ export default async function NewMessagePage({
         </p>
       </main>
 
-      <SiteFooter />
     </>
   );
 }

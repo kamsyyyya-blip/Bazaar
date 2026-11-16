@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { removeFromCartAction } from "@/app/actions/cart";
-import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import { getCurrentUser } from "@/lib/auth";
 import { currencyForCountry } from "@/lib/currency";
@@ -188,7 +187,6 @@ export default async function CartPage() {
         )}
       </main>
 
-      <SiteFooter />
     </>
   );
 }

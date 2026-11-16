@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import { getCurrentUser } from "@/lib/auth";
 import { countUnreadConversations, listConversations } from "@/lib/db";
@@ -166,7 +165,6 @@ export default async function MessagesPage() {
         </div>
       </main>
 
-      <SiteFooter />
     </>
   );
 }

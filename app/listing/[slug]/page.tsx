@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
 import ReviewForm from "@/components/ReviewForm";
 import SellerWidget from "@/components/SellerWidget";
-import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import Stars from "@/components/Stars";
 import { addToCartAction } from "@/app/actions/cart";
@@ -321,7 +320,6 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
         ) : null}
       </main>
 
-      <SiteFooter />
     </>
   );
 }

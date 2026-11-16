@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import MarketplaceCard from "@/components/MarketplaceCard";
-import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import Stars from "@/components/Stars";
 import { getSellerBySlug, listCategories, listSellerReviews } from "@/lib/db";
@@ -208,7 +207,6 @@ export default async function SellerPage({ params }: { params: Promise<{ slug: s
         </section>
       </main>
 
-      <SiteFooter />
     </>
   );
 }
