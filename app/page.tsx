@@ -152,17 +152,24 @@ export default async function HomePage({
               </p>
             ) : null}
 
-            <div className="mt-3 flex flex-wrap items-center gap-x-1 gap-y-1 text-xs text-ink-soft">
-              <span className="pr-1">Popular:</span>
-              {categories.slice(0, 4).map((item) => (
-                <Link
-                  key={item.slug}
-                  href={browseHref(filters, { category: item.slug, q: "" })}
-                  className="rounded-full px-2 py-1 transition hover:bg-white hover:text-ink"
-                >
-                  {item.name}
-                </Link>
-              ))}
+            <div className="mt-5">
+              <h2 className="mb-3 text-sm font-semibold text-ink">Popular categories</h2>
+              <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 sm:gap-3 md:grid-cols-5 xl:grid-cols-8">
+                {categories.map((item) => (
+                  <Link
+                    key={item.slug}
+                    href={browseHref(filters, { category: item.slug, q: "" })}
+                    className="group flex aspect-square min-w-0 flex-col items-center justify-center gap-2 rounded-2xl border border-line bg-white px-2 py-2 text-center shadow-sm transition hover:-translate-y-0.5 hover:border-ink/20 hover:shadow-soft focus-visible:outline-offset-2"
+                  >
+                    <span aria-hidden="true" className="text-2xl leading-none transition-transform group-hover:scale-110">
+                      {item.emoji}
+                    </span>
+                    <span className="line-clamp-2 text-xs font-semibold leading-tight text-ink-soft group-hover:text-ink">
+                      {item.name}
+                    </span>
+                  </Link>
+                ))}
+              </div>
             </div>
 
             {filters.county ? (
