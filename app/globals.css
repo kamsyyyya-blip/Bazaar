@@ -185,6 +185,12 @@
   }
 }
 
+@media (min-width: 768px) {
+  .mobile-bottom-nav {
+    display: none;
+  }
+}
+
 @keyframes rise {
   from {
     opacity: 0;
