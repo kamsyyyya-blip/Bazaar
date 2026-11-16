@@ -45,7 +45,7 @@ export default async function SiteHeader({
           <Link
             href="/cart"
             aria-label={cartCount > 0 ? `Cart (${cartCount} item${cartCount === 1 ? "" : "s"})` : "Cart"}
-            className="relative flex h-10 w-10 items-center justify-center rounded-full text-ink-soft transition hover:bg-paper-2 hover:text-ink sm:h-auto sm:w-auto sm:gap-1.5 sm:px-3 sm:py-2"
+            className="relative hidden h-10 w-10 items-center justify-center rounded-full text-ink-soft transition hover:bg-paper-2 hover:text-ink sm:flex sm:h-auto sm:w-auto sm:gap-1.5 sm:px-3 sm:py-2"
           >
             <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
               <path d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.4L21 8H6" />
@@ -63,7 +63,7 @@ export default async function SiteHeader({
             href="/sell"
             aria-label="Start selling"
             title="Start selling"
-            className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-ink/15 text-ink transition hover:border-ink/40 hover:bg-white"
+            className="hidden h-9 w-9 shrink-0 place-items-center rounded-full border border-ink/15 text-ink transition hover:border-ink/40 hover:bg-white sm:grid"
           >
             <svg
               aria-hidden="true"
@@ -117,7 +117,7 @@ export default async function SiteHeader({
 
           <Link
             href="/messages"
-            className="relative ml-1 flex items-center gap-1.5 rounded-full px-2.5 py-2 text-ink-soft transition hover:bg-paper-2 hover:text-ink"
+            className="relative ml-1 hidden items-center gap-1.5 rounded-full px-2.5 py-2 text-ink-soft transition hover:bg-paper-2 hover:text-ink sm:flex"
             aria-label={`Messages${unread > 0 ? ` (${unread} unread)` : ""}`}
           >
             <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
