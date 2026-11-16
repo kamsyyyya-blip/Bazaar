@@ -8,6 +8,7 @@ export default function MarketplaceCard({ product }: { product: Product }) {
   return (
     <Link
       href={`/listing/${product.slug}`}
+      prefetch={false}
       className="group flex flex-col overflow-hidden rounded-xl border border-line bg-white transition duration-300 hover:-translate-y-0.5 hover:border-ink/15 hover:shadow-lift"
     >
       <div

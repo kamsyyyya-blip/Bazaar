@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { createProduct, listCategories } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
@@ -112,6 +112,7 @@ export async function createListingAction(_state: SellState, formData: FormData)
     return { error: "We couldn't keep this listing online. Please try again in a moment." };
   }
 
+  updateTag("durable-products");
   revalidatePath("/", "layout");
   redirect(`/listing/${product.slug}`);
 }

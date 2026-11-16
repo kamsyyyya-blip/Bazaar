@@ -23,6 +23,7 @@ function Row({
   return (
     <Link
       href={href}
+      prefetch={false}
       aria-current={active ? "true" : undefined}
       className={[
         "flex items-start justify-between gap-2 rounded-lg px-2.5 py-2 text-[14px] leading-snug transition",

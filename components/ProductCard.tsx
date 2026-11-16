@@ -11,6 +11,7 @@ export default function ProductCard({ product }: Props) {
   return (
     <Link
       href={`/listing/${product.slug}`}
+      prefetch={false}
       className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-white transition duration-300 hover:-translate-y-1 hover:border-ink/15 hover:shadow-lift"
     >
       <div

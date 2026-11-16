@@ -1,4 +1,5 @@
 import { list, put } from "@vercel/blob";
+import { unstable_cache } from "next/cache";
 import type { Product } from "@/lib/db";
 
 const PRODUCT_PREFIX = "bazaar/listings/";
@@ -24,7 +25,7 @@ function isProduct(value: unknown): value is Product {
 
 async function readProduct(url: string): Promise<Product | null> {
   try {
-    const response = await fetch(url, { cache: "no-store" });
+    const response = await fetch(url, { next: { revalidate: 60 } });
     if (!response.ok) return null;
     const value: unknown = await response.json();
     return isProduct(value) ? value : null;
@@ -46,34 +47,50 @@ export async function saveDurableProduct(product: Product): Promise<void> {
   });
 }
 
+const readDurableProductCached = unstable_cache(
+  async (slug: string): Promise<Product | null> => {
+    try {
+      const pathname = `${PRODUCT_PREFIX}${slug}.json`;
+      const result = await list({ prefix: pathname, limit: 10 });
+      const blob = result.blobs.find((item) => item.pathname === pathname);
+      return blob ? readProduct(blob.url) : null;
+    } catch (error) {
+      console.error("Could not read listing from durable storage", error);
+      return null;
+    }
+  },
+  ["bazaar-durable-product"],
+  { revalidate: 60, tags: ["durable-products"] },
+);
+
+const listDurableProductsCached = unstable_cache(
+  async (): Promise<Product[]> => {
+    const products: Product[] = [];
+    let cursor: string | undefined;
+
+    try {
+      do {
+        const result = await list({ prefix: PRODUCT_PREFIX, limit: 1000, cursor });
+        const page = await Promise.all(result.blobs.map((blob) => readProduct(blob.url)));
+        products.push(...page.filter((product): product is Product => product !== null));
+        cursor = result.hasMore ? result.cursor : undefined;
+      } while (cursor);
+    } catch (error) {
+      console.error("Could not list products from durable storage", error);
+    }
+
+    return products;
+  },
+  ["bazaar-durable-products"],
+  { revalidate: 60, tags: ["durable-products"] },
+);
+
 export async function getDurableProduct(slug: string): Promise<Product | null> {
   if (!blobStorageConfigured()) return null;
-  try {
-    const pathname = `${PRODUCT_PREFIX}${slug}.json`;
-    const result = await list({ prefix: pathname, limit: 10 });
-    const blob = result.blobs.find((item) => item.pathname === pathname);
-    return blob ? readProduct(blob.url) : null;
-  } catch (error) {
-    console.error("Could not read listing from durable storage", error);
-    return null;
-  }
+  return readDurableProductCached(slug);
 }
 
 export async function listDurableProducts(): Promise<Product[]> {
   if (!blobStorageConfigured()) return [];
-  const products: Product[] = [];
-  let cursor: string | undefined;
-
-  try {
-    do {
-      const result = await list({ prefix: PRODUCT_PREFIX, limit: 1000, cursor });
-      const page = await Promise.all(result.blobs.map((blob) => readProduct(blob.url)));
-      products.push(...page.filter((product): product is Product => product !== null));
-      cursor = result.hasMore ? result.cursor : undefined;
-    } while (cursor);
-  } catch (error) {
-    console.error("Could not list products from durable storage", error);
-  }
-
-  return products;
+  return listDurableProductsCached();
 }

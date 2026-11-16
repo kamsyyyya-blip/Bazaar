@@ -51,6 +51,7 @@ function NavLink({ name, href, label, emphasized = false }: {
   return (
     <Link
       href={href}
+      prefetch={false}
       aria-label={label}
       aria-current={active ? "page" : undefined}
       data-active={active ? "true" : undefined}

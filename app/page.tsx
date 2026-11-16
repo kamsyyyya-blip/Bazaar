@@ -26,6 +26,7 @@ function Tab({ href, active, children }: { href: string; active: boolean; childr
   return (
     <Link
       href={href}
+      prefetch={false}
       aria-current={active ? "page" : undefined}
       className={[
         "-mb-px shrink-0 border-b-2 pb-2.5 text-sm transition",
@@ -45,6 +46,7 @@ export default async function HomePage({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const filters = parseFilters(await searchParams);
+  const durableProductsPromise = listDurableProducts();
   const detected = await detectCountry();
   const currency = currencyForCountry(filters.country || detected || HOME_COUNTRY);
   const priceOptions = priceFilters(currency);
@@ -56,7 +58,7 @@ export default async function HomePage({
   const featured = listFeatured(4);
   const productsFromDb = listProducts({ ...filters, maxPrice: filters.max });
   const databaseSlugs = new Set(productsFromDb.map((product) => product.slug));
-  const durableProducts = await listDurableProducts();
+  const durableProducts = await durableProductsPromise;
   const query = filters.q.toLowerCase();
   const products = [
     ...productsFromDb,
@@ -86,7 +88,7 @@ export default async function HomePage({
   });
   const categoryTotal = categories.reduce((total, category) => total + category.count, 0);
   const countryEmpty = Boolean(filters.country) && (countryCounts[filters.country] ?? 0) === 0;
-  const marketplaceEmpty = stats.products === 0;
+  const marketplaceEmpty = stats.products === 0 && durableProducts.length === 0;
 
   const activeCategory = categories.find((item) => item.slug === filters.category);
   const filtered = hasActiveFilters(filters);
@@ -182,6 +184,7 @@ export default async function HomePage({
                   <Link
                     key={item.slug}
                     href={browseHref(filters, { category: item.slug, q: "" })}
+                    prefetch={false}
                     className="group flex aspect-square min-w-0 flex-col items-center justify-center gap-2 rounded-2xl border border-line bg-white px-2 py-2 text-center shadow-sm transition hover:-translate-y-0.5 hover:border-ink/20 hover:shadow-soft focus-visible:outline-offset-2"
                   >
                     <span aria-hidden="true" className="text-2xl leading-none transition-transform group-hover:scale-110">
