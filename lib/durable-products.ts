@@ -2,6 +2,7 @@ import { list, put } from "@vercel/blob";
 import type { Product } from "@/lib/db";
 
 const PRODUCT_PREFIX = "bazaar/listings/";
+const blobStorageConfigured = () => Boolean(process.env.BLOB_STORE_ID || process.env.BLOB_READ_WRITE_TOKEN);
 
 function isProduct(value: unknown): value is Product {
   if (!value || typeof value !== "object") return false;
@@ -33,8 +34,8 @@ async function readProduct(url: string): Promise<Product | null> {
 }
 
 export async function saveDurableProduct(product: Product): Promise<void> {
-  if (!process.env.BLOB_READ_WRITE_TOKEN) {
-    throw new Error("BLOB_READ_WRITE_TOKEN is missing from the deployment environment.");
+  if (!blobStorageConfigured()) {
+    throw new Error("A Vercel Blob store is not connected to this deployment.");
   }
 
   await put(`${PRODUCT_PREFIX}${product.slug}.json`, JSON.stringify(product), {
@@ -46,7 +47,7 @@ export async function saveDurableProduct(product: Product): Promise<void> {
 }
 
 export async function getDurableProduct(slug: string): Promise<Product | null> {
-  if (!process.env.BLOB_READ_WRITE_TOKEN) return null;
+  if (!blobStorageConfigured()) return null;
   try {
     const pathname = `${PRODUCT_PREFIX}${slug}.json`;
     const result = await list({ prefix: pathname, limit: 10 });
@@ -59,7 +60,7 @@ export async function getDurableProduct(slug: string): Promise<Product | null> {
 }
 
 export async function listDurableProducts(): Promise<Product[]> {
-  if (!process.env.BLOB_READ_WRITE_TOKEN) return [];
+  if (!blobStorageConfigured()) return [];
   const products: Product[] = [];
   let cursor: string | undefined;
 

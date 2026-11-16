@@ -14,7 +14,7 @@ export const UPLOAD_DIR = process.env.VERCEL === "1"
 export async function saveProductImages(files: File[]): Promise<string[]> {
   if (files.length === 0) return [];
 
-  if (process.env.BLOB_READ_WRITE_TOKEN) {
+  if (process.env.BLOB_STORE_ID || process.env.BLOB_READ_WRITE_TOKEN) {
     const urls: string[] = [];
     for (const file of files) {
       const extension = photoExtension(file.type);
@@ -29,7 +29,7 @@ export async function saveProductImages(files: File[]): Promise<string[]> {
   }
 
   if (process.env.VERCEL === "1") {
-    throw new Error("BLOB_READ_WRITE_TOKEN must be connected to store listing photos on Vercel.");
+    throw new Error("A Vercel Blob store must be connected to store listing photos on Vercel.");
   }
 
   await fs.mkdir(UPLOAD_DIR, { recursive: true });
