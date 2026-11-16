@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createUser, getPasswordHashByEmail, getUserByEmail, updateUser } from "@/lib/db";
 import { HOME_COUNTRY, isCountryCode } from "@/lib/countries";
-import { endSession, getCurrentUser, safeNext, startSession } from "@/lib/auth";
+import { endSession, getCurrentUser, refreshCurrentSession, safeNext, startSession } from "@/lib/auth";
 import { hashPassword, verifyPassword } from "@/lib/password";
 
 export type AuthState = { error?: string };
@@ -57,7 +57,7 @@ export async function signInAction(_state: AuthState, formData: FormData): Promi
     }
   }
 
-  await startSession(user.id);
+  await startSession(user);
   revalidatePath("/", "layout");
   redirect(next);
 }
@@ -79,7 +79,9 @@ export async function updateProfileAction(_state: ProfileState, formData: FormDa
   if (name.length > 60) return { error: "Keep your name under 60 characters." };
   if (bio.length > 280) return { error: "Keep your bio under 280 characters." };
 
-  updateUser(user.id, { name, country, county, phone, bio });
+  const updatedUser = updateUser(user.id, { name, country, county, phone, bio });
+  if (!updatedUser) return { error: "Could not find your account. Sign in again and retry." };
+  await refreshCurrentSession(updatedUser);
   revalidatePath("/profile");
   revalidatePath("/", "layout");
 

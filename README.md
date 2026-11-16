@@ -67,6 +67,8 @@ No product photography yet — each tile is a deterministic gradient + emoji pla
 
 Cart, checkout, payments, seller dashboards, real product images, email verification, password reset and login rate limiting. The Vercel SQLite database is stored under `/tmp` and can reset; connect a persistent database before using accounts with real users. The detail page's "Add to cart" button is disabled and labeled as next. Messaging is buyer-side only: the seller's first reply is simulated, and there is no seller inbox yet.
 
+For production sign-in, set `AUTH_SECRET` in the Vercel project environment to a random secret of at least 32 characters, then redeploy. Generate one locally with `node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"`. User profiles and marketplace data still need a persistent database; the encrypted cookie keeps the login session valid across Vercel function instances.
+
 ## Next steps that fit the current structure
 
 1. **Cart** — a `cart` cookie + server actions, line items in SQLite.
