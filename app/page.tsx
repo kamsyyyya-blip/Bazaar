@@ -177,7 +177,7 @@ export default async function HomePage({
               </p>
             ) : null}
 
-            <div className="mt-5">
+            <div className="mt-5 md:hidden">
               <h2 className="mb-3 text-sm font-semibold text-ink">Popular categories</h2>
               <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 sm:gap-3 md:grid-cols-5 xl:grid-cols-8">
                 {categories.map((item) => (

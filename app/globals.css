@@ -1,17 +1,17 @@
 @import "tailwindcss";
 
 @theme {
-  --color-paper: #faf7f2;
-  --color-paper-2: #f2ece2;
-  --color-ink: #191714;
-  --color-ink-soft: #5f574d;
-  --color-line: #e6ded1;
-  --color-clay: #b04f31;
-  --color-clay-dark: #9d4526;
-  --color-olive: #5f6b45;
+  --color-paper: #f6f9fd;
+  --color-paper-2: #eaf1f8;
+  --color-ink: #14243b;
+  --color-ink-soft: #53647a;
+  --color-line: #d8e2ed;
+  --color-clay: #1769aa;
+  --color-clay-dark: #0c4f8c;
+  --color-olive: #1b75b8;
 
-  --shadow-soft: 0 18px 40px -24px rgb(25 23 20 / 0.45);
-  --shadow-lift: 0 28px 60px -28px rgb(25 23 20 / 0.5);
+  --shadow-soft: 0 18px 40px -24px rgb(20 36 59 / 0.24);
+  --shadow-lift: 0 28px 60px -28px rgb(20 36 59 / 0.28);
 
   /* Heavier weights so body copy and labels read bolder everywhere. */
   --font-weight-medium: 600;
@@ -52,15 +52,15 @@
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --color-paper: #141210;
-  --color-paper-2: #1e1a16;
-  --color-ink: #f4eee4;
-  --color-ink-soft: #b6aa9b;
-  --color-line: #3a322a;
-  --color-clay: #dd7d5c;
-  --color-clay-dark: #ec9879;
-  --color-olive: #a3b584;
-  --color-white: #211d18;
+  --color-paper: #0d1828;
+  --color-paper-2: #15253a;
+  --color-ink: #edf5ff;
+  --color-ink-soft: #afc0d4;
+  --color-line: #2b405a;
+  --color-clay: #67b5f2;
+  --color-clay-dark: #92ccfa;
+  --color-olive: #67b5f2;
+  --color-white: #192a40;
   --shadow-soft: 0 18px 40px -24px rgb(0 0 0 / 0.7);
   --shadow-lift: 0 28px 60px -28px rgb(0 0 0 / 0.75);
 }
