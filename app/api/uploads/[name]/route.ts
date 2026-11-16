@@ -21,7 +21,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ nam
   }
 
   try {
-    const file = await readFile(path.join(UPLOAD_DIR, name));
+    const file = await readFile(path.join(/*turbopackIgnore: true*/ UPLOAD_DIR, name));
     return new Response(new Uint8Array(file), {
       headers: {
         "Content-Type": CONTENT_TYPES[extension],

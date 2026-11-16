@@ -8,7 +8,13 @@ import { COUNTRIES } from "./countries";
 
 export type { SortKey };
 
-const DB_PATH = path.join(process.cwd(), "data", "marketplace.db");
+// Vercel's deployed filesystem is read-only. Use its temporary directory at
+// runtime so the SQLite database can be initialized for a demo deployment.
+// Local development keeps the durable project data/ directory.
+const DATA_DIR = process.env.VERCEL === "1"
+  ? path.join("/tmp", "bazaar")
+  : path.join(process.cwd(), "data");
+const DB_PATH = path.join(DATA_DIR, "marketplace.db");
 
 export type Category = {
   slug: string;
