@@ -87,7 +87,7 @@ export type Seller = {
 };
 
 export type User = {
-  id: number;
+  id: number | string;
   name: string;
   email: string;
   country: string;
@@ -418,7 +418,7 @@ function mapProduct(row: ProductRow): Product {
 }
 
 function imageUrl(filename: string): string {
-  if (/^https:\/\/[a-z0-9-]+\.public\.blob\.vercel-storage\.com\//i.test(filename)) return filename;
+  if (/^https:\/\//i.test(filename)) return filename;
   return `/api/uploads/${encodeURIComponent(filename)}`;
 }
 

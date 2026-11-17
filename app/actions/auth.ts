@@ -2,12 +2,11 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createUser, getPasswordHashByEmail, getUserByEmail, updateUser } from "@/lib/db";
 import { HOME_COUNTRY, isCountryCode } from "@/lib/countries";
-import { endSession, getCurrentUser, refreshCurrentSession, safeNext, startSession } from "@/lib/auth";
-import { hashPassword, verifyPassword } from "@/lib/password";
+import { getCurrentUser, safeNext } from "@/lib/auth";
+import { createClient } from "@/lib/supabase/server";
 
-export type AuthState = { error?: string };
+export type AuthState = { error?: string; message?: string };
 export type ProfileState = { error?: string; success?: string };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -26,11 +25,10 @@ export async function signInAction(_state: AuthState, formData: FormData): Promi
   if (!EMAIL_RE.test(email)) return { error: "Enter a valid email address." };
   if (!password || Buffer.byteLength(password, "utf8") > 1024) return { error: "Enter a valid password." };
 
-  let user = getUserByEmail(email);
+  const supabase = await createClient();
   if (mode === "signup") {
     if (password.length < 12) return { error: "Use a password with at least 12 characters." };
     if (password.length > 128) return { error: "Keep your password under 128 characters." };
-    if (user) return { error: "An account with this email already exists. Sign in instead." };
     if (name.length < 2) {
       return { error: "Add your name so sellers know who is asking." };
     }
@@ -40,24 +38,23 @@ export async function signInAction(_state: AuthState, formData: FormData): Promi
     if (county.length > 90) {
       return { error: "Keep your state or province under 90 characters." };
     }
-    const passwordHash = await hashPassword(password);
-    try {
-      user = createUser({ email, name, country, county, passwordHash });
-    } catch {
-      return { error: "We couldn’t create that account. Check the email and try again." };
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { name, country, county },
+        emailRedirectTo: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+      },
+    });
+    if (error) return { error: error.message };
+    if (!data.session) {
+      return { message: "Account created. Check your email to confirm your address, then sign in." };
     }
   } else {
-    const passwordHash = getPasswordHashByEmail(email);
-    if (!user) return { error: "Email or password is incorrect." };
-    if (!passwordHash) {
-      return { error: "This old demo account has no password. Create a new account with a different email." };
-    }
-    if (!(await verifyPassword(password, passwordHash))) {
-      return { error: "Email or password is incorrect." };
-    }
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) return { error: "Email or password is incorrect." };
   }
 
-  await startSession(user);
   revalidatePath("/", "layout");
   redirect(next);
 }
@@ -79,9 +76,11 @@ export async function updateProfileAction(_state: ProfileState, formData: FormDa
   if (name.length > 60) return { error: "Keep your name under 60 characters." };
   if (bio.length > 280) return { error: "Keep your bio under 280 characters." };
 
-  const updatedUser = updateUser(user.id, { name, country, county, phone, bio });
-  if (!updatedUser) return { error: "Could not find your account. Sign in again and retry." };
-  await refreshCurrentSession(updatedUser);
+  const supabase = await createClient();
+  const { error } = await supabase.auth.updateUser({
+    data: { name, country, county, phone, bio },
+  });
+  if (error) return { error: "Could not save your profile. Please try again." };
   revalidatePath("/profile");
   revalidatePath("/", "layout");
 
@@ -89,7 +88,8 @@ export async function updateProfileAction(_state: ProfileState, formData: FormDa
 }
 
 export async function signOutAction(): Promise<void> {
-  await endSession();
+  const supabase = await createClient();
+  await supabase.auth.signOut();
   revalidatePath("/", "layout");
   redirect("/");
 }

@@ -132,6 +132,11 @@ export default function SignInForm({ defaultCountry = "", next = "/profile" }: P
           {state.error}
         </p>
       ) : null}
+      {state.message ? (
+        <p role="status" aria-live="polite" className="rounded-xl bg-olive/10 px-3.5 py-2.5 text-sm text-olive">
+          {state.message}
+        </p>
+      ) : null}
 
       <button
         type="submit"
@@ -142,7 +147,7 @@ export default function SignInForm({ defaultCountry = "", next = "/profile" }: P
       </button>
 
       <p className="text-center text-xs leading-relaxed text-ink-soft">
-        Passwords are stored as salted hashes. Never reuse a password from another account.
+        Your password is securely managed by Supabase. Never reuse a password from another account.
       </p>
     </form>
   );

@@ -32,12 +32,12 @@ Requires **Node 22.5+** for `node:sqlite` (developed on Node 26).
 - **Sell flow** (`/sell`) — a signed-in user can publish a real listing (title, category, condition, price, city, country, state/province, description) that immediately appears in browse, search and their own listing page.
 - **Listing pages** (`/listing/[slug]`) — big product view, condition, verified status, country in “Ships from”, a “Message seller” CTA that opens the in-app composer, an about-the-seller widget and a full review feed.
 - **Seller pages** (`/seller/[slug]`) — profile header, seller stats, all active listings and recent buyer reviews.
-- **Password accounts** (`/signin`, `/profile`) — create an account with an email and password, then sign in with a salted scrypt password hash and an httpOnly session cookie. Profiles include country/state, phone, bio, message counts, and sign out.
+- **Password accounts** (`/signin`, `/profile`) — email/password sign-in and account creation use Supabase Auth with server-managed sessions. Profile details are stored as Supabase Auth metadata.
 - **Appearance** (`/profile`) — light, dark or system theme, saved in `localStorage` and applied before first paint with no flash.
 - **Reviews** — signed-in buyers can leave a 1–5 star review with text, which updates both the listing and seller pages.
 - **Empty states + 404**, responsive layout, reduced-motion support, accessible names on cards and controls.
 
-No product photography yet — each tile is a deterministic gradient + emoji placeholder driven by the category palette in `lib/seed-data.ts`.
+Listings with uploaded photos use public Supabase Storage URLs. Listings without photos use a deterministic gradient + emoji placeholder driven by the category palette in `lib/seed-data.ts`.
 
 ## Where things live
 
@@ -53,9 +53,11 @@ No product photography yet — each tile is a deterministic gradient + emoji pla
 | `app/signin/page.tsx` | Password sign-in and account creation |
 | `app/profile/page.tsx` | Profile, settings and sign out |
 | `app/actions/` | Server actions for auth, reviews, messaging and listings |
-| `lib/auth.ts` | Session cookie helpers |
+| `lib/auth.ts` | Verified Supabase user lookup and safe redirect handling |
+| `lib/supabase/` | SSR client, session refresh and server-only Storage client |
+| `lib/uploads.ts` | Supabase Storage product photo uploads |
 | `lib/db.ts` | Schema (v7), seeding, users/sessions, listings, reviews, conversations/messages |
-| `lib/durable-products.ts` | Durable listing records in Vercel Blob |
+| `lib/durable-products.ts` | Durable listing JSON records in Vercel Blob (photos are in Supabase Storage) |
 | `lib/countries.ts` | All ISO countries, flags, popular 30 and detection helpers |
 | `lib/currency.ts` | Country → currency mapping, minor-unit and symbol helpers |
 | `lib/geo.ts` | Server-side country detection from request headers |
@@ -66,9 +68,9 @@ No product photography yet — each tile is a deterministic gradient + emoji pla
 
 ## Deliberately not built yet
 
-Checkout, payments, seller dashboards, email verification, password reset and login rate limiting. Listing records and uploaded photos are saved to the connected Vercel Blob store. Other account and marketplace data still uses SQLite under `/tmp`, so profiles, carts, messages and reviews can reset when Vercel starts a new function instance. Messaging is buyer-side only: the seller's first reply is simulated, and there is no seller inbox yet.
+Checkout, payments, password reset and login rate limiting. Listing records are saved to Vercel Blob; uploaded listing photos are stored in the public Supabase Storage bucket `product-images`. Other marketplace data still uses SQLite under `/tmp`, so carts, messages and reviews can reset when Vercel starts a new function instance. Messaging is buyer-side only: the seller's first reply is simulated, and there is no seller inbox yet.
 
-For production sign-in, set `AUTH_SECRET` in the Vercel project environment to a random secret of at least 32 characters, then redeploy. Generate one locally with `node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"`. The Bazaar project also needs a connected Vercel Blob store with `BLOB_READ_WRITE_TOKEN` for persistent listings and photos. The encrypted cookie keeps a login session valid across Vercel function instances, though account records and other non-listing data still need a persistent database.
+Supabase Auth and Storage credentials are connected to the Vercel project. For local development, run `vercel env pull .env.local --environment development`. Set the Supabase Auth site URL and redirect allowlist to include the deployed Bazaar URL and `http://localhost:3000` so email confirmation links can return to the app. Vercel Blob remains connected for durable listing JSON only.
 
 ## Next steps that fit the current structure
 
