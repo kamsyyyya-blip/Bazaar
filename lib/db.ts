@@ -653,11 +653,12 @@ export type NewProductInput = {
 
 function uniqueProductSlug(title: string): string {
   const base = sellerSlug(title) || "listing";
-  let slug = base;
-  let suffix = 2;
+  // SQLite is per-instance on Vercel, so its local uniqueness check cannot
+  // see a slug already present in the shared Blob store. A random suffix makes
+  // collisions across function instances exceptionally unlikely.
+  let slug = `${base}-${randomBytes(5).toString("hex")}`;
   while (getDb().prepare("SELECT 1 FROM products WHERE slug = ?").get(slug)) {
-    slug = `${base}-${suffix}`;
-    suffix += 1;
+    slug = `${base}-${randomBytes(5).toString("hex")}`;
   }
   return slug;
 }
