@@ -8,7 +8,6 @@ import SiteHeader from "@/components/SiteHeader";
 import SortSelect from "@/components/SortSelect";
 import { countryName, flagFor, HOME_COUNTRY } from "@/lib/countries";
 import {
-  getStats,
   listCategories,
   listCountryCounts,
   listFeatured,
@@ -22,6 +21,8 @@ import { listAllDurableProducts } from "@/lib/durable-products";
 
 export const dynamic = "force-dynamic";
 const LISTINGS_PER_PAGE = 24;
+// Clear the current homepage sample posts without deleting their stored data.
+const CLEARED_HOME_LISTINGS = new Set(["gaming-mouse", "hp-laptop", "laptop"]);
 
 function Tab({ href, active, children }: { href: string; active: boolean; children: React.ReactNode }) {
   return (
@@ -58,15 +59,17 @@ export default async function HomePage({
   const countryCounts = Object.fromEntries(
     listCountryCounts().map((country) => [country.code, country.count]),
   ) as Record<string, number>;
-  const stats = getStats();
-  const featured = listFeatured(4);
+  const featured = listFeatured(4).filter((product) => !CLEARED_HOME_LISTINGS.has(product.slug));
   const productsFromDb = listProducts({ ...filters, maxPrice: filters.max, imageMode: "cover" });
   const durableProducts = await durableProductsPromise;
   const durableBySlug = new Map(durableProducts.map((product) => [product.slug, product]));
   const query = filters.q.toLowerCase();
   const matchingProducts = [
-    ...productsFromDb.filter((product) => !durableBySlug.has(product.slug)),
+    ...productsFromDb.filter((product) =>
+      !durableBySlug.has(product.slug) && !CLEARED_HOME_LISTINGS.has(product.slug),
+    ),
     ...durableProducts.filter((product) => {
+      if (CLEARED_HOME_LISTINGS.has(product.slug)) return false;
       if (product.status === "sold") return false;
       if (filters.category && product.category !== filters.category) return false;
       if (filters.county && product.county !== filters.county) return false;
@@ -100,10 +103,9 @@ export default async function HomePage({
     .map((product) => ({ ...product, images: product.images.slice(0, 1) }));
   const categoryTotal = categories.reduce((total, category) => total + category.count, 0);
   const countryEmpty = Boolean(filters.country) && (countryCounts[filters.country] ?? 0) === 0;
-  const marketplaceEmpty = stats.products === 0 && durableProducts.length === 0;
-
   const activeCategory = categories.find((item) => item.slug === filters.category);
   const filtered = hasActiveFilters(filters);
+  const marketplaceEmpty = matchingProducts.length === 0 && !filtered;
   const heading = filters.q
     ? `Results for “${filters.q}”`
     : marketplaceEmpty
@@ -142,10 +144,7 @@ export default async function HomePage({
                   something here.
                 </>
               ) : (
-                <>
-                  {pluralize(stats.products, "fresh listing")} from {pluralize(stats.makers, "local seller")} across{" "}
-                  {pluralize(stats.counties, "state")}. Search the whole market, or pick a category.
-                </>
+                <>Search the whole market, or pick a category.</>
               )}
             </p>
 
@@ -191,18 +190,18 @@ export default async function HomePage({
 
             <div className="mt-5 md:hidden">
               <h2 className="mb-3 text-sm font-semibold text-ink">Popular categories</h2>
-              <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 sm:gap-3 md:grid-cols-5 xl:grid-cols-8">
+              <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
                 {categories.map((item) => (
                   <Link
                     key={item.slug}
                     href={browseHref(filters, { category: item.slug, q: "" })}
                     prefetch={false}
-                    className="group flex aspect-square min-w-0 flex-col items-center justify-center gap-2 rounded-2xl border border-line bg-white px-2 py-2 text-center shadow-sm transition hover:-translate-y-0.5 hover:border-ink/20 hover:shadow-soft focus-visible:outline-offset-2"
+                    className="group flex aspect-square min-w-0 flex-col items-center justify-center gap-1 rounded-xl border border-line bg-white px-1 py-1.5 text-center shadow-sm transition hover:-translate-y-0.5 hover:border-ink/20 hover:shadow-soft focus-visible:outline-offset-2 sm:gap-1.5 sm:rounded-2xl sm:px-2 sm:py-2"
                   >
-                    <span aria-hidden="true" className="text-2xl leading-none transition-transform group-hover:scale-110">
+                    <span aria-hidden="true" className="text-xl leading-none transition-transform group-hover:scale-110 sm:text-2xl">
                       {item.emoji}
                     </span>
-                    <span className="line-clamp-2 text-xs font-semibold leading-tight text-ink-soft group-hover:text-ink">
+                    <span className="line-clamp-2 text-[10px] font-semibold leading-tight text-ink-soft group-hover:text-ink sm:text-xs">
                       {item.name}
                     </span>
                   </Link>
@@ -289,7 +288,7 @@ export default async function HomePage({
                 </div>
               </details>
 
-              {!filtered && !marketplaceEmpty ? (
+              {!filtered && featuredAds.length > 0 ? (
                 <section id="recommended" className="scroll-mt-20">
                   <div className="flex items-end justify-between gap-4">
                     <div>
