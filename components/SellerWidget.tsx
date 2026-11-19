@@ -18,6 +18,7 @@ export default function SellerWidget({ seller }: { seller: Seller }) {
           <div className="flex flex-wrap items-center gap-2">
             <Link
               href={`/seller/${seller.slug}`}
+              prefetch={false}
               className="font-display text-xl leading-tight transition hover:text-clay"
             >
               {seller.name}
@@ -47,6 +48,7 @@ export default function SellerWidget({ seller }: { seller: Seller }) {
       <div className="flex shrink-0 flex-col gap-2 sm:items-end">
         <Link
           href={`/seller/${seller.slug}`}
+          prefetch={false}
           className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-ink px-5 text-sm font-semibold text-paper transition hover:bg-clay"
         >
           View seller page

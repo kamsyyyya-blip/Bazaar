@@ -25,7 +25,7 @@ function isProduct(value: unknown): value is Product {
 
 async function readProduct(url: string): Promise<Product | null> {
   try {
-    const response = await fetch(url, { next: { revalidate: 60 } });
+    const response = await fetch(url, { next: { revalidate: 3600 } });
     if (!response.ok) return null;
     const value: unknown = await response.json();
     return isProduct(value) ? value : null;
@@ -60,7 +60,7 @@ const readDurableProductCached = unstable_cache(
     }
   },
   ["bazaar-durable-product"],
-  { revalidate: 60, tags: ["durable-products"] },
+  { revalidate: 3600, tags: ["durable-products"] },
 );
 
 const listDurableProductsCached = unstable_cache(
@@ -82,7 +82,7 @@ const listDurableProductsCached = unstable_cache(
     return products;
   },
   ["bazaar-durable-products"],
-  { revalidate: 60, tags: ["durable-products"] },
+  { revalidate: 3600, tags: ["durable-products"] },
 );
 
 export async function getDurableProduct(slug: string): Promise<Product | null> {

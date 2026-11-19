@@ -61,7 +61,7 @@ export type Product = {
 };
 
 export type Review = {
-  id: number;
+  id: number | string;
   productSlug: string;
   productTitle?: string;
   authorName: string;
@@ -962,6 +962,15 @@ export function createReview(input: {
        VALUES (?, ?, ?, ?, ?, ?)`,
     )
     .run(input.productSlug, input.authorName, input.authorEmail, input.rating, input.body, createdAt);
+
+  getDb()
+    .prepare(
+      `UPDATE products
+       SET rating = (SELECT AVG(rating) FROM reviews WHERE product_slug = ?),
+           reviews = (SELECT COUNT(*) FROM reviews WHERE product_slug = ?)
+       WHERE slug = ?`,
+    )
+    .run(input.productSlug, input.productSlug, input.productSlug);
 
   const row = getDb()
     .prepare(`${SELECT_REVIEW} WHERE id = ?`)

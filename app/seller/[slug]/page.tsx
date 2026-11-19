@@ -6,6 +6,7 @@ import SiteHeader from "@/components/SiteHeader";
 import Stars from "@/components/Stars";
 import { getSellerBySlug, listCategories, listSellerReviews } from "@/lib/db";
 import { formatDate, initials } from "@/lib/format";
+import { getDurableSellerBySlug, getDurableSellerReviews, mergeSellerProfiles } from "@/lib/durable-sellers";
 
 export async function generateMetadata({
   params,
@@ -13,7 +14,9 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const seller = getSellerBySlug(slug);
+  const localSeller = getSellerBySlug(slug);
+  const durableSeller = localSeller ? null : await getDurableSellerBySlug(slug);
+  const seller = mergeSellerProfiles(localSeller, durableSeller);
   if (!seller) return { title: "Seller not found" };
   return {
     title: seller.name,
@@ -23,10 +26,19 @@ export async function generateMetadata({
 
 export default async function SellerPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const seller = getSellerBySlug(slug);
+  const localSeller = getSellerBySlug(slug);
+  const durableSeller = localSeller ? null : await getDurableSellerBySlug(slug);
+  const seller = mergeSellerProfiles(localSeller, durableSeller);
   if (!seller) notFound();
 
-  const reviews = listSellerReviews(seller.name, 4);
+  const durableReviewData = await getDurableSellerReviews(seller);
+  const reviews = [...listSellerReviews(seller.name, 4), ...durableReviewData.reviews]
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+    .slice(0, 4);
+  const ratingCount = seller.reviews + durableReviewData.count;
+  const rating = ratingCount > 0
+    ? (seller.rating * seller.reviews + durableReviewData.averageRating * durableReviewData.count) / ratingCount
+    : seller.rating;
   const categoryLinks = listCategories().filter((category) => seller.categories.includes(category.name));
 
   return (
@@ -94,9 +106,9 @@ export default async function SellerPage({ params }: { params: Promise<{ slug: s
               <div>
                 <dt className="text-[12px] uppercase tracking-[0.1em] text-ink-soft">Seller rating</dt>
                 <dd className="mt-1 flex items-center gap-1.5 text-sm font-medium">
-                  <Stars value={seller.rating} />
-                  {seller.rating.toFixed(1)}
-                  <span className="font-normal text-ink-soft">({seller.reviews.toLocaleString("en-US")})</span>
+                  <Stars value={rating} />
+                  {rating.toFixed(1)}
+                  <span className="font-normal text-ink-soft">({ratingCount.toLocaleString("en-US")})</span>
                 </dd>
               </div>
               <div>
@@ -164,9 +176,9 @@ export default async function SellerPage({ params }: { params: Promise<{ slug: s
               </p>
             </div>
             <p className="flex items-center gap-1.5 text-sm text-ink-soft">
-              <Stars value={seller.rating} />
-              <span className="font-medium text-ink">{seller.rating.toFixed(1)}</span>
-              <span>({seller.reviews.toLocaleString("en-US")} ratings)</span>
+              <Stars value={rating} />
+              <span className="font-medium text-ink">{rating.toFixed(1)}</span>
+              <span>({ratingCount.toLocaleString("en-US")} ratings)</span>
             </p>
           </div>
 

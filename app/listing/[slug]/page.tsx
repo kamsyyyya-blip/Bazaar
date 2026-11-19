@@ -14,6 +14,8 @@ import { countryName, flagFor } from "@/lib/countries";
 import { currencyForCountry } from "@/lib/currency";
 import { formatDate, formatPrice, initials } from "@/lib/format";
 import { getDurableProduct } from "@/lib/durable-products";
+import { getDurableSellerForListing } from "@/lib/durable-sellers";
+import { getDurableReviews } from "@/lib/durable-reviews";
 
 export async function generateMetadata({
   params,
@@ -38,10 +40,22 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
     .filter((item) => item.slug !== product.slug)
     .slice(0, 4);
 
-  const seller = getSellerByName(product.seller);
-  const reviews = listReviews(product.slug);
-  const reviewCount = countReviews(product.slug);
-  const user = await getCurrentUser();
+  const localSeller = getSellerByName(product.seller);
+  const localReviews = listReviews(product.slug);
+  const localReviewCount = countReviews(product.slug);
+  const seller = localSeller ?? getDurableSellerForListing(product);
+  const [durableReviewData, user] = await Promise.all([
+    getDurableReviews(product.slug),
+    getCurrentUser(),
+  ]);
+  const reviews = [...localReviews, ...durableReviewData.reviews]
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+    .slice(0, 20);
+  const reviewCount = localReviewCount + durableReviewData.count;
+  const ratingCount = product.reviews + durableReviewData.count;
+  const rating = ratingCount > 0
+    ? (product.rating * product.reviews + durableReviewData.averageRating * durableReviewData.count) / ratingCount
+    : product.rating;
   const ownListing = user?.name === product.seller;
   const inCart = user && !ownListing
     ? (user.cart ?? []).includes(product.slug) || isInCart(user.email, product.slug)
@@ -89,13 +103,13 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
             <h1 className="mt-2 text-2xl leading-tight sm:mt-3 sm:text-4xl">{product.title}</h1>
 
             <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-ink-soft">
-              {product.reviews > 0 ? (
+              {ratingCount > 0 ? (
                 <span className="flex items-center gap-1.5">
                   <span aria-hidden="true" className="text-clay">
                     ★
                   </span>
-                  <span className="font-medium text-ink">{product.rating.toFixed(1)}</span>
-                  <span>({product.reviews.toLocaleString("en-US")} ratings)</span>
+                  <span className="font-medium text-ink">{rating.toFixed(1)}</span>
+                  <span>({ratingCount.toLocaleString("en-US")} ratings)</span>
                 </span>
               ) : (
                 <span className="rounded-full bg-olive/10 px-2 py-0.5 text-xs font-medium text-olive">
@@ -106,7 +120,7 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
               <span>
                 by{" "}
                 {seller ? (
-                  <Link href={`/seller/${seller.slug}`} className="font-medium text-ink underline-offset-4 hover:underline">
+                  <Link href={`/seller/${seller.slug}`} prefetch={false} className="font-medium text-ink underline-offset-4 hover:underline">
                     {product.seller}
                   </Link>
                 ) : (
@@ -136,7 +150,7 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
                 <dt className="text-xs uppercase tracking-[0.1em] text-ink-soft">Sold by</dt>
                 <dd className="mt-1 font-medium">
                   {seller ? (
-                    <Link href={`/seller/${seller.slug}`} className="underline-offset-4 hover:underline">
+                    <Link href={`/seller/${seller.slug}`} prefetch={false} className="underline-offset-4 hover:underline">
                       {product.seller}
                     </Link>
                   ) : (
@@ -220,7 +234,7 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
                 <h2 className="text-2xl">Reviews</h2>
                 <p className="mt-1 text-xs text-ink-soft">
                   {reviewCount} written {reviewCount === 1 ? "review" : "reviews"} ·{" "}
-                  {product.reviews.toLocaleString("en-US")} ratings
+                  {ratingCount.toLocaleString("en-US")} ratings
                 </p>
               </div>
 

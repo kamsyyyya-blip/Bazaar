@@ -83,6 +83,7 @@ export default async function SiteHeader({
           {user ? (
             <Link
               href={published > 0 ? `/seller/${sellerSlug(user.name)}` : "/sell"}
+              prefetch={false}
               aria-label={
                 published > 0
                   ? `Your listings (${published} published)`

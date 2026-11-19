@@ -1,8 +1,10 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { createReview, getProduct, sellerSlug } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
+import { getDurableProduct } from "@/lib/durable-products";
+import { saveDurableReview } from "@/lib/durable-reviews";
 
 export type ReviewState = { error?: string; success?: boolean };
 
@@ -13,7 +15,8 @@ export async function addReviewAction(_state: ReviewState, formData: FormData): 
   }
 
   const slug = String(formData.get("slug") ?? "");
-  const product = getProduct(slug);
+  const durableProduct = await getDurableProduct(slug);
+  const product = durableProduct ?? getProduct(slug);
   if (!product) {
     return { error: "That listing is no longer available." };
   }
@@ -31,15 +34,30 @@ export async function addReviewAction(_state: ReviewState, formData: FormData): 
     return { error: "Keep your review under 800 characters." };
   }
 
-  createReview({
-    productSlug: slug,
-    authorName: user.name,
-    authorEmail: user.email,
-    rating,
-    body,
-  });
+  try {
+    if (durableProduct) {
+      await saveDurableReview({
+        productSlug: product.slug,
+        authorName: user.name,
+        rating,
+        body,
+      });
+      updateTag("durable-reviews");
+    } else {
+      createReview({
+        productSlug: product.slug,
+        authorName: user.name,
+        authorEmail: user.email,
+        rating,
+        body,
+      });
+    }
+  } catch (error) {
+    console.error("Failed to save review", error);
+    return { error: "Your review could not be saved. Please try again." };
+  }
 
-  revalidatePath(`/listing/${slug}`);
+  revalidatePath(`/listing/${product.slug}`);
   revalidatePath(`/seller/${sellerSlug(product.seller)}`);
 
   return { success: true };
