@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { removeFromCartAction } from "@/app/actions/cart";
 import SiteHeader from "@/components/SiteHeader";
 import { getCurrentUser } from "@/lib/auth";
@@ -72,10 +73,12 @@ export default async function CartPage() {
                       }}
                     >
                       {product.images.length > 0 ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
+                        <Image
                           src={product.images[0]}
                           alt={product.title}
+                          fill
+                          sizes="96px"
+                          quality={60}
                           className="absolute inset-0 h-full w-full object-cover"
                         />
                       ) : (

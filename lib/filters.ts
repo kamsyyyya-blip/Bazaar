@@ -80,6 +80,16 @@ export function browseHref(current: Filters, patch: Partial<Filters> = {}): stri
   return `/${query ? `?${query}` : ""}#trending`;
 }
 
+/** Builds a browse page URL while keeping the active search and filters intact. */
+export function pageHref(current: Filters, page: number): string {
+  const base = browseHref(current).split("#", 1)[0];
+  const search = new URLSearchParams(base.split("?")[1] ?? "");
+  if (page > 1) search.set("p", String(Math.floor(page)));
+  else search.delete("p");
+  const query = search.toString();
+  return `/${query ? `?${query}` : ""}#trending`;
+}
+
 export function hasActiveFilters(filters: Filters): boolean {
   return Boolean(
     filters.q ||

@@ -242,6 +242,11 @@ CREATE INDEX IF NOT EXISTS idx_products_county ON products(county);
 CREATE INDEX IF NOT EXISTS idx_products_country ON products(country);
 CREATE INDEX IF NOT EXISTS idx_products_price ON products(price);
 CREATE INDEX IF NOT EXISTS idx_products_seller ON products(seller);
+CREATE INDEX IF NOT EXISTS idx_products_created_at ON products(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_products_rating ON products(rating DESC, reviews DESC);
+CREATE INDEX IF NOT EXISTS idx_products_category_created ON products(category, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_products_seller_created ON products(seller, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_products_featured ON products(badge, rating DESC, reviews DESC);
 
 CREATE TABLE IF NOT EXISTS users (
   id           INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -276,6 +281,7 @@ CREATE TABLE IF NOT EXISTS reviews (
 );
 
 CREATE INDEX IF NOT EXISTS idx_reviews_product ON reviews(product_slug);
+CREATE INDEX IF NOT EXISTS idx_reviews_product_created ON reviews(product_slug, created_at DESC, id DESC);
 
 CREATE TABLE IF NOT EXISTS conversations (
   id           INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -290,6 +296,7 @@ CREATE TABLE IF NOT EXISTS conversations (
 );
 
 CREATE INDEX IF NOT EXISTS idx_conversations_buyer ON conversations(buyer_email);
+CREATE INDEX IF NOT EXISTS idx_conversations_buyer_updated ON conversations(buyer_email, updated_at DESC, id DESC);
 
 CREATE TABLE IF NOT EXISTS messages (
   id              INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -301,6 +308,7 @@ CREATE TABLE IF NOT EXISTS messages (
 );
 
 CREATE INDEX IF NOT EXISTS idx_messages_conversation ON messages(conversation_id);
+CREATE INDEX IF NOT EXISTS idx_messages_conversation_created ON messages(conversation_id, created_at DESC, id DESC);
 
 CREATE TABLE IF NOT EXISTS product_images (
   id           INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -321,6 +329,7 @@ CREATE TABLE IF NOT EXISTS cart_items (
 );
 
 CREATE INDEX IF NOT EXISTS idx_cart_items_user ON cart_items(user_email);
+CREATE INDEX IF NOT EXISTS idx_cart_items_user_created ON cart_items(user_email, created_at DESC, id DESC);
 `;
 
 const globalForDb = globalThis as unknown as { __bazaarDb?: DatabaseSync };
@@ -464,6 +473,17 @@ const SELECT_PRODUCT = `
   JOIN categories c ON c.slug = p.category
 `;
 
+const SELECT_PRODUCT_COVER = `
+  SELECT p.*, c.name AS category_name,
+         (SELECT filename
+          FROM product_images
+          WHERE product_slug = p.slug
+          ORDER BY position ASC, id ASC
+          LIMIT 1) AS image_files
+  FROM products p
+  JOIN categories c ON c.slug = p.category
+`;
+
 const ORDER_BY: Record<SortKey, string> = {
   featured: "p.badge IS NULL, p.rating DESC, p.reviews DESC",
   "price-asc": "p.price ASC",
@@ -480,6 +500,8 @@ export type ProductQuery = {
   seller?: string;
   sort?: SortKey;
   maxPrice?: number;
+  limit?: number;
+  imageMode?: "all" | "cover";
 };
 
 export function listProducts({
@@ -490,6 +512,8 @@ export function listProducts({
   seller = "",
   sort = "featured",
   maxPrice,
+  limit,
+  imageMode = "all",
 }: ProductQuery = {}): Product[] {
   const clauses: string[] = [];
   const params: (string | number)[] = [];
@@ -541,8 +565,11 @@ export function listProducts({
   }
 
   const where = clauses.length ? `WHERE ${clauses.join(" AND ")}` : "";
-  const sql = `${SELECT_PRODUCT} ${where} ORDER BY ${ORDER_BY[sort] ?? ORDER_BY.featured}`;
+  const imageSelect = imageMode === "cover" ? SELECT_PRODUCT_COVER : SELECT_PRODUCT;
+  const boundedLimit = Number.isFinite(limit) && limit! > 0 ? Math.floor(limit!) : undefined;
+  const sql = `${imageSelect} ${where} ORDER BY ${ORDER_BY[sort] ?? ORDER_BY.featured}${boundedLimit ? " LIMIT ?" : ""}`;
 
+  if (boundedLimit) params.push(boundedLimit);
   return (getDb().prepare(sql).all(...params) as ProductRow[]).map(mapProduct);
 }
 
@@ -684,15 +711,11 @@ export function listFeatured(limit = 3): Product[] {
     .prepare(
       `SELECT * FROM (
          SELECT p.*, c.name AS category_name,
-                COALESCE((
-                  SELECT group_concat(filename, ',')
-                  FROM (
-                    SELECT filename
-                    FROM product_images
-                    WHERE product_slug = p.slug
-                    ORDER BY position ASC, id ASC
-                  )
-                ), '') AS image_files,
+                (SELECT filename
+                 FROM product_images
+                 WHERE product_slug = p.slug
+                 ORDER BY position ASC, id ASC
+                 LIMIT 1) AS image_files,
                 ROW_NUMBER() OVER (PARTITION BY p.category ORDER BY p.rating DESC, p.reviews DESC) AS rn
          FROM products p
          JOIN categories c ON c.slug = p.category
@@ -803,7 +826,7 @@ export function countProductsBySeller(seller: string): number {
 }
 
 function buildSeller(name: string): Seller | null {
-  const products = listProducts({ seller: name, sort: "newest" });
+  const products = listProducts({ seller: name, sort: "newest", imageMode: "cover" });
   if (products.length === 0) return null;
 
   const first = products[0];
@@ -847,7 +870,50 @@ export function getSellerBySlug(slug: string): Seller | null {
 }
 
 export function getSellerByName(name: string): Seller | null {
-  return buildSeller(name);
+  const first = listProducts({ seller: name, sort: "newest", limit: 1, imageMode: "cover" })[0];
+  if (!first) return null;
+
+  const summary = getDb()
+    .prepare(
+      `SELECT COUNT(*) AS listings, AVG(rating) AS avg_rating, SUM(reviews) AS reviews,
+              MIN(created_at) AS joined, MIN(verified) AS verified
+       FROM products WHERE seller = ?`,
+    )
+    .get(name) as {
+      listings: number;
+      avg_rating: number;
+      reviews: number;
+      joined: string;
+      verified: number;
+    };
+  const categories = getDb()
+    .prepare(
+      `SELECT DISTINCT c.name
+       FROM products p JOIN categories c ON c.slug = p.category
+       WHERE p.seller = ? ORDER BY c.sort_order ASC`,
+    )
+    .all(name) as Array<{ name: string }>;
+  const categoryNames = categories.map((category) => category.name);
+  const slug = sellerSlug(name);
+
+  return {
+    slug,
+    name,
+    location: first.location,
+    county: first.county,
+    verified: summary.verified === 1,
+    rating: Math.round(summary.avg_rating * 10) / 10,
+    reviews: summary.reviews,
+    listings: summary.listings,
+    categories: categoryNames,
+    joined: summary.joined,
+    bio: `${name} is an independent seller based in ${first.location}. They list ${categoryNames
+      .slice(0, 3)
+      .join(", ")
+      .toLowerCase()} to buyers around ${first.county}. Expect honest descriptions, quick replies and careful packing.`,
+    avatarColor: AVATAR_COLORS[name.length % AVATAR_COLORS.length],
+    products: [],
+  };
 }
 
 /* ------------------------------------------------------------------ reviews */

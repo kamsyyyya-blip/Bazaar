@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 type Props = {
   images: string[];
@@ -36,8 +37,15 @@ export default function ImageGallery({ images, title, tintFrom, tintTo, emoji, b
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_28%_18%,rgba(255,255,255,0.65),transparent_58%)]" />
         {images.length > 0 ? (
           <button type="button" onClick={() => setActiveIndex(0)} aria-label={`Open ${title} photo`} className="absolute inset-0 block h-full w-full cursor-zoom-in">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={images[0]} alt={title} className="absolute inset-0 h-full w-full object-cover" />
+            <Image
+              src={images[0]}
+              alt={title}
+              fill
+              sizes="(max-width: 639px) 100vw, 50vw"
+              quality={75}
+              fetchPriority="high"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
             <span className="absolute bottom-3 right-3 rounded-full bg-black/60 px-3 py-1.5 text-xs font-semibold text-white">View photos</span>
           </button>
         ) : (
@@ -50,8 +58,16 @@ export default function ImageGallery({ images, title, tintFrom, tintTo, emoji, b
         <div className="mt-3 grid grid-cols-5 gap-2">
           {images.slice(0, 5).map((image, index) => (
             <button key={image} type="button" onClick={() => setActiveIndex(index)} aria-label={`View photo ${index + 1} of ${images.length}`} className="overflow-hidden rounded-lg ring-1 ring-black/5 transition hover:ring-2 hover:ring-clay focus-visible:outline-2 focus-visible:outline-clay">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={image} alt={`${title}, photo ${index + 1}`} className="aspect-square w-full object-cover" />
+              <Image
+                src={image}
+                alt={`${title}, photo ${index + 1}`}
+                width={128}
+                height={128}
+                sizes="(max-width: 639px) 20vw, 128px"
+                quality={50}
+                loading="lazy"
+                className="aspect-square w-full object-cover"
+              />
             </button>
           ))}
         </div>
@@ -64,8 +80,15 @@ export default function ImageGallery({ images, title, tintFrom, tintTo, emoji, b
             <button type="button" onClick={() => setActiveIndex((activeIndex! - 1 + images.length) % images.length)} aria-label="Previous photo" className="absolute left-2 top-1/2 z-10 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-white/15 text-3xl text-white hover:bg-white/25 sm:left-6">‹</button>
           ) : null}
           <figure className="flex max-h-full max-w-full flex-col items-center justify-center gap-3">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={activeImage} alt={`${title}, photo ${(activeIndex ?? 0) + 1}`} className="max-h-[82vh] max-w-[92vw] rounded object-contain" />
+            <Image
+              src={activeImage}
+              alt={`${title}, photo ${(activeIndex ?? 0) + 1}`}
+              width={1600}
+              height={1200}
+              sizes="92vw"
+              quality={75}
+              className="max-h-[82vh] max-w-[92vw] rounded object-contain"
+            />
             <figcaption className="text-sm text-white/80">{title} · {(activeIndex ?? 0) + 1} of {images.length}</figcaption>
           </figure>
           {images.length > 1 ? (

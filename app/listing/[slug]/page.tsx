@@ -34,7 +34,7 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
   const product = getProduct(slug) ?? (await getDurableProduct(slug));
   if (!product) notFound();
 
-  const related = listProducts({ category: product.category })
+  const related = listProducts({ category: product.category, limit: 5, imageMode: "cover" })
     .filter((item) => item.slug !== product.slug)
     .slice(0, 4);
 

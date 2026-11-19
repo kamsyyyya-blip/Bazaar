@@ -14,13 +14,14 @@ import {
   listFeatured,
   listProducts,
 } from "@/lib/db";
-import { browseHref, hasActiveFilters, parseFilters, priceFilters } from "@/lib/filters";
+import { browseHref, hasActiveFilters, pageHref, parseFilters, priceFilters } from "@/lib/filters";
 import { currencyForCountry } from "@/lib/currency";
 import { pluralize } from "@/lib/format";
 import { detectCountry } from "@/lib/geo";
 import { listDurableProducts } from "@/lib/durable-products";
 
 export const dynamic = "force-dynamic";
+const LISTINGS_PER_PAGE = 24;
 
 function Tab({ href, active, children }: { href: string; active: boolean; children: React.ReactNode }) {
   return (
@@ -45,7 +46,10 @@ export default async function HomePage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const filters = parseFilters(await searchParams);
+  const params = await searchParams;
+  const filters = parseFilters(params);
+  const pageParam = Array.isArray(params.p) ? params.p[0] : params.p ?? "1";
+  const requestedPage = Math.max(1, Number.parseInt(pageParam, 10) || 1);
   const durableProductsPromise = listDurableProducts();
   const detected = await detectCountry();
   const currency = currencyForCountry(filters.country || detected || HOME_COUNTRY);
@@ -56,11 +60,11 @@ export default async function HomePage({
   ) as Record<string, number>;
   const stats = getStats();
   const featured = listFeatured(4);
-  const productsFromDb = listProducts({ ...filters, maxPrice: filters.max });
+  const productsFromDb = listProducts({ ...filters, maxPrice: filters.max, imageMode: "cover" });
   const databaseSlugs = new Set(productsFromDb.map((product) => product.slug));
   const durableProducts = await durableProductsPromise;
   const query = filters.q.toLowerCase();
-  const products = [
+  const matchingProducts = [
     ...productsFromDb,
     ...durableProducts.filter((product) => {
       if (databaseSlugs.has(product.slug)) return false;
@@ -86,7 +90,14 @@ export default async function HomePage({
       default: return Number(Boolean(b.badge)) - Number(Boolean(a.badge)) || b.rating - a.rating || b.reviews - a.reviews;
     }
   });
-  const featuredAds = featured.length > 0 ? featured : products.slice(0, 4);
+  const totalPages = Math.max(1, Math.ceil(matchingProducts.length / LISTINGS_PER_PAGE));
+  const currentPage = Math.min(requestedPage, totalPages);
+  const pageStart = (currentPage - 1) * LISTINGS_PER_PAGE;
+  const products = matchingProducts
+    .slice(pageStart, pageStart + LISTINGS_PER_PAGE)
+    .map((product) => ({ ...product, images: product.images.slice(0, 1) }));
+  const featuredAds = (featured.length > 0 ? featured : matchingProducts.slice(0, 4))
+    .map((product) => ({ ...product, images: product.images.slice(0, 1) }));
   const categoryTotal = categories.reduce((total, category) => total + category.count, 0);
   const countryEmpty = Boolean(filters.country) && (countryCounts[filters.country] ?? 0) === 0;
   const marketplaceEmpty = stats.products === 0 && durableProducts.length === 0;
@@ -309,7 +320,7 @@ export default async function HomePage({
                   <div>
                     <h2 className="text-xl sm:text-2xl">{heading}</h2>
                     <p className="mt-1 text-xs text-ink-soft" aria-live="polite">
-                      {pluralize(products.length, "listing")}
+                      {pluralize(matchingProducts.length, "listing")}
                       {activeCategory ? ` in ${activeCategory.name}` : ""}
                       {filters.county ? ` from ${filters.county}` : ""}
                       {filters.country ? ` in ${countryName(filters.country)}` : ""}
@@ -350,8 +361,33 @@ export default async function HomePage({
                       ))}
                     </div>
                     <p className="mt-8 text-center text-xs text-ink-soft">
-                      You&rsquo;ve reached the end · {pluralize(products.length, "listing")}
+                      Showing {pageStart + 1}–{Math.min(pageStart + products.length, matchingProducts.length)} of {pluralize(matchingProducts.length, "listing")}
                     </p>
+                    {totalPages > 1 ? (
+                      <nav aria-label="Listing pages" className="mt-4 flex items-center justify-center gap-3">
+                        {currentPage > 1 ? (
+                          <Link
+                            href={pageHref(filters, currentPage - 1)}
+                            prefetch={false}
+                            className="inline-flex min-h-10 items-center rounded-full border border-line bg-white px-4 text-sm font-semibold text-ink-soft transition hover:border-ink/25 hover:text-ink"
+                          >
+                            Previous
+                          </Link>
+                        ) : null}
+                        <span className="text-sm text-ink-soft" aria-current="page">
+                          Page {currentPage} of {totalPages}
+                        </span>
+                        {currentPage < totalPages ? (
+                          <Link
+                            href={pageHref(filters, currentPage + 1)}
+                            prefetch={false}
+                            className="inline-flex min-h-10 items-center rounded-full border border-line bg-white px-4 text-sm font-semibold text-ink-soft transition hover:border-ink/25 hover:text-ink"
+                          >
+                            Next
+                          </Link>
+                        ) : null}
+                      </nav>
+                    ) : null}
                   </>
                 ) : marketplaceEmpty ? (
                   <div className="mt-6 rounded-xl border border-dashed border-line bg-white/60 px-6 py-16 text-center">

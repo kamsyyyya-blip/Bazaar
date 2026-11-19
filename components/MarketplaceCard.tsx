@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Product } from "@/lib/db";
 import { currencyForCountry } from "@/lib/currency";
 import { formatPrice } from "@/lib/format";
@@ -17,10 +18,12 @@ export default function MarketplaceCard({ product }: { product: Product }) {
       >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_28%_18%,rgba(255,255,255,0.6),transparent_58%)]" />
         {product.images.length > 0 ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={product.images[0]}
             alt={product.title}
+            fill
+            sizes="(max-width: 639px) 46vw, (max-width: 1023px) 30vw, 23vw"
+            quality={60}
             loading="lazy"
             className="absolute inset-0 h-full w-full object-cover transition duration-500 ease-out group-hover:scale-105"
           />
