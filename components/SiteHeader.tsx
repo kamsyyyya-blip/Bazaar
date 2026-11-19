@@ -25,7 +25,9 @@ export default async function SiteHeader({
   const user = await getCurrentUser();
   const unread = user ? countUnreadConversations(user.email) : 0;
   const published = user ? countProductsBySeller(user.name) : 0;
-  const cartCount = user ? countCartItems(user.email) : 0;
+  const cartCount = user
+    ? Math.max((user.cart ?? []).length, countCartItems(user.email))
+    : 0;
 
   return (
     <header className="sticky top-0 z-50 border-b border-line/80 bg-paper/85 backdrop-blur-md">

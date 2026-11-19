@@ -96,6 +96,7 @@ export type User = {
   bio: string;
   avatarColor: string;
   createdAt: string;
+  cart?: string[];
 };
 
 type ProductRow = {
@@ -765,8 +766,7 @@ export function countCartItems(email: string): number {
   return row.n;
 }
 
-/** Cart contents, newest first. Products that were deleted are skipped. */
-export function listCartProducts(email: string): Product[] {
+export function listCartProductSlugs(email: string): string[] {
   const rows = getDb()
     .prepare(
       `SELECT product_slug FROM cart_items
@@ -774,9 +774,13 @@ export function listCartProducts(email: string): Product[] {
        ORDER BY created_at DESC, id DESC`,
     )
     .all(email) as Array<{ product_slug: string }>;
+  return rows.map((row) => row.product_slug);
+}
 
-  return rows
-    .map((row) => getProduct(row.product_slug))
+/** Cart contents, newest first. Products that were deleted are skipped. */
+export function listCartProducts(email: string): Product[] {
+  return listCartProductSlugs(email)
+    .map((slug) => getProduct(slug))
     .filter((product): product is Product => product !== null);
 }
 

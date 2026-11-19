@@ -86,6 +86,7 @@ export default async function HomePage({
       default: return Number(Boolean(b.badge)) - Number(Boolean(a.badge)) || b.rating - a.rating || b.reviews - a.reviews;
     }
   });
+  const featuredAds = featured.length > 0 ? featured : products.slice(0, 4);
   const categoryTotal = categories.reduce((total, category) => total + category.count, 0);
   const countryEmpty = Boolean(filters.country) && (countryCounts[filters.country] ?? 0) === 0;
   const marketplaceEmpty = stats.products === 0 && durableProducts.length === 0;
@@ -104,7 +105,7 @@ export default async function HomePage({
           ? `Trending in ${filters.county}`
           : filters.country
             ? `Trending in ${countryName(filters.country)}`
-            : "Trending now";
+            : "Latest ads";
 
   return (
     <>
@@ -281,8 +282,8 @@ export default async function HomePage({
                 <section id="recommended" className="scroll-mt-20">
                   <div className="flex items-end justify-between gap-4">
                     <div>
-                      <h2 className="text-xl sm:text-2xl">Recommended for you</h2>
-                      <p className="mt-1 text-xs text-ink-soft">Hand-picked listings our editors are watching this week.</p>
+                      <h2 className="text-xl sm:text-2xl">Featured ads</h2>
+                      <p className="mt-1 text-xs text-ink-soft">Featured listings from Bazaar sellers.</p>
                     </div>
                     <Link
                       href="/#trending"
@@ -296,7 +297,7 @@ export default async function HomePage({
                   </div>
 
                   <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-4">
-                    {featured.map((product) => (
+                    {featuredAds.map((product) => (
                       <MarketplaceCard key={product.slug} product={product} />
                     ))}
                   </div>

@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
+import AddToCartForm from "@/components/AddToCartForm";
+import ImageGallery from "@/components/ImageGallery";
 import ReviewForm from "@/components/ReviewForm";
 import SellerWidget from "@/components/SellerWidget";
 import SiteHeader from "@/components/SiteHeader";
 import Stars from "@/components/Stars";
-import { addToCartAction } from "@/app/actions/cart";
 import { getCurrentUser } from "@/lib/auth";
 import { countReviews, getProduct, getSellerByName, isInCart, listProducts, listReviews } from "@/lib/db";
 import { countryName, flagFor } from "@/lib/countries";
@@ -42,7 +43,9 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
   const reviewCount = countReviews(product.slug);
   const user = await getCurrentUser();
   const ownListing = user?.name === product.seller;
-  const inCart = user && !ownListing ? isInCart(user.email, product.slug) : false;
+  const inCart = user && !ownListing
+    ? (user.cart ?? []).includes(product.slug) || isInCart(user.email, product.slug)
+    : false;
 
   return (
     <>
@@ -66,53 +69,17 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
 
         <div className="mt-5 grid gap-6 sm:mt-8 sm:gap-10 lg:grid-cols-2 lg:gap-14">
           <div>
-            <div
-              className="relative aspect-[4/3] overflow-hidden rounded-2xl ring-1 ring-black/5 sm:aspect-square sm:rounded-3xl"
-              style={{
-                backgroundImage: `linear-gradient(135deg, ${product.tintFrom}, ${product.tintTo})`,
-              }}
-            >
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_28%_18%,rgba(255,255,255,0.65),transparent_58%)]" />
-              {product.images.length > 0 ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={product.images[0]}
-                  alt={product.title}
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
-              ) : (
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-0 grid place-items-center text-[112px] drop-shadow-[0_16px_30px_rgba(25,23,20,0.18)] sm:text-[190px]"
-                >
-                  {product.emoji}
-                </span>
-              )}
-              {product.badge ? (
-                <span className="absolute left-5 top-5 rounded-full bg-ink/85 px-3 py-1.5 text-[12px] font-semibold uppercase tracking-[0.08em] text-paper backdrop-blur-sm">
-                  {product.badge}
-                </span>
-              ) : null}
-            </div>
-            {product.images.length > 1 ? (
-              <div className="mt-3 grid grid-cols-5 gap-2">
-                {product.images.slice(0, 5).map((image) => (
-                  <a
-                    key={image}
-                    href={image}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="overflow-hidden rounded-lg ring-1 ring-black/5 transition hover:ring-2 hover:ring-clay"
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={image} alt={`${product.title} photo`} className="aspect-square w-full object-cover" />
-                  </a>
-                ))}
-              </div>
-            ) : null}
+            <ImageGallery
+              images={product.images}
+              title={product.title}
+              tintFrom={product.tintFrom}
+              tintTo={product.tintTo}
+              emoji={product.emoji}
+              badge={product.badge}
+            />
             <p className="mt-3 text-xs text-ink-soft">
               {product.images.length > 0
-                ? `${product.images.length} of up to 5 photos · open a photo to see it full size.`
+                ? `${product.images.length} of up to 5 photos · tap a photo to view it here.`
                 : "No photos added yet — ask the seller about condition before buying."}
             </p>
           </div>
@@ -224,17 +191,7 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
                   <span aria-hidden="true">→</span>
                 </Link>
               ) : (
-                <form action={addToCartAction} className="flex flex-1">
-                  <input type="hidden" name="slug" value={product.slug} />
-                  <input type="hidden" name="next" value={`/listing/${product.slug}`} />
-                  <button
-                    type="submit"
-                    className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-ink px-6 text-sm font-semibold text-paper transition hover:bg-clay"
-                  >
-                    Add to cart
-                    <span aria-hidden="true">→</span>
-                  </button>
-                </form>
+                <AddToCartForm slug={product.slug} />
               )}
             </div>
 

@@ -4,7 +4,8 @@ import { removeFromCartAction } from "@/app/actions/cart";
 import SiteHeader from "@/components/SiteHeader";
 import { getCurrentUser } from "@/lib/auth";
 import { currencyForCountry } from "@/lib/currency";
-import { listCartProducts } from "@/lib/db";
+import { getProduct, listCartProductSlugs } from "@/lib/db";
+import { getDurableProduct } from "@/lib/durable-products";
 import { formatPrice, pluralize } from "@/lib/format";
 
 export const metadata: Metadata = {
@@ -14,7 +15,11 @@ export const metadata: Metadata = {
 
 export default async function CartPage() {
   const user = await getCurrentUser();
-  const items = user ? listCartProducts(user.email) : [];
+  const cartSlugs = user
+    ? [...new Set([...(user.cart ?? []), ...listCartProductSlugs(user.email)])]
+    : [];
+  const resolvedItems = await Promise.all(cartSlugs.map(async (slug) => getProduct(slug) ?? await getDurableProduct(slug)));
+  const items = resolvedItems.filter((product) => product !== null);
 
   return (
     <>

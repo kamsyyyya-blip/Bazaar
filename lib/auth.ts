@@ -24,6 +24,9 @@ export async function getCurrentUser(): Promise<User | null> {
     bio: typeof metadata.bio === "string" ? metadata.bio : "",
     avatarColor: AVATAR_COLORS[name.length % AVATAR_COLORS.length],
     createdAt: user.created_at,
+    cart: Array.isArray(metadata.cart)
+      ? metadata.cart.filter((slug: unknown): slug is string => typeof slug === "string").slice(0, 100)
+      : [],
   };
 }
 
