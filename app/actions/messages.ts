@@ -9,6 +9,7 @@ import {
   getProduct,
 } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
+import { getDurableProduct } from "@/lib/durable-products";
 
 export type MessageState = { error?: string; sent?: boolean };
 
@@ -38,20 +39,26 @@ export async function startConversationAction(
   if (!user) return { error: "Sign in to message this seller." };
 
   const slug = String(formData.get("slug") ?? "");
-  const product = getProduct(slug);
+  const product = await getDurableProduct(slug) ?? getProduct(slug);
   if (!product) return { error: "That listing is no longer available." };
-  if (product.seller === user.name) {
+  if (product.ownerId ? product.ownerId === String(user.id) : product.seller === user.name) {
     return { error: "This is your own listing — buyers will message you here." };
   }
 
   const { body, error } = validateBody(formData.get("body"));
   if (error || !body) return { error };
 
-  const conversation = ensureConversation({
-    productSlug: product.slug,
-    buyerEmail: user.email,
-    buyerName: user.name,
-  });
+  let conversation: ReturnType<typeof ensureConversation>;
+  try {
+    conversation = ensureConversation({
+      productSlug: product.slug,
+      buyerEmail: user.email,
+      buyerName: user.name,
+    });
+  } catch (error) {
+    console.error("Could not create listing conversation", error);
+    return { error: "Messaging is temporarily unavailable for this listing. Please try again shortly." };
+  }
   if (!conversation) return { error: "That listing is no longer available." };
 
   addMessage({

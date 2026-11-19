@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": ">=22.5.0"
+    "node": ">=22.6.0"
   },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "test": "node --experimental-strip-types --test tests",
     "db:reset": "node -e \"const fs=require('fs');for(const f of ['data/marketplace.db','data/marketplace.db-wal','data/marketplace.db-shm']){try{fs.unlinkSync(f)}catch{}}console.log('database reset')\""
   },
   "dependencies": {

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
 import AddToCartForm from "@/components/AddToCartForm";
+import FavoriteButton from "@/components/FavoriteButton";
 import ImageGallery from "@/components/ImageGallery";
 import ReviewForm from "@/components/ReviewForm";
 import SellerWidget from "@/components/SellerWidget";
@@ -23,7 +24,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProduct(slug) ?? (await getDurableProduct(slug));
+  const product = (await getDurableProduct(slug)) ?? getProduct(slug);
   if (!product) return { title: "Listing not found" };
   return {
     title: product.title,
@@ -33,7 +34,7 @@ export async function generateMetadata({
 
 export default async function ListingPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const product = getProduct(slug) ?? (await getDurableProduct(slug));
+  const product = (await getDurableProduct(slug)) ?? getProduct(slug);
   if (!product) notFound();
 
   const related = listProducts({ category: product.category, limit: 5, imageMode: "cover" })
@@ -56,7 +57,9 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
   const rating = ratingCount > 0
     ? (product.rating * product.reviews + durableReviewData.averageRating * durableReviewData.count) / ratingCount
     : product.rating;
-  const ownListing = user?.name === product.seller;
+  const ownListing = product.ownerId
+    ? product.ownerId === String(user?.id)
+    : user?.name === product.seller;
   const inCart = user && !ownListing
     ? (user.cart ?? []).includes(product.slug) || isInCart(user.email, product.slug)
     : false;
@@ -188,7 +191,11 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
             </dl>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              {ownListing ? (
+              {product.status === "sold" ? (
+                <span className="flex h-12 flex-1 items-center justify-center rounded-full bg-ink/10 px-6 text-sm font-semibold text-ink-soft" aria-label="This item has sold">
+                  Sold
+                </span>
+              ) : ownListing ? (
                 <Link
                   href="/messages"
                   className="flex h-12 flex-1 items-center justify-center gap-2 rounded-full border border-ink/15 bg-white px-6 text-sm font-medium transition hover:border-ink/35"
@@ -207,6 +214,11 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
               ) : (
                 <AddToCartForm slug={product.slug} />
               )}
+              <FavoriteButton
+                slug={product.slug}
+                signedIn={Boolean(user)}
+                initiallySaved={Boolean(user?.favorites?.includes(product.slug))}
+              />
             </div>
 
             <p className="mt-4 flex items-center gap-2 text-xs text-ink-soft">

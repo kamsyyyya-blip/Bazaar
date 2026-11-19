@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
-import { countCartItems, countProductsBySeller, countUnreadConversations, sellerSlug } from "@/lib/db";
+import { countCartItems, countProductsBySeller, countUnreadConversations } from "@/lib/db";
 import type { SortKey } from "@/lib/filters";
 import SearchForm from "./SearchForm";
 
@@ -82,11 +82,11 @@ export default async function SiteHeader({
 
           {user ? (
             <Link
-              href={published > 0 ? `/seller/${sellerSlug(user.name)}` : "/sell"}
+              href="/my-listings"
               prefetch={false}
               aria-label={
                 published > 0
-                  ? `Your listings (${published} published)`
+                  ? `Manage your listings (${published} published)`
                   : "You have no published listings"
               }
               title={
@@ -115,6 +115,19 @@ export default async function SiteHeader({
               {published > 0 ? (
                 <span className="sr-only">{published === 1 ? "published listing" : "published listings"}</span>
               ) : null}
+            </Link>
+          ) : null}
+
+          {user ? (
+            <Link
+              href="/favorites"
+              aria-label={`Saved listings${user.favorites?.length ? ` (${user.favorites.length})` : ""}`}
+              title="Saved listings"
+              className="hidden h-10 w-10 items-center justify-center rounded-full text-ink-soft transition hover:bg-paper-2 hover:text-ink sm:flex"
+            >
+              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z" />
+              </svg>
             </Link>
           ) : null}
 

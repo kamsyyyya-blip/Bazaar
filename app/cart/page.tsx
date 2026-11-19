@@ -5,7 +5,7 @@ import { removeFromCartAction } from "@/app/actions/cart";
 import SiteHeader from "@/components/SiteHeader";
 import { getCurrentUser } from "@/lib/auth";
 import { currencyForCountry } from "@/lib/currency";
-import { getProduct, listCartProductSlugs } from "@/lib/db";
+import { getProduct, listCartProductSlugs, type Product } from "@/lib/db";
 import { getDurableProduct } from "@/lib/durable-products";
 import { formatPrice, pluralize } from "@/lib/format";
 
@@ -19,8 +19,8 @@ export default async function CartPage() {
   const cartSlugs = user
     ? [...new Set([...(user.cart ?? []), ...listCartProductSlugs(user.email)])]
     : [];
-  const resolvedItems = await Promise.all(cartSlugs.map(async (slug) => getProduct(slug) ?? await getDurableProduct(slug)));
-  const items = resolvedItems.filter((product) => product !== null);
+  const resolvedItems = await Promise.all(cartSlugs.map(async (slug) => await getDurableProduct(slug) ?? getProduct(slug)));
+  const items = resolvedItems.filter((product): product is Product => product !== null && product.status !== "sold");
 
   return (
     <>

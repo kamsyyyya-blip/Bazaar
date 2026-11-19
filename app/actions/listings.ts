@@ -2,13 +2,13 @@
 
 import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
-import { createProduct, listCategories } from "@/lib/db";
+import { createProduct, deleteProduct, listCategories } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import { CONDITIONS } from "@/lib/filters";
 import { HOME_COUNTRY, isCountryCode } from "@/lib/countries";
 import { currencyForCountry, toMinorUnits } from "@/lib/currency";
 import { MAX_PHOTOS, MAX_PHOTO_BYTES, MAX_PHOTO_TOTAL_BYTES, isAllowedPhotoType } from "@/lib/photos";
-import { saveProductImages } from "@/lib/uploads";
+import { removeProductImages, saveProductImages } from "@/lib/uploads";
 import { saveDurableProduct } from "@/lib/durable-products";
 
 export type SellState = { error?: string };
@@ -85,7 +85,7 @@ export async function createListingAction(_state: SellState, formData: FormData)
 
   let product: ReturnType<typeof createProduct>;
   try {
-    product = createProduct({
+    const created = createProduct({
       title,
       description,
       price,
@@ -100,8 +100,12 @@ export async function createListingAction(_state: SellState, formData: FormData)
       tintTo: category.tintTo,
       images: imageNames,
     });
+    product = { ...created, ownerId: String(user.id), status: "active" };
   } catch (error) {
     console.error("Failed to create listing", error);
+    try { await removeProductImages(imageNames); } catch (cleanupError) {
+      console.error("Failed to clean up listing photos", cleanupError);
+    }
     return { error: "Your listing could not be saved. Please try again in a moment." };
   }
 
@@ -109,6 +113,10 @@ export async function createListingAction(_state: SellState, formData: FormData)
     await saveDurableProduct(product);
   } catch (error) {
     console.error("Failed to save listing to durable storage", error);
+    deleteProduct(product.slug);
+    try { await removeProductImages(imageNames); } catch (cleanupError) {
+      console.error("Failed to clean up listing photos", cleanupError);
+    }
     return { error: "We couldn't keep this listing online. Please try again in a moment." };
   }
 

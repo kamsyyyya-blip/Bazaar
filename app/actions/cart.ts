@@ -26,9 +26,12 @@ export async function addToCartAction(_state: CartActionState, formData: FormDat
   if (!user) redirect(`/signin?next=${encodeURIComponent(next)}`);
   if (!slug) return { error: "This listing could not be added. Refresh and try again." };
 
-  const product = getProduct(slug) ?? await getDurableProduct(slug);
+  const product = await getDurableProduct(slug) ?? getProduct(slug);
   if (!product) return { error: "This listing is no longer available." };
-  if (product.seller === user.name) return { error: "You can’t add your own listing to the cart." };
+  if (product.status === "sold") return { error: "This item has already sold." };
+  if (product.ownerId ? product.ownerId === String(user.id) : product.seller === user.name) {
+    return { error: "You can’t add your own listing to the cart." };
+  }
 
   const existingCart = new Set([...(user.cart ?? []), ...listCartProductSlugs(user.email)]);
   if (existingCart.size >= 100 && !existingCart.has(slug)) {

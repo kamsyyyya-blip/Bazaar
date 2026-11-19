@@ -1,5 +1,5 @@
-import { list, put } from "@vercel/blob";
-import { unstable_cache } from "next/cache";
+import { del, list, put } from "@vercel/blob";
+import { unstable_cache, updateTag } from "next/cache";
 import type { Product } from "@/lib/db";
 
 const PRODUCT_PREFIX = "bazaar/listings/";
@@ -18,6 +18,8 @@ function isProduct(value: unknown): value is Product {
     typeof product.categoryName === "string" &&
     typeof product.county === "string" &&
     typeof product.country === "string" &&
+    (product.ownerId === undefined || typeof product.ownerId === "string") &&
+    (product.status === undefined || product.status === "active" || product.status === "sold") &&
     Array.isArray(product.images) &&
     product.images.every((image) => typeof image === "string")
   );
@@ -42,9 +44,28 @@ export async function saveDurableProduct(product: Product): Promise<void> {
   await put(`${PRODUCT_PREFIX}${product.slug}.json`, JSON.stringify(product), {
     access: "public",
     addRandomSuffix: false,
+    // Never let two listings with the same slug silently replace each other.
+    allowOverwrite: false,
+    contentType: "application/json; charset=utf-8",
+  });
+}
+
+/** Updates only an existing listing after its owner has been checked by the caller. */
+export async function updateDurableProduct(product: Product): Promise<void> {
+  if (!blobStorageConfigured()) throw new Error("A Vercel Blob store is not connected to this deployment.");
+  await put(`${PRODUCT_PREFIX}${product.slug}.json`, JSON.stringify(product), {
+    access: "public",
+    addRandomSuffix: false,
     allowOverwrite: true,
     contentType: "application/json; charset=utf-8",
   });
+  updateTag("durable-products");
+}
+
+export async function deleteDurableProduct(slug: string): Promise<void> {
+  if (!blobStorageConfigured()) throw new Error("A Vercel Blob store is not connected to this deployment.");
+  await del(`${PRODUCT_PREFIX}${slug}.json`);
+  updateTag("durable-products");
 }
 
 const readDurableProductCached = unstable_cache(
@@ -91,6 +112,11 @@ export async function getDurableProduct(slug: string): Promise<Product | null> {
 }
 
 export async function listDurableProducts(): Promise<Product[]> {
+  if (!blobStorageConfigured()) return [];
+  return (await listDurableProductsCached()).filter((product) => product.status !== "sold");
+}
+
+export async function listAllDurableProducts(): Promise<Product[]> {
   if (!blobStorageConfigured()) return [];
   return listDurableProductsCached();
 }

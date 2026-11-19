@@ -58,6 +58,9 @@ export type Product = {
   tintFrom: string;
   tintTo: string;
   images: string[];
+  /** Present on durable user listings; absent on legacy/demo SQLite records. */
+  ownerId?: string;
+  status?: "active" | "sold";
 };
 
 export type Review = {
@@ -97,6 +100,7 @@ export type User = {
   avatarColor: string;
   createdAt: string;
   cart?: string[];
+  favorites?: string[];
 };
 
 type ProductRow = {
@@ -334,7 +338,7 @@ CREATE INDEX IF NOT EXISTS idx_cart_items_user_created ON cart_items(user_email,
 
 const globalForDb = globalThis as unknown as { __bazaarDb?: DatabaseSync };
 
-/** Bump when the seed schema changes; demo data is rebuilt on the next request. */
+/** Schema changes must be additive: this database can contain real user data. */
 const SCHEMA_VERSION = 7;
 
 const AVATAR_COLORS = ["#b04f31", "#5f6b45", "#9d4526", "#6b5b95", "#3f6b6b", "#8a5a2b", "#4f5d75"];
@@ -350,21 +354,8 @@ function initDb(): DatabaseSync {
   fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
   const db = new DatabaseSync(DB_PATH);
 
-  const version = Number(
-    (db.prepare("PRAGMA user_version").get() as { user_version: number } | undefined)?.user_version ?? 0,
-  );
-  if (version < SCHEMA_VERSION) {
-    db.exec(`
-      DROP TABLE IF EXISTS messages;
-      DROP TABLE IF EXISTS conversations;
-      DROP TABLE IF EXISTS reviews;
-      DROP TABLE IF EXISTS sessions;
-      DROP TABLE IF EXISTS users;
-      DROP TABLE IF EXISTS products;
-      DROP TABLE IF EXISTS categories;
-    `);
-  }
-
+  // Do not drop marketplace data on deploy. SCHEMA creates missing tables and
+  // the additive migrations below add columns to existing tables.
   db.exec(SCHEMA);
 
   // Additive migration for databases created before users had a country column.
@@ -637,6 +628,11 @@ export function listCountryCounts(): CountryCount[] {
 export function getProduct(slug: string): Product | null {
   const row = getDb().prepare(`${SELECT_PRODUCT} WHERE p.slug = ?`).get(slug) as ProductRow | undefined;
   return row ? mapProduct(row) : null;
+}
+
+/** Removes a just-created listing when a later durable-storage step fails. */
+export function deleteProduct(slug: string): void {
+  getDb().prepare("DELETE FROM products WHERE slug = ?").run(slug);
 }
 
 export type NewProductInput = {

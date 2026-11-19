@@ -18,7 +18,7 @@ import { browseHref, hasActiveFilters, pageHref, parseFilters, priceFilters } fr
 import { currencyForCountry } from "@/lib/currency";
 import { pluralize } from "@/lib/format";
 import { detectCountry } from "@/lib/geo";
-import { listDurableProducts } from "@/lib/durable-products";
+import { listAllDurableProducts } from "@/lib/durable-products";
 
 export const dynamic = "force-dynamic";
 const LISTINGS_PER_PAGE = 24;
@@ -50,7 +50,7 @@ export default async function HomePage({
   const filters = parseFilters(params);
   const pageParam = Array.isArray(params.p) ? params.p[0] : params.p ?? "1";
   const requestedPage = Math.max(1, Number.parseInt(pageParam, 10) || 1);
-  const durableProductsPromise = listDurableProducts();
+  const durableProductsPromise = listAllDurableProducts();
   const detected = await detectCountry();
   const currency = currencyForCountry(filters.country || detected || HOME_COUNTRY);
   const priceOptions = priceFilters(currency);
@@ -61,13 +61,13 @@ export default async function HomePage({
   const stats = getStats();
   const featured = listFeatured(4);
   const productsFromDb = listProducts({ ...filters, maxPrice: filters.max, imageMode: "cover" });
-  const databaseSlugs = new Set(productsFromDb.map((product) => product.slug));
   const durableProducts = await durableProductsPromise;
+  const durableBySlug = new Map(durableProducts.map((product) => [product.slug, product]));
   const query = filters.q.toLowerCase();
   const matchingProducts = [
-    ...productsFromDb,
+    ...productsFromDb.filter((product) => !durableBySlug.has(product.slug)),
     ...durableProducts.filter((product) => {
-      if (databaseSlugs.has(product.slug)) return false;
+      if (product.status === "sold") return false;
       if (filters.category && product.category !== filters.category) return false;
       if (filters.county && product.county !== filters.county) return false;
       if (filters.country && product.country !== filters.country) return false;
@@ -293,8 +293,8 @@ export default async function HomePage({
                 <section id="recommended" className="scroll-mt-20">
                   <div className="flex items-end justify-between gap-4">
                     <div>
-                      <h2 className="text-xl sm:text-2xl">Featured ads</h2>
-                      <p className="mt-1 text-xs text-ink-soft">Featured listings from Bazaar sellers.</p>
+                      <h2 className="text-xl sm:text-2xl">Popular finds</h2>
+                      <p className="mt-1 text-xs text-ink-soft">Listings buyers are discovering on Bazaar.</p>
                     </div>
                     <Link
                       href="/#trending"
@@ -466,7 +466,7 @@ export default async function HomePage({
               <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-clay">For sellers</p>
               <h2 className="mt-1 text-2xl">Sell your things on Bazaar</h2>
               <p className="mt-1 text-sm text-ink-soft">
-                Keep 92% of every sale · No listing fees for 90 days · We handle payments and labels.
+                No listing fee · Talk with interested buyers directly through Bazaar.
               </p>
             </div>
             <Link

@@ -7,6 +7,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { currencyForCountry } from "@/lib/currency";
 import { findConversationForProduct, getProduct, getSellerByName } from "@/lib/db";
 import { formatPrice } from "@/lib/format";
+import { getDurableProduct } from "@/lib/durable-products";
 
 export const metadata: Metadata = {
   title: "Message seller",
@@ -26,14 +27,14 @@ export default async function NewMessagePage({
   const next = `/messages/new${slug ? `?listing=${encodeURIComponent(slug)}` : ""}`;
   if (!user) redirect(`/signin?next=${encodeURIComponent(next)}`);
 
-  const product = slug ? getProduct(slug) : null;
+  const product = slug ? await getDurableProduct(slug) ?? getProduct(slug) : null;
   if (!product) notFound();
 
   const existing = findConversationForProduct(product.slug, user.email);
   if (existing) redirect(`/messages/${existing.id}`);
 
   const seller = getSellerByName(product.seller);
-  const ownListing = product.seller === user.name;
+  const ownListing = product.ownerId ? product.ownerId === String(user.id) : product.seller === user.name;
 
   return (
     <>
