@@ -67,7 +67,8 @@
 
 @layer base {
   html {
-    scroll-behavior: smooth;
+    /* Keep page/route changes instant; smooth scrolling caused unwanted jumps. */
+    scroll-behavior: auto;
     -webkit-text-size-adjust: 100%;
   }
 
@@ -188,6 +189,14 @@
 @media (min-width: 768px) {
   .mobile-bottom-nav {
     display: none;
+  }
+}
+
+/* Mobile profile keeps the long account sections hidden until a deep link
+   such as /profile#profile-details specifically asks for them. */
+@media (max-width: 1023px) {
+  #profile-details:target {
+    display: block !important;
   }
 }
 

@@ -18,6 +18,10 @@ export const metadata: Metadata = {
 
 const green = "#00831e";
 
+// Set to true to restore the old mobile profile (account settings, feedback,
+// appearance and FAQ all shown on the first profile screen).
+const SHOW_OLD_MOBILE_PROFILE_SECTIONS = false;
+
 type NavKind = "money" | "followers" | "adverts" | "feedback" | "faq" | "settings" | "appearance" | "messages" | "notifications";
 
 function NavIcon({ kind }: { kind: NavKind }) {
@@ -112,6 +116,7 @@ export default async function ProfilePage() {
   const conversationCount = countConversations(user.email);
   const unread = countUnreadConversations(user.email);
   const sellerLink = `/seller/${sellerSlug(user.name)}`;
+  const profileDetailsClass = SHOW_OLD_MOBILE_PROFILE_SECTIONS ? "" : "hidden lg:block";
 
   return (
     <>
@@ -301,75 +306,77 @@ export default async function ProfilePage() {
             )}
           </section>
 
-          <section className="mt-12">
-            <SectionTitle id="profile-details">Account settings</SectionTitle>
-            <p className="mt-3 text-sm leading-relaxed text-ink-soft">
-              Keep your name, country, state and phone number current so buyers know where you are.
-            </p>
-            <div id="profile-phone" className="mt-5 max-w-2xl scroll-mt-8">
-              <ProfileForm user={user} />
-            </div>
-          </section>
-
-          <section className="mt-12">
-            <SectionTitle id="feedback">Feedback</SectionTitle>
-            <div className="mt-5 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-line p-5">
-              <div>
-                <p className="text-2xl font-semibold text-ink">{reviewCount}</p>
-                <p className="mt-0.5 text-sm text-ink-soft">{reviewCount === 1 ? "review written" : "reviews written"}</p>
+          <div id="profile-details" className={`scroll-mt-8 ${profileDetailsClass}`}>
+            <section className="mt-12">
+              <SectionTitle id="account-settings-title">Account settings</SectionTitle>
+              <p className="mt-3 text-sm leading-relaxed text-ink-soft">
+                Keep your name, country, state and phone number current so buyers know where you are.
+              </p>
+              <div id="profile-phone" className="mt-5 max-w-2xl scroll-mt-8">
+                <ProfileForm user={user} />
               </div>
-              <div className="flex items-center gap-4">
-                <Link href="/messages" className="text-sm font-semibold hover:underline" style={{ color: green }}>
-                  {unread > 0 ? `${unread} unread messages` : `${conversationCount} conversations`}
-                </Link>
-                <Link href={sellerLink} className="text-sm font-semibold hover:underline" style={{ color: green }}>
-                  View seller page →
-                </Link>
+            </section>
+
+            <section className="mt-12">
+              <SectionTitle id="feedback">Feedback</SectionTitle>
+              <div className="mt-5 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-line p-5">
+                <div>
+                  <p className="text-2xl font-semibold text-ink">{reviewCount}</p>
+                  <p className="mt-0.5 text-sm text-ink-soft">{reviewCount === 1 ? "review written" : "reviews written"}</p>
+                </div>
+                <div className="flex items-center gap-4">
+                  <Link href="/messages" className="text-sm font-semibold hover:underline" style={{ color: green }}>
+                    {unread > 0 ? `${unread} unread messages` : `${conversationCount} conversations`}
+                  </Link>
+                  <Link href={sellerLink} className="text-sm font-semibold hover:underline" style={{ color: green }}>
+                    View seller page →
+                  </Link>
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
 
-          <section className="mt-12">
-            <SectionTitle id="appearance">Appearance</SectionTitle>
-            <p className="mt-3 text-sm text-ink-soft">Choose how Bazaar looks on this device.</p>
-            <div className="mt-4 max-w-md">
-              <AppearanceSettings />
-            </div>
-          </section>
+            <section className="mt-12">
+              <SectionTitle id="appearance">Appearance</SectionTitle>
+              <p className="mt-3 text-sm text-ink-soft">Choose how Bazaar looks on this device.</p>
+              <div className="mt-4 max-w-md">
+                <AppearanceSettings />
+              </div>
+            </section>
 
-          <section className="mt-12">
-            <SectionTitle id="faq">Frequently Asked Questions</SectionTitle>
-            <div className="mt-4 max-w-3xl divide-y divide-line rounded-xl border border-line px-5">
-              <details className="py-4">
-                <summary className="cursor-pointer text-sm font-semibold text-ink">How do I publish an advert?</summary>
-                <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-                  Choose <Link href="/sell" className="font-semibold hover:underline" style={{ color: green }}>Make money</Link>, add a
-                  title, price, location and up to five photos, then publish. Your advert goes live immediately.
-                </p>
-              </details>
-              <details className="py-4">
-                <summary className="cursor-pointer text-sm font-semibold text-ink">How do buyers contact me?</summary>
-                <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-                  Buyers message you through your Bazaar inbox, so your email address stays private. New conversations appear
-                  with an unread count in the sidebar.
-                </p>
-              </details>
-              <details className="py-4">
-                <summary className="cursor-pointer text-sm font-semibold text-ink">Which currency will buyers see?</summary>
-                <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-                  Prices are shown in the currency of the country you choose for each advert. Changing your country on a new
-                  advert switches its currency automatically.
-                </p>
-              </details>
-              <details className="py-4">
-                <summary className="cursor-pointer text-sm font-semibold text-ink">How do I arrange payment and pickup?</summary>
-                <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-                  Bazaar is a classifieds marketplace: you and the buyer agree on payment and handover directly in your
-                  messages. Items saved to the cart are still arranged with each seller.
-                </p>
-              </details>
-            </div>
-          </section>
+            <section className="mt-12">
+              <SectionTitle id="faq">Frequently Asked Questions</SectionTitle>
+              <div className="mt-4 max-w-3xl divide-y divide-line rounded-xl border border-line px-5">
+                <details className="py-4">
+                  <summary className="cursor-pointer text-sm font-semibold text-ink">How do I publish an advert?</summary>
+                  <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+                    Choose <Link href="/sell" className="font-semibold hover:underline" style={{ color: green }}>Make money</Link>, add a
+                    title, price, location and up to five photos, then publish. Your advert goes live immediately.
+                  </p>
+                </details>
+                <details className="py-4">
+                  <summary className="cursor-pointer text-sm font-semibold text-ink">How do buyers contact me?</summary>
+                  <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+                    Buyers message you through your Bazaar inbox, so your email address stays private. New conversations appear
+                    with an unread count in the sidebar.
+                  </p>
+                </details>
+                <details className="py-4">
+                  <summary className="cursor-pointer text-sm font-semibold text-ink">Which currency will buyers see?</summary>
+                  <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+                    Prices are shown in the currency of the country you choose for each advert. Changing your country on a new
+                    advert switches its currency automatically.
+                  </p>
+                </details>
+                <details className="py-4">
+                  <summary className="cursor-pointer text-sm font-semibold text-ink">How do I arrange payment and pickup?</summary>
+                  <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+                    Bazaar is a classifieds marketplace: you and the buyer agree on payment and handover directly in your
+                    messages. Items saved to the cart are still arranged with each seller.
+                  </p>
+                </details>
+              </div>
+            </section>
+          </div>
         </div>
       </main>
     </>
