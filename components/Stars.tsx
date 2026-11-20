@@ -10,7 +10,7 @@ export default function Stars({ value, className = "" }: { value: number; classN
         <span
           key={star}
           aria-hidden="true"
-          className={star <= filled ? "text-clay" : "text-line"}
+          className={star <= filled ? "text-highlight" : "text-line"}
         >
           ★
         </span>

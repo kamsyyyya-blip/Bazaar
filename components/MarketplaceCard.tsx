@@ -10,7 +10,7 @@ export default function MarketplaceCard({ product }: { product: Product }) {
     <Link
       href={`/listing/${product.slug}`}
       prefetch={false}
-      className="group flex flex-col overflow-hidden rounded-xl border border-line bg-white transition duration-300 hover:-translate-y-0.5 hover:border-ink/15 hover:shadow-lift"
+      className="group flex flex-col overflow-hidden rounded-xl border border-line bg-surface transition duration-300 hover:-translate-y-0.5 hover:border-ink/15 hover:shadow-lift"
     >
       <div
         className="relative aspect-[4/3] overflow-hidden"
@@ -37,7 +37,7 @@ export default function MarketplaceCard({ product }: { product: Product }) {
         )}
 
         {product.badge ? (
-          <span className="absolute left-2.5 top-2.5 rounded-full bg-ink/85 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-paper backdrop-blur-sm">
+          <span className="absolute left-2.5 top-2.5 rounded-full bg-clay/85 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-on-dark backdrop-blur-sm">
             {product.badge}
           </span>
         ) : null}
@@ -63,7 +63,7 @@ export default function MarketplaceCard({ product }: { product: Product }) {
         <div className="mt-auto flex items-center justify-between gap-2 border-t border-line/70 pt-2.5">
           <span className="truncate text-[12px] text-ink-soft">{product.seller}</span>
           {product.verified ? (
-            <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-olive/10 px-1.5 py-0.5 text-[11px] font-medium text-olive">
+            <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-accent-soft px-1.5 py-0.5 text-[11px] font-medium text-clay">
               <svg aria-hidden="true" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.4">
                 <path d="m5 13 4 4L19 7" strokeLinecap="round" strokeLinejoin="round" />
               </svg>

@@ -11,7 +11,7 @@ export default function NotFound() {
         </p>
         <Link
           href="/#trending"
-          className="mt-7 inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-medium text-paper transition hover:bg-clay"
+          className="mt-7 inline-flex items-center gap-2 rounded-full bg-clay px-6 py-3 text-sm font-medium text-on-dark transition hover:bg-clay-dark"
         >
           Back to the marketplace
         </Link>

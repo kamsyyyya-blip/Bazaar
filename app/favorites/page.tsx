@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import MarketplaceCard from "@/components/MarketplaceCard";
@@ -37,10 +37,10 @@ export default async function FavoritesPage() {
             {products.map((product) => <MarketplaceCard key={product.slug} product={product} />)}
           </div>
         ) : (
-          <section className="mt-7 rounded-2xl border border-dashed border-line bg-white px-5 py-14 text-center">
+          <section className="mt-7 rounded-2xl border border-dashed border-line bg-surface px-5 py-14 text-center">
             <h2 className="text-xl">Nothing saved yet</h2>
             <p className="mt-2 text-sm text-ink-soft">Tap the heart on a listing and it will be saved here.</p>
-            <Link href="/#trending" className="mt-5 inline-flex h-10 items-center rounded-full bg-ink px-5 text-sm font-semibold text-paper">Browse listings</Link>
+            <Link href="/#trending" className="mt-5 inline-flex h-10 items-center rounded-full bg-clay px-5 text-sm font-semibold text-on-dark">Browse listings</Link>
           </section>
         )}
       </main>

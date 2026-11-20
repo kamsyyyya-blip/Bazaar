@@ -11,7 +11,7 @@ type Props = {
 };
 
 const field =
-  "h-11 w-full rounded-xl border border-line bg-white px-3.5 text-sm outline-none transition placeholder:text-ink-soft/60 focus:border-ink/35 disabled:bg-paper-2/60 disabled:text-ink-soft";
+  "h-11 w-full rounded-xl border border-line bg-surface px-3.5 text-sm outline-none transition placeholder:text-ink-soft/60 focus:border-ink/35 disabled:bg-paper-2/60 disabled:text-ink-soft";
 
 export default function ProfileForm({ user }: Props) {
   const [state, action, pending] = useActionState(updateProfileAction, {} as ProfileState);
@@ -96,17 +96,17 @@ export default function ProfileForm({ user }: Props) {
           rows={4}
           maxLength={280}
           placeholder="Tell buyers what you collect, sell or are hunting for."
-          className="mt-1.5 w-full resize-y rounded-xl border border-line bg-white px-3.5 py-3 text-sm leading-relaxed outline-none transition placeholder:text-ink-soft/60 focus:border-ink/35"
+          className="mt-1.5 w-full resize-y rounded-xl border border-line bg-surface px-3.5 py-3 text-sm leading-relaxed outline-none transition placeholder:text-ink-soft/60 focus:border-ink/35"
         />
       </div>
 
       {state.error ? (
-        <p role="alert" aria-live="polite" className="rounded-xl bg-clay/10 px-3.5 py-2.5 text-sm text-clay-dark">
+        <p role="alert" aria-live="polite" className="rounded-xl bg-danger/10 px-3.5 py-2.5 text-sm text-danger">
           {state.error}
         </p>
       ) : null}
       {state.success ? (
-        <p role="status" aria-live="polite" className="rounded-xl bg-olive/10 px-3.5 py-2.5 text-sm text-olive">
+        <p role="status" aria-live="polite" className="rounded-xl bg-accent-soft px-3.5 py-2.5 text-sm text-clay">
           {state.success}
         </p>
       ) : null}
@@ -115,7 +115,7 @@ export default function ProfileForm({ user }: Props) {
         <button
           type="submit"
           disabled={pending}
-          className="flex h-12 w-full items-center justify-center rounded-full bg-ink px-6 text-sm font-medium text-paper transition hover:bg-clay disabled:cursor-wait disabled:opacity-60 sm:w-auto"
+          className="flex h-12 w-full items-center justify-center rounded-full bg-clay px-6 text-sm font-medium text-on-dark transition hover:bg-clay-dark disabled:cursor-wait disabled:opacity-60 sm:w-auto"
         >
           {pending ? "Saving…" : "Save changes"}
         </button>

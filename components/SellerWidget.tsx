@@ -5,11 +5,11 @@ import Stars from "./Stars";
 /** Seller card shown on the listing page, directly above the reviews. */
 export default function SellerWidget({ seller }: { seller: Seller }) {
   return (
-    <div className="flex flex-col gap-5 rounded-2xl border border-line bg-white p-5 sm:flex-row sm:items-center sm:justify-between">
+    <div className="flex flex-col gap-5 rounded-2xl border border-line bg-surface p-5 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex items-start gap-3.5">
         <span
           aria-hidden="true"
-          className="grid h-12 w-12 shrink-0 place-items-center rounded-full text-base font-semibold text-paper"
+          className="grid h-12 w-12 shrink-0 place-items-center rounded-full text-base font-semibold text-on-dark"
           style={{ backgroundColor: seller.avatarColor }}
         >
           {seller.name.charAt(0)}
@@ -24,7 +24,7 @@ export default function SellerWidget({ seller }: { seller: Seller }) {
               {seller.name}
             </Link>
             {seller.verified ? (
-              <span className="inline-flex items-center gap-1 rounded-full bg-olive/10 px-2 py-0.5 text-[11px] font-medium text-olive">
+              <span className="inline-flex items-center gap-1 rounded-full bg-accent-soft px-2 py-0.5 text-[11px] font-medium text-clay">
                 <span aria-hidden="true">✓</span> Verified seller
               </span>
             ) : (
@@ -49,7 +49,7 @@ export default function SellerWidget({ seller }: { seller: Seller }) {
         <Link
           href={`/seller/${seller.slug}`}
           prefetch={false}
-          className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-ink px-5 text-sm font-semibold text-paper transition hover:bg-clay"
+          className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-clay px-5 text-sm font-semibold text-on-dark transition hover:bg-clay-dark"
         >
           View seller page
           <span aria-hidden="true">→</span>

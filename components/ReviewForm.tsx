@@ -19,7 +19,7 @@ export default function ReviewForm({ slug, signedIn, next }: Props) {
         <p className="text-sm text-ink-soft">Bought something from this seller? Share how it went.</p>
         <Link
           href={`/signin?next=${encodeURIComponent(next ?? `/listing/${slug}`)}`}
-          className="mt-3 inline-flex h-10 items-center justify-center rounded-full bg-ink px-5 text-sm font-medium text-paper transition hover:bg-clay"
+          className="mt-3 inline-flex h-10 items-center justify-center rounded-full bg-clay px-5 text-sm font-medium text-on-dark transition hover:bg-clay-dark"
         >
           Sign in to write a review
         </Link>
@@ -28,7 +28,7 @@ export default function ReviewForm({ slug, signedIn, next }: Props) {
   }
 
   return (
-    <form action={action} className="rounded-2xl border border-line bg-white p-5">
+    <form action={action} className="rounded-2xl border border-line bg-surface p-5">
       <input type="hidden" name="slug" value={slug} />
       <h3 className="font-display text-lg">Write a review</h3>
       <p className="mt-1 text-xs text-ink-soft">Reviews are public and help other buyers in your area.</p>
@@ -45,7 +45,7 @@ export default function ReviewForm({ slug, signedIn, next }: Props) {
                 defaultChecked={value === 5}
                 className="peer sr-only"
               />
-              <span className="grid h-10 w-10 place-items-center rounded-full border border-line bg-white text-sm font-medium text-ink-soft transition hover:border-ink/30 peer-checked:border-ink peer-checked:bg-ink peer-checked:text-paper peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-clay">
+              <span className="grid h-10 w-10 place-items-center rounded-full border border-line bg-surface text-sm font-medium text-ink-soft transition hover:border-ink/30 peer-checked:border-clay peer-checked:bg-clay peer-checked:text-on-dark peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-clay">
                 {value}
               </span>
               <span className="sr-only">
@@ -68,17 +68,17 @@ export default function ReviewForm({ slug, signedIn, next }: Props) {
           maxLength={800}
           required
           placeholder="How was the item, the handover, the packing?"
-          className="mt-1.5 w-full resize-y rounded-xl border border-line bg-white px-3.5 py-3 text-sm leading-relaxed outline-none transition placeholder:text-ink-soft/60 focus:border-ink/35"
+          className="mt-1.5 w-full resize-y rounded-xl border border-line bg-surface px-3.5 py-3 text-sm leading-relaxed outline-none transition placeholder:text-ink-soft/60 focus:border-ink/35"
         />
       </div>
 
       {state.error ? (
-        <p role="alert" aria-live="polite" className="mt-3 rounded-xl bg-clay/10 px-3.5 py-2.5 text-sm text-clay-dark">
+        <p role="alert" aria-live="polite" className="mt-3 rounded-xl bg-danger/10 px-3.5 py-2.5 text-sm text-danger">
           {state.error}
         </p>
       ) : null}
       {state.success ? (
-        <p role="status" aria-live="polite" className="mt-3 rounded-xl bg-olive/10 px-3.5 py-2.5 text-sm text-olive">
+        <p role="status" aria-live="polite" className="mt-3 rounded-xl bg-accent-soft px-3.5 py-2.5 text-sm text-clay">
           Thanks — your review is live.
         </p>
       ) : null}
@@ -86,7 +86,7 @@ export default function ReviewForm({ slug, signedIn, next }: Props) {
       <button
         type="submit"
         disabled={pending}
-        className="mt-4 flex h-11 items-center justify-center rounded-full bg-ink px-6 text-sm font-medium text-paper transition hover:bg-clay disabled:cursor-wait disabled:opacity-60"
+        className="mt-4 flex h-11 items-center justify-center rounded-full bg-clay px-6 text-sm font-medium text-on-dark transition hover:bg-clay-dark disabled:cursor-wait disabled:opacity-60"
       >
         {pending ? "Posting…" : "Post review"}
       </button>

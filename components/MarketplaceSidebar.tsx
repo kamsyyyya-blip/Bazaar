@@ -38,7 +38,7 @@ function Row({
 
 function Group({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-line bg-white">
+    <div className="overflow-hidden rounded-xl border border-line bg-surface">
       <p className="border-b border-line px-3.5 py-2.5 text-[12px] font-semibold uppercase tracking-[0.12em] text-ink-soft">
         {title}
       </p>
@@ -101,7 +101,7 @@ export default function MarketplaceSidebar({ categories, filters, total, priceOp
       {active ? (
         <Link
           href="/#trending"
-          className="block rounded-full border border-line bg-white px-4 py-2 text-center text-xs font-medium text-ink-soft transition hover:border-ink/25 hover:text-ink"
+          className="block rounded-full border border-line bg-surface px-4 py-2 text-center text-xs font-medium text-ink-soft transition hover:border-ink/25 hover:text-ink"
         >
           Clear all filters
         </Link>

@@ -51,7 +51,7 @@ export default function ImageGallery({ images, title, tintFrom, tintTo, emoji, b
         ) : (
           <span aria-hidden="true" className="absolute inset-0 grid place-items-center text-[112px] drop-shadow-[0_16px_30px_rgba(25,23,20,0.18)] sm:text-[190px]">{emoji}</span>
         )}
-        {badge ? <span className="absolute left-5 top-5 rounded-full bg-ink/85 px-3 py-1.5 text-[12px] font-semibold uppercase tracking-[0.08em] text-paper backdrop-blur-sm">{badge}</span> : null}
+        {badge ? <span className="absolute left-5 top-5 rounded-full bg-clay/85 px-3 py-1.5 text-[12px] font-semibold uppercase tracking-[0.08em] text-on-dark backdrop-blur-sm">{badge}</span> : null}
       </div>
 
       {images.length > 1 ? (

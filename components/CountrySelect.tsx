@@ -116,7 +116,7 @@ export default function CountrySelect({
       </button>
 
       {open ? (
-        <div className="absolute left-0 right-0 top-full z-50 mt-1.5 overflow-hidden rounded-xl border border-line bg-white shadow-lift">
+        <div className="absolute left-0 right-0 top-full z-50 mt-1.5 overflow-hidden rounded-xl border border-line bg-surface shadow-lift">
           <div className="border-b border-line p-2">
             <label htmlFor={`${id ?? name}-country-search`} className="sr-only">
               Search countries
@@ -143,7 +143,7 @@ export default function CountrySelect({
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder={`Search all ${COUNTRIES.length} countries…`}
                 autoComplete="off"
-                className="h-9 w-full rounded-lg border border-line bg-paper-2/50 pl-8 pr-2.5 text-sm outline-none transition placeholder:text-ink-soft/60 focus:border-ink/35 focus:bg-white"
+                className="h-9 w-full rounded-lg border border-line bg-paper-2/50 pl-8 pr-2.5 text-sm outline-none transition placeholder:text-ink-soft/60 focus:border-ink/35 focus:bg-surface"
               />
             </div>
           </div>
@@ -158,7 +158,7 @@ export default function CountrySelect({
                   onClick={() => choose("")}
                   className={[
                     "flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-sm transition",
-                    !selectedCode ? "bg-ink text-paper" : "hover:bg-paper-2",
+                    !selectedCode ? "bg-clay text-on-dark" : "hover:bg-paper-2",
                   ].join(" ")}
                 >
                   <span aria-hidden="true" className="text-base">
@@ -180,7 +180,7 @@ export default function CountrySelect({
                     onClick={() => choose(country.code)}
                     className={[
                       "mt-0.5 flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-sm transition",
-                      active ? "bg-ink text-paper" : "hover:bg-paper-2",
+                      active ? "bg-clay text-on-dark" : "hover:bg-paper-2",
                     ].join(" ")}
                   >
                     <span aria-hidden="true" className="text-base leading-none">
@@ -188,7 +188,7 @@ export default function CountrySelect({
                     </span>
                     <span className="min-w-0 flex-1 truncate">{country.name}</span>
                     {active ? (
-                      <span aria-hidden="true" className="text-xs text-paper">
+                      <span aria-hidden="true" className="text-xs text-on-dark">
                         ✓
                       </span>
                     ) : null}

@@ -43,7 +43,7 @@ export default async function MessagesPage() {
           </div>
           <Link
             href="/#trending"
-            className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-full border border-line bg-white px-4 text-sm font-medium transition hover:border-ink/25 sm:w-auto"
+            className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-full border border-line bg-surface px-4 text-sm font-medium transition hover:border-ink/25 sm:w-auto"
           >
             Find something to ask about
             <span aria-hidden="true">→</span>
@@ -58,7 +58,7 @@ export default async function MessagesPage() {
                   <li key={conversation.id}>
                     <Link
                       href={`/messages/${conversation.id}`}
-                      className="group flex gap-3 rounded-2xl border border-line bg-white p-3 transition hover:border-ink/20 hover:shadow-soft sm:gap-4 sm:p-4"
+                      className="group flex gap-3 rounded-2xl border border-line bg-surface p-3 transition hover:border-ink/20 hover:shadow-soft sm:gap-4 sm:p-4"
                     >
                       <span
                         aria-hidden="true"
@@ -76,7 +76,7 @@ export default async function MessagesPage() {
                             <span className="flex items-center gap-2">
                               <span className="truncate text-sm font-semibold">{conversation.productTitle}</span>
                               {conversation.unread > 0 ? (
-                                <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-clay px-1.5 py-0.5 text-[11px] font-semibold text-paper">
+                                <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-clay px-1.5 py-0.5 text-[11px] font-semibold text-on-dark">
                                   {conversation.unread} new
                                 </span>
                               ) : null}
@@ -106,7 +106,7 @@ export default async function MessagesPage() {
                 ))}
               </ul>
             ) : (
-              <div className="rounded-2xl border border-dashed border-line bg-white/60 px-6 py-16 text-center">
+              <div className="rounded-2xl border border-dashed border-line bg-surface/60 px-6 py-16 text-center">
                 <p className="text-4xl" aria-hidden="true">
                   💬
                 </p>
@@ -117,7 +117,7 @@ export default async function MessagesPage() {
                 </p>
                 <Link
                   href="/#trending"
-                  className="mt-5 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper transition hover:bg-clay"
+                  className="mt-5 inline-flex items-center gap-2 rounded-full bg-clay px-5 py-2.5 text-sm font-medium text-on-dark transition hover:bg-clay-dark"
                 >
                   Browse listings
                   <span aria-hidden="true">→</span>
@@ -127,11 +127,11 @@ export default async function MessagesPage() {
           </section>
 
           <aside className="space-y-5">
-              <div className="rounded-2xl border border-line bg-white p-4 sm:p-6">
+              <div className="rounded-2xl border border-line bg-surface p-4 sm:p-6">
               <div className="flex items-center gap-3">
                 <span
                   aria-hidden="true"
-                  className="grid h-11 w-11 place-items-center rounded-full text-sm font-semibold text-paper"
+                  className="grid h-11 w-11 place-items-center rounded-full text-sm font-semibold text-on-dark"
                   style={{ backgroundColor: user.avatarColor }}
                 >
                   {initials(user.name)}

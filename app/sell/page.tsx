@@ -40,7 +40,7 @@ export default async function SellPage() {
         </div>
 
         <div className="mt-6 grid gap-4 sm:mt-8 sm:gap-7 lg:grid-cols-[minmax(0,1fr)_300px]">
-          <section className="rounded-2xl border border-line bg-white p-4 sm:p-6 lg:p-7">
+          <section className="rounded-2xl border border-line bg-surface p-4 sm:p-6 lg:p-7">
             <h2 className="font-display text-xl sm:text-2xl">Your listing</h2>
             <p className="mt-1 text-xs text-ink-soft">
               Selling as <span className="font-medium text-ink">{user.name}</span>
@@ -52,7 +52,7 @@ export default async function SellPage() {
           </section>
 
           <aside className="space-y-5">
-            <div className="rounded-2xl border border-line bg-white p-4 sm:p-6">
+            <div className="rounded-2xl border border-line bg-surface p-4 sm:p-6">
               <h2 className="font-display text-xl">How it works</h2>
               <ol className="mt-4 space-y-4 text-sm text-ink-soft">
                 {[
@@ -78,7 +78,7 @@ export default async function SellPage() {
               <p className="mt-1 text-xs leading-relaxed text-ink-soft">
                 You can update your name, country, state and contact details from your profile at any time.
               </p>
-              <Link href="/profile#settings" className="mt-3 inline-flex text-xs font-medium text-clay hover:text-clay-dark">
+              <Link href="/profile#settings" className="mt-3 inline-flex text-xs font-medium text-clay hover:text-danger">
                 Open profile &amp; settings →
               </Link>
             </div>

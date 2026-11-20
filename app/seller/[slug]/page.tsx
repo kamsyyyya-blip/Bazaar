@@ -54,11 +54,11 @@ export default async function SellerPage({ params }: { params: Promise<{ slug: s
           <span className="text-ink">{seller.name}</span>
         </nav>
 
-        <section className="mt-5 overflow-hidden rounded-2xl border border-line bg-white sm:mt-6 sm:rounded-3xl">
+        <section className="mt-5 overflow-hidden rounded-2xl border border-line bg-surface sm:mt-6 sm:rounded-3xl">
           <div
             className="h-24 sm:h-28"
             style={{
-              backgroundImage: "linear-gradient(120deg, #f2ece2, #eadfce 55%, #e2d4bf)",
+              backgroundImage: "linear-gradient(120deg, var(--color-accent-soft), var(--color-paper-2) 55%, var(--color-line))",
             }}
           />
 
@@ -67,7 +67,7 @@ export default async function SellerPage({ params }: { params: Promise<{ slug: s
               <div className="flex min-w-0 items-end gap-3 sm:gap-4">
                 <span
                   aria-hidden="true"
-                  className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl border-4 border-white text-xl font-semibold text-paper shadow-soft sm:h-20 sm:w-20 sm:text-2xl"
+                  className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl border-4 border-surface text-xl font-semibold text-on-dark shadow-soft sm:h-20 sm:w-20 sm:text-2xl"
                   style={{ backgroundColor: seller.avatarColor }}
                 >
                   {initials(seller.name)}
@@ -76,7 +76,7 @@ export default async function SellerPage({ params }: { params: Promise<{ slug: s
                   <div className="flex flex-wrap items-center gap-2">
                     <h1 className="text-2xl leading-tight sm:text-4xl">{seller.name}</h1>
                     {seller.verified ? (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-olive/10 px-2 py-0.5 text-[11px] font-medium text-olive">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-accent-soft px-2 py-0.5 text-[11px] font-medium text-clay">
                         <span aria-hidden="true">✓</span> Verified seller
                       </span>
                     ) : (
@@ -93,7 +93,7 @@ export default async function SellerPage({ params }: { params: Promise<{ slug: s
 
               <Link
                 href={`/messages/new?listing=${seller.products[0].slug}`}
-                className="inline-flex h-11 w-full shrink-0 items-center justify-center gap-2 rounded-full bg-ink px-6 text-sm font-medium text-paper transition hover:bg-clay sm:w-auto"
+                className="inline-flex h-11 w-full shrink-0 items-center justify-center gap-2 rounded-full bg-clay px-6 text-sm font-medium text-on-dark transition hover:bg-clay-dark sm:w-auto"
               >
                 Message seller
                 <span aria-hidden="true">→</span>
@@ -185,7 +185,7 @@ export default async function SellerPage({ params }: { params: Promise<{ slug: s
           {reviews.length > 0 ? (
             <ul className="mt-5 grid gap-4 sm:grid-cols-2">
               {reviews.map((review) => (
-                <li key={review.id} className="rounded-2xl border border-line bg-white p-5">
+                <li key={review.id} className="rounded-2xl border border-line bg-surface p-5">
                   <div className="flex items-center gap-3">
                     <span
                       aria-hidden="true"
@@ -212,7 +212,7 @@ export default async function SellerPage({ params }: { params: Promise<{ slug: s
               ))}
             </ul>
           ) : (
-            <p className="mt-5 rounded-2xl border border-dashed border-line bg-white/60 px-5 py-10 text-center text-sm text-ink-soft">
+            <p className="mt-5 rounded-2xl border border-dashed border-line bg-surface/60 px-5 py-10 text-center text-sm text-ink-soft">
               No written reviews yet. Be the first after your next purchase.
             </p>
           )}

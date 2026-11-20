@@ -196,7 +196,7 @@ export default async function HomePage({
                     key={item.slug}
                     href={browseHref(filters, { category: item.slug, q: "" })}
                     prefetch={false}
-                    className="group flex aspect-square min-w-0 flex-col items-center justify-center gap-1 rounded-xl border border-line bg-white px-1 py-1.5 text-center shadow-sm transition hover:-translate-y-0.5 hover:border-ink/20 hover:shadow-soft focus-visible:outline-offset-2 sm:gap-1.5 sm:rounded-2xl sm:px-2 sm:py-2"
+                    className="group flex aspect-square min-w-0 flex-col items-center justify-center gap-1 rounded-xl border border-line bg-surface px-1 py-1.5 text-center shadow-sm transition hover:-translate-y-0.5 hover:border-ink/20 hover:shadow-soft focus-visible:outline-offset-2 sm:gap-1.5 sm:rounded-2xl sm:px-2 sm:py-2"
                   >
                     <span aria-hidden="true" className="text-xl leading-none transition-transform group-hover:scale-110 sm:text-2xl">
                       {item.emoji}
@@ -216,7 +216,7 @@ export default async function HomePage({
                 </span>
                 <Link
                   href={browseHref(filters, { county: "" })}
-                  className="rounded-full border border-line bg-white px-2.5 py-1 font-medium transition hover:border-ink/25 hover:text-ink"
+                  className="rounded-full border border-line bg-surface px-2.5 py-1 font-medium transition hover:border-ink/25 hover:text-ink"
                 >
                   Clear state
                 </Link>
@@ -233,7 +233,7 @@ export default async function HomePage({
                 </span>
                 <Link
                   href={browseHref(filters, { country: "" })}
-                  className="rounded-full border border-line bg-white px-2.5 py-1 font-medium transition hover:border-ink/25 hover:text-ink"
+                  className="rounded-full border border-line bg-surface px-2.5 py-1 font-medium transition hover:border-ink/25 hover:text-ink"
                 >
                   All countries
                 </Link>
@@ -252,7 +252,7 @@ export default async function HomePage({
 
             <div className="min-w-0">
               {/* Keep price and sort controls compact on phones. */}
-              <details className="mb-6 rounded-xl border border-line bg-white lg:hidden">
+              <details className="mb-6 rounded-xl border border-line bg-surface lg:hidden">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-semibold text-ink marker:hidden">
                   <span>Filters</span>
                   <svg aria-hidden="true" className="shrink-0 transition-transform [details[open]_&]:rotate-180" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -268,8 +268,8 @@ export default async function HomePage({
                       className={[
                         "rounded-full border px-3 py-1.5 text-xs font-medium transition",
                         filters.max === option.value
-                          ? "border-ink/30 bg-ink/5 text-ink"
-                          : "border-line bg-white text-ink-soft hover:border-ink/25 hover:text-ink",
+                          ? "border-clay/30 bg-accent-soft text-ink"
+                          : "border-line bg-surface text-ink-soft hover:border-ink/25 hover:text-ink",
                       ].join(" ")}
                     >
                       {option.label}
@@ -328,7 +328,7 @@ export default async function HomePage({
                   {filtered ? (
                     <Link
                       href="/#trending"
-                      className="rounded-full border border-line bg-white px-3.5 py-1.5 text-xs font-medium text-ink-soft transition hover:border-ink/25 hover:text-ink"
+                      className="rounded-full border border-line bg-surface px-3.5 py-1.5 text-xs font-medium text-ink-soft transition hover:border-ink/25 hover:text-ink"
                     >
                       Clear filters
                     </Link>
@@ -368,7 +368,7 @@ export default async function HomePage({
                           <Link
                             href={pageHref(filters, currentPage - 1)}
                             prefetch={false}
-                            className="inline-flex min-h-10 items-center rounded-full border border-line bg-white px-4 text-sm font-semibold text-ink-soft transition hover:border-ink/25 hover:text-ink"
+                            className="inline-flex min-h-10 items-center rounded-full border border-line bg-surface px-4 text-sm font-semibold text-ink-soft transition hover:border-ink/25 hover:text-ink"
                           >
                             Previous
                           </Link>
@@ -380,7 +380,7 @@ export default async function HomePage({
                           <Link
                             href={pageHref(filters, currentPage + 1)}
                             prefetch={false}
-                            className="inline-flex min-h-10 items-center rounded-full border border-line bg-white px-4 text-sm font-semibold text-ink-soft transition hover:border-ink/25 hover:text-ink"
+                            className="inline-flex min-h-10 items-center rounded-full border border-line bg-surface px-4 text-sm font-semibold text-ink-soft transition hover:border-ink/25 hover:text-ink"
                           >
                             Next
                           </Link>
@@ -389,7 +389,7 @@ export default async function HomePage({
                     ) : null}
                   </>
                 ) : marketplaceEmpty ? (
-                  <div className="mt-6 rounded-xl border border-dashed border-line bg-white/60 px-6 py-16 text-center">
+                  <div className="mt-6 rounded-xl border border-dashed border-line bg-surface/60 px-6 py-16 text-center">
                     <p className="text-4xl" aria-hidden="true">
                       🏷️
                     </p>
@@ -401,21 +401,21 @@ export default async function HomePage({
                     <div className="mt-5 flex flex-wrap items-center justify-center gap-2.5">
                       <Link
                         href="/sell"
-                        className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper transition hover:bg-clay"
+                        className="inline-flex items-center gap-2 rounded-full bg-clay px-5 py-2.5 text-sm font-medium text-on-dark transition hover:bg-clay-dark"
                       >
                         List an item
                         <span aria-hidden="true">→</span>
                       </Link>
                       <Link
                         href="/signin"
-                        className="inline-flex items-center gap-2 rounded-full border border-line bg-white px-5 py-2.5 text-sm font-medium text-ink-soft transition hover:border-ink/25 hover:text-ink"
+                        className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-5 py-2.5 text-sm font-medium text-ink-soft transition hover:border-ink/25 hover:text-ink"
                       >
                         Create an account
                       </Link>
                     </div>
                   </div>
                 ) : countryEmpty ? (
-                  <div className="mt-6 rounded-xl border border-dashed border-line bg-white/60 px-6 py-16 text-center">
+                  <div className="mt-6 rounded-xl border border-dashed border-line bg-surface/60 px-6 py-16 text-center">
                     <p className="text-4xl" aria-hidden="true">
                       {flagFor(filters.country)}
                     </p>
@@ -427,7 +427,7 @@ export default async function HomePage({
                     <div className="mt-5 flex flex-wrap items-center justify-center gap-2.5">
                       <Link
                         href={browseHref(filters, { country: "" })}
-                        className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper transition hover:bg-clay"
+                        className="inline-flex items-center gap-2 rounded-full bg-clay px-5 py-2.5 text-sm font-medium text-on-dark transition hover:bg-clay-dark"
                       >
                         Browse all listings
                         <span aria-hidden="true">→</span>
@@ -435,7 +435,7 @@ export default async function HomePage({
                     </div>
                   </div>
                 ) : (
-                  <div className="mt-6 rounded-xl border border-dashed border-line bg-white/60 px-6 py-16 text-center">
+                  <div className="mt-6 rounded-xl border border-dashed border-line bg-surface/60 px-6 py-16 text-center">
                     <p className="text-4xl" aria-hidden="true">
                       🔍
                     </p>
@@ -447,7 +447,7 @@ export default async function HomePage({
                     </p>
                     <Link
                       href="/#trending"
-                      className="mt-5 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper transition hover:bg-clay"
+                      className="mt-5 inline-flex items-center gap-2 rounded-full bg-clay px-5 py-2.5 text-sm font-medium text-on-dark transition hover:bg-clay-dark"
                     >
                       Clear filters
                     </Link>
@@ -460,7 +460,7 @@ export default async function HomePage({
 
         {/* compact seller band */}
         <section id="sell" className="mx-auto max-w-7xl scroll-mt-20 px-4 pb-16 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-4 rounded-2xl border border-line bg-white px-6 py-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-4 rounded-2xl border border-line bg-surface px-6 py-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-clay">For sellers</p>
               <h2 className="mt-1 text-2xl">Sell your things on Bazaar</h2>
@@ -470,7 +470,7 @@ export default async function HomePage({
             </div>
             <Link
               href="/sell"
-              className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-ink px-6 text-sm font-medium text-paper transition hover:bg-clay"
+              className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-clay px-6 text-sm font-medium text-on-dark transition hover:bg-clay-dark"
             >
               Start selling
               <span aria-hidden="true">→</span>

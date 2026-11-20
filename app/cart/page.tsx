@@ -49,7 +49,7 @@ export default async function CartPage() {
           </div>
           <Link
             href="/#trending"
-            className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-full border border-line bg-white px-4 text-sm font-semibold transition hover:border-ink/25 sm:w-auto"
+            className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-full border border-line bg-surface px-4 text-sm font-semibold transition hover:border-ink/25 sm:w-auto"
           >
             Keep browsing
             <span aria-hidden="true">→</span>
@@ -63,7 +63,7 @@ export default async function CartPage() {
                 {items.map((product) => (
                   <li
                     key={product.slug}
-                    className="flex gap-3 rounded-2xl border border-line bg-white p-3 transition hover:border-ink/20 sm:gap-4 sm:p-4"
+                    className="flex gap-3 rounded-2xl border border-line bg-surface p-3 transition hover:border-ink/20 sm:gap-4 sm:p-4"
                   >
                     <Link
                       href={`/listing/${product.slug}`}
@@ -117,7 +117,7 @@ export default async function CartPage() {
                           <input type="hidden" name="slug" value={product.slug} />
                           <button
                             type="submit"
-                            className="text-xs font-semibold text-clay transition hover:text-clay-dark"
+                            className="text-xs font-semibold text-clay transition hover:text-danger"
                           >
                             Remove
                           </button>
@@ -130,7 +130,7 @@ export default async function CartPage() {
             </section>
 
             <aside className="space-y-4">
-              <div className="rounded-2xl border border-line bg-white p-4 sm:p-5">
+              <div className="rounded-2xl border border-line bg-surface p-4 sm:p-5">
                 <h2 className="font-display text-xl">Summary</h2>
                 <dl className="mt-4 space-y-3 text-sm">
                   <div className="flex items-center justify-between gap-3">
@@ -153,7 +153,7 @@ export default async function CartPage() {
             </aside>
           </div>
         ) : (
-          <section className="mt-6 rounded-2xl border border-line bg-white p-5 text-center sm:mt-8 sm:p-12">
+          <section className="mt-6 rounded-2xl border border-line bg-surface p-5 text-center sm:mt-8 sm:p-12">
             <span
               aria-hidden="true"
               className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-paper-2 text-ink-soft"
@@ -177,7 +177,7 @@ export default async function CartPage() {
             <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
               <Link
                 href="/#trending"
-                className="inline-flex h-10 items-center gap-2 rounded-full bg-ink px-5 text-sm font-semibold text-paper transition hover:bg-clay"
+                className="inline-flex h-10 items-center gap-2 rounded-full bg-clay px-5 text-sm font-semibold text-on-dark transition hover:bg-clay-dark"
               >
                 Browse listings
                 <span aria-hidden="true">→</span>
@@ -185,7 +185,7 @@ export default async function CartPage() {
               {!user ? (
                 <Link
                   href={`/signin?next=${encodeURIComponent("/cart")}`}
-                  className="inline-flex h-10 items-center gap-2 rounded-full border border-line bg-white px-5 text-sm font-semibold transition hover:border-ink/25"
+                  className="inline-flex h-10 items-center gap-2 rounded-full border border-line bg-surface px-5 text-sm font-semibold transition hover:border-ink/25"
                 >
                   Sign in
                 </Link>

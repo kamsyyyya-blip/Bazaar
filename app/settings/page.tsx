@@ -16,10 +16,10 @@ type Tone = "green" | "red" | "blue" | "dark";
 type IconKind = "user" | "case" | "globe" | "phone" | "mail" | "chat" | "feedback" | "bell" | "info" | "star" | "lock";
 
 const toneColor: Record<Tone, string> = {
-  green: "#00831e",
-  red: "#d93025",
-  blue: "#1769aa",
-  dark: "#14243b",
+  green: "var(--color-clay)",
+  red: "var(--color-danger)",
+  blue: "var(--color-ink-soft)",
+  dark: "var(--color-footer)",
 };
 
 function Icon({ kind }: { kind: IconKind }) {
@@ -78,7 +78,7 @@ function SettingsRow({
 }) {
   const content = (
     <>
-      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl text-[#fff]" style={{ backgroundColor: toneColor[tone] }}>
+      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl text-on-dark" style={{ backgroundColor: toneColor[tone] }}>
         <Icon kind={icon} />
       </span>
       <span className="min-w-0 flex-1 truncate text-sm font-semibold text-ink">{label}</span>
@@ -103,11 +103,11 @@ function SettingsRow({
 }
 
 function Group({ children }: { children: ReactNode }) {
-  return <div className="divide-y divide-line border-y border-line bg-white">{children}</div>;
+  return <div className="divide-y divide-line border-y border-line bg-surface">{children}</div>;
 }
 
 function Gap() {
-  return <div className="h-2 bg-[#eaf1f8]" aria-hidden="true" />;
+  return <div className="h-2 bg-paper-2" aria-hidden="true" />;
 }
 
 export default async function SettingsPage() {
@@ -119,8 +119,8 @@ export default async function SettingsPage() {
   const sellerLink = `/seller/${sellerSlug(user.name)}`;
 
   return (
-    <div className="min-h-screen bg-[#eaf1f8] pb-28 lg:bg-white lg:pb-16">
-      <header className="sticky top-0 z-40 border-b border-line bg-white">
+    <div className="min-h-screen bg-paper-2 pb-28 lg:bg-surface lg:pb-16">
+      <header className="sticky top-0 z-40 border-b border-line bg-surface">
         <div className="mx-auto flex h-14 max-w-2xl items-center gap-3 px-4">
           <Link href="/profile" aria-label="Back to profile" className="grid h-9 w-9 place-items-center rounded-full text-xl text-ink">
             <span aria-hidden="true">‹</span>
@@ -130,11 +130,11 @@ export default async function SettingsPage() {
       </header>
 
       <main className="mx-auto max-w-2xl">
-        <section className="flex items-center gap-3 bg-white px-4 py-5">
+        <section className="flex items-center gap-3 bg-surface px-4 py-5">
           <span
             aria-hidden="true"
-            className="grid h-12 w-12 shrink-0 place-items-center rounded-full text-sm font-bold text-[#fff]"
-            style={{ backgroundColor: user.avatarColor || "#00831e" }}
+            className="grid h-12 w-12 shrink-0 place-items-center rounded-full text-sm font-bold text-on-dark"
+            style={{ backgroundColor: user.avatarColor || "var(--color-clay)" }}
           >
             {initials(user.name)}
           </span>
@@ -177,19 +177,19 @@ export default async function SettingsPage() {
 
         <Gap />
 
-        <section id="feedback" className="scroll-mt-16 bg-white px-4 py-5">
+        <section id="feedback" className="scroll-mt-16 bg-surface px-4 py-5">
           <h2 className="font-display text-lg font-semibold text-ink">Feedback</h2>
           <p className="mt-2 text-sm text-ink-soft">
             {reviewCount === 0 ? "No feedback yet." : `${reviewCount} ${reviewCount === 1 ? "review" : "reviews"} written.`}
           </p>
-          <Link href={sellerLink} className="mt-3 inline-flex text-sm font-semibold text-[#00831e] hover:underline">
+          <Link href={sellerLink} className="mt-3 inline-flex text-sm font-semibold text-clay hover:underline">
             View seller page →
           </Link>
         </section>
 
         <Gap />
 
-        <section id="faq" className="scroll-mt-16 bg-white px-4 py-5">
+        <section id="faq" className="scroll-mt-16 bg-surface px-4 py-5">
           <h2 className="font-display text-lg font-semibold text-ink">Frequently Asked Questions</h2>
           <div className="mt-3 divide-y divide-line">
             <details className="py-3">
@@ -215,11 +215,11 @@ export default async function SettingsPage() {
 
         <Gap />
 
-        <div className="bg-white px-4 py-5">
+        <div className="bg-surface px-4 py-5">
           <form action={signOutAction}>
             <button
               type="submit"
-              className="h-11 w-full rounded-full border border-line text-sm font-semibold text-[#d93025] transition hover:border-[#d93025]/40 hover:bg-[#d93025]/5"
+              className="h-11 w-full rounded-full border border-line text-sm font-semibold text-danger transition hover:border-danger/40 hover:bg-danger/5"
             >
               Sign out
             </button>

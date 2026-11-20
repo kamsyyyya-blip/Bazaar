@@ -62,7 +62,7 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
           </div>
           <Link
             href="/messages"
-            className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-full border border-line bg-white px-4 text-sm font-medium transition hover:border-ink/25 sm:w-auto"
+            className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-full border border-line bg-surface px-4 text-sm font-medium transition hover:border-ink/25 sm:w-auto"
           >
             <span aria-hidden="true">←</span>
             All messages
@@ -72,7 +72,7 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
         {product ? (
           <Link
             href={`/listing/${product.slug}`}
-            className="mt-5 flex items-center gap-3 rounded-2xl border border-line bg-white p-3 transition hover:border-ink/20 hover:shadow-soft sm:mt-6 sm:gap-4 sm:p-4"
+            className="mt-5 flex items-center gap-3 rounded-2xl border border-line bg-surface p-3 transition hover:border-ink/20 hover:shadow-soft sm:mt-6 sm:gap-4 sm:p-4"
           >
             <span
               aria-hidden="true"
@@ -105,7 +105,7 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
                     <div className={`flex items-center gap-2 ${mine ? "justify-end" : ""}`}>
                       <span
                         aria-hidden="true"
-                        className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-white text-[11px] font-semibold text-ink-soft ring-1 ring-line"
+                        className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-surface text-[11px] font-semibold text-ink-soft ring-1 ring-line"
                       >
                         {initials(mine ? user.name : message.senderName)}
                       </span>
@@ -117,8 +117,8 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
                       className={[
                         "mt-1.5 whitespace-pre-line rounded-2xl px-4 py-3 text-sm leading-relaxed",
                         mine
-                          ? "rounded-br-md bg-ink text-paper"
-                          : "rounded-bl-md border border-line bg-white text-ink",
+                          ? "rounded-br-md bg-clay text-on-dark"
+                          : "rounded-bl-md border border-line bg-surface text-ink",
                       ].join(" ")}
                     >
                       {message.body}

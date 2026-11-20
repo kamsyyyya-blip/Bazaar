@@ -17,7 +17,7 @@ type Props = {
 };
 
 const field =
-  "h-11 w-full rounded-xl border border-line bg-white px-3.5 text-sm outline-none transition placeholder:text-ink-soft/60 focus:border-ink/35";
+  "h-11 w-full rounded-xl border border-line bg-surface px-3.5 text-sm outline-none transition placeholder:text-ink-soft/60 focus:border-ink/35";
 
 export default function SellForm({ categories, defaultCountry = HOME_COUNTRY, defaultCounty = "" }: Props) {
   const [state, action, pending] = useActionState(createListingAction, {} as SellState);
@@ -208,13 +208,13 @@ export default function SellForm({ categories, defaultCountry = HOME_COUNTRY, de
           accept={PHOTO_ACCEPT}
           multiple
           onChange={handlePhotos}
-          className="mt-1.5 w-full cursor-pointer rounded-xl border border-dashed border-line bg-white px-3.5 py-3 text-sm text-ink-soft outline-none transition file:mr-3 file:cursor-pointer file:rounded-full file:border-0 file:bg-ink file:px-4 file:py-2 file:text-xs file:font-semibold file:text-paper hover:border-ink/30 focus:border-ink/35"
+          className="mt-1.5 w-full cursor-pointer rounded-xl border border-dashed border-line bg-surface px-3.5 py-3 text-sm text-ink-soft outline-none transition file:mr-3 file:cursor-pointer file:rounded-full file:border-0 file:bg-clay file:px-4 file:py-2 file:text-xs file:font-semibold file:text-on-dark hover:border-ink/30 focus:border-ink/35"
         />
         <p className="mt-1.5 text-xs text-ink-soft">
           Add up to {MAX_PHOTOS} pictures — JPG, PNG, WebP or GIF, 6 MB each and 4 MB combined. The first photo becomes the cover.
         </p>
         {photoError ? (
-          <p role="alert" className="mt-2 text-xs font-medium text-clay-dark">
+          <p role="alert" className="mt-2 text-xs font-medium text-danger">
             {photoError}
           </p>
         ) : null}
@@ -228,12 +228,12 @@ export default function SellForm({ categories, defaultCountry = HOME_COUNTRY, de
                   type="button"
                   onClick={() => removePhoto(index)}
                   aria-label={`Remove ${preview.name}`}
-                  className="absolute right-1 top-1 grid h-6 w-6 place-items-center rounded-full bg-ink/80 text-xs font-semibold text-paper transition hover:bg-clay"
+                  className="absolute right-1 top-1 grid h-6 w-6 place-items-center rounded-full bg-footer/80 text-xs font-semibold text-on-dark transition hover:bg-clay-dark"
                 >
                   ×
                 </button>
                 {index === 0 ? (
-                  <span className="absolute inset-x-1 bottom-1 rounded bg-ink/75 px-1 py-0.5 text-center text-[11px] font-medium text-paper">
+                  <span className="absolute inset-x-1 bottom-1 rounded bg-footer/75 px-1 py-0.5 text-center text-[11px] font-medium text-on-dark">
                     Cover
                   </span>
                 ) : null}
@@ -255,7 +255,7 @@ export default function SellForm({ categories, defaultCountry = HOME_COUNTRY, de
           maxLength={2000}
           rows={6}
           placeholder="What are you selling, how old is it, and what should the buyer know? Mention flaws, dimensions, pickup options and anything included."
-          className="mt-1.5 w-full resize-y rounded-xl border border-line bg-white px-3.5 py-3 text-sm leading-relaxed outline-none transition placeholder:text-ink-soft/60 focus:border-ink/35"
+          className="mt-1.5 w-full resize-y rounded-xl border border-line bg-surface px-3.5 py-3 text-sm leading-relaxed outline-none transition placeholder:text-ink-soft/60 focus:border-ink/35"
         />
       </div>
 
@@ -270,7 +270,7 @@ export default function SellForm({ categories, defaultCountry = HOME_COUNTRY, de
       </div>
 
       {state.error ? (
-        <p role="alert" aria-live="polite" className="rounded-xl bg-clay/10 px-3.5 py-2.5 text-sm text-clay-dark">
+        <p role="alert" aria-live="polite" className="rounded-xl bg-danger/10 px-3.5 py-2.5 text-sm text-danger">
           {state.error}
         </p>
       ) : null}
@@ -279,7 +279,7 @@ export default function SellForm({ categories, defaultCountry = HOME_COUNTRY, de
         <button
           type="submit"
           disabled={pending}
-          className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-ink px-7 text-sm font-medium text-paper transition hover:bg-clay disabled:cursor-wait disabled:opacity-60 sm:w-auto"
+          className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-clay px-7 text-sm font-medium text-on-dark transition hover:bg-clay-dark disabled:cursor-wait disabled:opacity-60 sm:w-auto"
         >
           {pending ? "Publishing…" : "Publish listing"}
           {!pending ? <span aria-hidden="true">→</span> : null}

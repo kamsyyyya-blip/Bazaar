@@ -29,7 +29,7 @@ const themeScript = `
 (function () {
   try {
     var stored = localStorage.getItem("bazaar-theme");
-    var dark = stored === "dark" || ((!stored || stored === "system") && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    var dark = stored === "dark" || (stored === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
     document.documentElement.dataset.theme = dark ? "dark" : "light";
     document.documentElement.style.colorScheme = dark ? "dark" : "light";
   } catch (error) {}

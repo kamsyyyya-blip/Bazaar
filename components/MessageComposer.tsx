@@ -22,12 +22,12 @@ export default function MessageComposer({ slug }: { slug: string }) {
           maxLength={1200}
           rows={5}
           placeholder="Hi! Is this still available? Could I collect it this weekend?"
-          className="mt-1.5 w-full resize-y rounded-xl border border-line bg-white px-3.5 py-3 text-sm leading-relaxed outline-none transition placeholder:text-ink-soft/60 focus:border-ink/35"
+          className="mt-1.5 w-full resize-y rounded-xl border border-line bg-surface px-3.5 py-3 text-sm leading-relaxed outline-none transition placeholder:text-ink-soft/60 focus:border-ink/35"
         />
       </div>
 
       {state.error ? (
-        <p role="alert" aria-live="polite" className="rounded-xl bg-clay/10 px-3.5 py-2.5 text-sm text-clay-dark">
+        <p role="alert" aria-live="polite" className="rounded-xl bg-danger/10 px-3.5 py-2.5 text-sm text-danger">
           {state.error}
         </p>
       ) : null}
@@ -36,7 +36,7 @@ export default function MessageComposer({ slug }: { slug: string }) {
         <button
           type="submit"
           disabled={pending}
-          className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-ink px-6 text-sm font-medium text-paper transition hover:bg-clay disabled:cursor-wait disabled:opacity-60 sm:w-auto"
+          className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-clay px-6 text-sm font-medium text-on-dark transition hover:bg-clay-dark disabled:cursor-wait disabled:opacity-60 sm:w-auto"
         >
           {pending ? "Sending…" : "Send message"}
           {!pending ? <span aria-hidden="true">→</span> : null}

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   description: "Manage your Bazaar profile, country, state and contact details.",
 };
 
-const green = "#00831e";
+
 
 // Set to true to restore the old mobile profile (account settings, feedback,
 // appearance and FAQ all shown on the first profile screen).
@@ -50,13 +50,13 @@ function SideLink({ href, kind, label, active = false, badge }: { href: string; 
       href={href}
       aria-current={active ? "page" : undefined}
       className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition ${
-        active ? "bg-[#00831e]/8 font-semibold text-[#007a1b]" : "text-ink-soft hover:bg-paper-2 hover:text-ink"
+        active ? "bg-accent-soft font-semibold text-ink" : "text-ink-soft hover:bg-paper-2 hover:text-ink"
       }`}
     >
       <NavIcon kind={kind} />
       <span className="flex-1">{label}</span>
       {badge && badge > 0 ? (
-        <span className="grid h-5 min-w-5 place-items-center rounded-full bg-clay px-1 text-[11px] font-semibold text-[#fff]">
+        <span className="grid h-5 min-w-5 place-items-center rounded-full bg-clay px-1 text-[11px] font-semibold text-on-dark">
           {badge > 9 ? "9+" : badge}
         </span>
       ) : null}
@@ -73,30 +73,24 @@ function SectionTitle({ id, children }: { id: string; children: ReactNode }) {
 }
 
 function MobileTile({ href, label, kind, badge }: { href: string; label: string; kind: NavKind; badge?: string }) {
-  const tint: Partial<Record<NavKind, string>> = {
-    adverts: "#e7f5ea",
-    notifications: "#fdeaea",
-    feedback: "#e7f0fb",
-    faq: "#eff5e6",
-  };
-  const ink: Partial<Record<NavKind, string>> = {
-    adverts: "#00831e",
-    notifications: "#d93025",
-    feedback: "#1769aa",
-    faq: "#4b7a1f",
+  const tone: Partial<Record<NavKind, string>> = {
+    adverts: "bg-accent-soft text-clay",
+    notifications: "bg-danger/10 text-danger",
+    feedback: "bg-paper-2 text-ink-soft",
+    faq: "bg-accent-soft text-clay",
   };
 
   return (
     <Link
       href={href}
-      className="relative flex min-h-[116px] flex-col justify-between rounded-2xl bg-white p-4 shadow-[0_2px_10px_rgba(20,36,59,0.05)] transition active:scale-[0.98]"
+      className="relative flex min-h-[116px] flex-col justify-between rounded-2xl bg-surface p-4 shadow-soft transition active:scale-[0.98]"
     >
-      <span className="grid h-10 w-10 place-items-center rounded-xl" style={{ backgroundColor: tint[kind], color: ink[kind] }}>
+      <span className={`grid h-10 w-10 place-items-center rounded-xl ${tone[kind] ?? "bg-paper-2 text-ink-soft"}`}>
         <NavIcon kind={kind} />
       </span>
       <span className="text-sm font-semibold text-ink">{label}</span>
       {badge ? (
-        <span className="absolute right-3 top-3 rounded-full bg-[#e53935] px-2 py-0.5 text-[11px] font-bold text-[#fff]">
+        <span className="absolute right-3 top-3 rounded-full bg-danger px-2 py-0.5 text-[11px] font-bold text-on-dark">
           {badge}
         </span>
       ) : null}
@@ -122,19 +116,19 @@ export default async function ProfilePage() {
     <>
       {/* Mobile profile: compact quick-action cards like the reference screenshot. */}
       <div className="lg:hidden">
-        <header className="flex h-14 items-center justify-between border-b border-line bg-white px-4">
-          <Link href="/" className="font-display text-lg font-bold text-[#00831e]">
+        <header className="flex h-14 items-center justify-between border-b border-line bg-surface px-4">
+          <Link href="/" className="font-display text-lg font-bold text-clay">
             Bazaar
           </Link>
           <Link
             href="/settings"
             aria-label="Settings"
-            className="grid h-9 w-9 place-items-center rounded-full bg-[#eaf1f8] text-ink"
+            className="grid h-9 w-9 place-items-center rounded-full bg-paper-2 text-ink"
           >
             <NavIcon kind="settings" />
           </Link>
         </header>
-        <section className="bg-[#eaf1f8] px-4 pb-4 pt-5">
+        <section className="bg-paper-2 px-4 pb-4 pt-5">
           <div className="grid grid-cols-2 gap-3">
             <MobileTile href="/my-listings" label="My ads" kind="adverts" />
             <MobileTile
@@ -148,10 +142,10 @@ export default async function ProfilePage() {
           </div>
           <Link
             href="/settings"
-            className="mt-3 flex items-center justify-between rounded-2xl bg-white px-4 py-3.5 text-sm font-semibold text-ink shadow-[0_2px_10px_rgba(20,36,59,0.05)]"
+            className="mt-3 flex items-center justify-between rounded-2xl bg-surface px-4 py-3.5 text-sm font-semibold text-ink shadow-soft"
           >
             <span className="flex items-center gap-3">
-              <span className="grid h-8 w-8 place-items-center rounded-lg bg-[#e7f0fb] text-[#1769aa]">
+              <span className="grid h-8 w-8 place-items-center rounded-lg bg-accent-soft text-clay">
                 <NavIcon kind="settings" />
               </span>
               Settings
@@ -163,16 +157,16 @@ export default async function ProfilePage() {
 
       {/* Desktop profile uses the green marketplace bar from the reference. */}
       <div className="hidden lg:block">
-        <header className="bg-[#00831e] text-[#fff]">
+        <header className="bg-clay text-on-dark">
           <div className="mx-auto flex h-[72px] max-w-[1280px] items-center justify-between px-5 sm:px-8 lg:px-10">
             <Link href="/" className="font-display text-[28px] font-bold leading-none tracking-tight">
               Bazaar
             </Link>
             <nav aria-label="Account navigation" className="flex items-center gap-5 text-sm font-semibold sm:gap-7">
-              <Link href="/" className="transition hover:text-[#fff]/75">
+              <Link href="/" className="transition hover:text-on-dark/75">
                 Browse listings
               </Link>
-              <Link href="/messages" className="transition hover:text-[#fff]/75">
+              <Link href="/messages" className="transition hover:text-on-dark/75">
                 Messages
               </Link>
             </nav>
@@ -180,13 +174,13 @@ export default async function ProfilePage() {
         </header>
       </div>
 
-      <main className="mx-auto max-w-[1280px] bg-white lg:grid lg:min-h-[calc(100vh-72px)] lg:grid-cols-[380px_minmax(0,1fr)]">
+      <main className="mx-auto max-w-[1280px] bg-surface lg:grid lg:min-h-[calc(100vh-72px)] lg:grid-cols-[380px_minmax(0,1fr)]">
         <aside className="hidden border-b border-line px-5 py-8 sm:px-8 lg:block lg:min-h-[calc(100vh-72px)] lg:border-b-0 lg:border-r lg:px-9 lg:py-10">
           <div className="flex flex-col items-center text-center">
             <span
               aria-hidden="true"
-              className="grid h-[76px] w-[76px] place-items-center rounded-full text-2xl font-bold text-[#fff]"
-              style={{ backgroundColor: user.avatarColor || green }}
+              className="grid h-[76px] w-[76px] place-items-center rounded-full text-2xl font-bold text-on-dark"
+              style={{ backgroundColor: user.avatarColor || "var(--color-clay)" }}
             >
               {initials(user.name)}
             </span>
@@ -194,8 +188,7 @@ export default async function ProfilePage() {
             <p className="mt-0.5 max-w-full truncate text-xs text-ink-soft">{user.email}</p>
             <Link
               href="#profile-details"
-              className="mt-4 inline-flex h-9 items-center justify-center rounded-md border px-4 text-[11px] font-bold uppercase tracking-[0.09em] transition"
-              style={{ borderColor: green, color: green }}
+              className="mt-4 inline-flex h-9 items-center justify-center rounded-md border border-clay px-4 text-[11px] font-bold uppercase tracking-[0.09em] text-clay transition hover:bg-accent-soft"
             >
               {user.phone ? "Edit phone number" : "Add phone number"}
             </Link>
@@ -221,7 +214,7 @@ export default async function ProfilePage() {
             <form action={signOutAction} className="mt-4">
               <button
                 type="submit"
-                className="h-10 w-full rounded-full border border-line bg-white text-sm font-semibold text-ink-soft transition hover:border-clay/40 hover:text-clay"
+                className="h-10 w-full rounded-full border border-line bg-surface text-sm font-semibold text-ink-soft transition hover:border-clay/40 hover:text-clay"
               >
                 Sign out
               </button>
@@ -231,10 +224,10 @@ export default async function ProfilePage() {
 
         <div className="px-4 py-8 sm:px-8 lg:px-12 lg:py-10">
           <div className="flex items-center gap-2.5">
-            <span className="grid h-8 w-8 place-items-center rounded-full text-[#fff]" style={{ backgroundColor: green }}>
+            <span className="grid h-8 w-8 place-items-center rounded-full bg-clay text-on-dark">
               <NavIcon kind="settings" />
             </span>
-            <p className="text-sm font-bold uppercase tracking-[0.18em]" style={{ color: green }}>
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-clay">
               SETTINGS
             </p>
           </div>
@@ -251,8 +244,7 @@ export default async function ProfilePage() {
               </div>
               <Link
                 href="/sell"
-                className="inline-flex h-10 items-center gap-2 rounded-md px-5 text-sm font-semibold text-[#fff] transition hover:brightness-110"
-                style={{ backgroundColor: green }}
+                className="inline-flex h-10 items-center gap-2 rounded-md bg-clay px-5 text-sm font-semibold text-on-dark transition hover:bg-clay-dark"
               >
                 Create new one now!
                 <span aria-hidden="true">→</span>
@@ -261,12 +253,12 @@ export default async function ProfilePage() {
 
             {listings.length === 0 ? (
               <div className="mt-8 rounded-xl border border-line bg-paper-2/40 px-6 py-16 text-center">
-                <span aria-hidden="true" className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-white text-2xl">
+                <span aria-hidden="true" className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-surface text-2xl">
                   📦
                 </span>
                 <p className="mt-5 text-lg font-semibold text-ink">
                   There are no adverts yet.{" "}
-                  <Link href="/sell" className="font-semibold hover:underline" style={{ color: green }}>
+                  <Link href="/sell" className="font-semibold hover:underline text-clay">
                     Create new one now!
                   </Link>
                 </p>
@@ -274,7 +266,7 @@ export default async function ProfilePage() {
             ) : (
               <ul className="mt-7 grid gap-3 sm:grid-cols-2">
                 {listings.map((product) => (
-                  <li key={product.slug} className="flex gap-4 rounded-xl border border-line bg-white p-3 transition hover:border-[#00831e]/40">
+                  <li key={product.slug} className="flex gap-4 rounded-xl border border-line bg-surface p-3 transition hover:border-clay/40">
                     <Link
                       href={`/listing/${product.slug}`}
                       className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-paper-2"
@@ -290,10 +282,10 @@ export default async function ProfilePage() {
                       )}
                     </Link>
                     <div className="min-w-0 flex-1">
-                      <Link href={`/listing/${product.slug}`} className="line-clamp-2 text-sm font-semibold text-ink transition hover:text-[#007a1b]">
+                      <Link href={`/listing/${product.slug}`} className="line-clamp-2 text-sm font-semibold text-ink transition hover:text-clay-dark">
                         {product.title}
                       </Link>
-                      <p className="mt-1 font-semibold tabular-nums" style={{ color: green }}>
+                      <p className="mt-1 font-semibold tabular-nums text-clay">
                         {formatPrice(product.price, currencyForCountry(product.country))}
                       </p>
                       <p className="mt-1 truncate text-xs text-ink-soft">
@@ -325,10 +317,10 @@ export default async function ProfilePage() {
                   <p className="mt-0.5 text-sm text-ink-soft">{reviewCount === 1 ? "review written" : "reviews written"}</p>
                 </div>
                 <div className="flex items-center gap-4">
-                  <Link href="/messages" className="text-sm font-semibold hover:underline" style={{ color: green }}>
+                  <Link href="/messages" className="text-sm font-semibold hover:underline text-clay">
                     {unread > 0 ? `${unread} unread messages` : `${conversationCount} conversations`}
                   </Link>
-                  <Link href={sellerLink} className="text-sm font-semibold hover:underline" style={{ color: green }}>
+                  <Link href={sellerLink} className="text-sm font-semibold hover:underline text-clay">
                     View seller page →
                   </Link>
                 </div>
@@ -349,7 +341,7 @@ export default async function ProfilePage() {
                 <details className="py-4">
                   <summary className="cursor-pointer text-sm font-semibold text-ink">How do I publish an advert?</summary>
                   <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-                    Choose <Link href="/sell" className="font-semibold hover:underline" style={{ color: green }}>Make money</Link>, add a
+                    Choose <Link href="/sell" className="font-semibold hover:underline text-clay">Make money</Link>, add a
                     title, price, location and up to five photos, then publish. Your advert goes live immediately.
                   </p>
                 </details>

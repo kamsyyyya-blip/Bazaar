@@ -108,14 +108,14 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
             <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-ink-soft">
               {ratingCount > 0 ? (
                 <span className="flex items-center gap-1.5">
-                  <span aria-hidden="true" className="text-clay">
+                  <span aria-hidden="true" className="text-highlight">
                     ★
                   </span>
                   <span className="font-medium text-ink">{rating.toFixed(1)}</span>
                   <span>({ratingCount.toLocaleString("en-US")} ratings)</span>
                 </span>
               ) : (
-                <span className="rounded-full bg-olive/10 px-2 py-0.5 text-xs font-medium text-olive">
+                <span className="rounded-full bg-accent-soft px-2 py-0.5 text-xs font-medium text-clay">
                   New listing · no ratings yet
                 </span>
               )}
@@ -130,7 +130,7 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
                   <span className="font-medium text-ink">{product.seller}</span>
                 )}
                 {product.verified ? (
-                  <span className="ml-1.5 inline-flex items-center gap-1 rounded-full bg-olive/10 px-1.5 py-0.5 align-middle text-[11px] font-medium text-olive">
+                  <span className="ml-1.5 inline-flex items-center gap-1 rounded-full bg-accent-soft px-1.5 py-0.5 align-middle text-[11px] font-medium text-clay">
                     <span aria-hidden="true">✓</span> Verified
                   </span>
                 ) : null}
@@ -192,13 +192,13 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               {product.status === "sold" ? (
-                <span className="flex h-12 flex-1 items-center justify-center rounded-full bg-ink/10 px-6 text-sm font-semibold text-ink-soft" aria-label="This item has sold">
+                <span className="flex h-12 flex-1 items-center justify-center rounded-full bg-paper-2 px-6 text-sm font-semibold text-ink-soft" aria-label="This item has sold">
                   Sold
                 </span>
               ) : ownListing ? (
                 <Link
                   href="/messages"
-                  className="flex h-12 flex-1 items-center justify-center gap-2 rounded-full border border-ink/15 bg-white px-6 text-sm font-medium transition hover:border-ink/35"
+                  className="flex h-12 flex-1 items-center justify-center gap-2 rounded-full border border-ink/15 bg-surface px-6 text-sm font-medium transition hover:border-ink/35"
                 >
                   Open your inbox
                   <span aria-hidden="true">→</span>
@@ -206,7 +206,7 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
               ) : inCart ? (
                 <Link
                   href="/cart"
-                  className="flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-olive px-6 text-sm font-semibold text-paper transition hover:bg-olive/90"
+                  className="flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-clay px-6 text-sm font-semibold text-on-dark transition hover:bg-clay-dark"
                 >
                   In your cart · View cart
                   <span aria-hidden="true">→</span>
@@ -222,7 +222,7 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
             </div>
 
             <p className="mt-4 flex items-center gap-2 text-xs text-ink-soft">
-              <span className="h-1.5 w-1.5 rounded-full bg-olive" />
+              <span className="h-1.5 w-1.5 rounded-full bg-clay" />
               {ownListing
                 ? "This is your listing — buyer messages appear in your inbox."
                 : user
@@ -272,7 +272,7 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
                   ))}
                 </ul>
               ) : (
-                <p className="mt-5 rounded-2xl border border-dashed border-line bg-white/60 px-5 py-10 text-center text-sm text-ink-soft">
+                <p className="mt-5 rounded-2xl border border-dashed border-line bg-surface/60 px-5 py-10 text-center text-sm text-ink-soft">
                   No written reviews yet. Be the first to share your experience.
                 </p>
               )}

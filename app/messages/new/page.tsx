@@ -59,7 +59,7 @@ export default async function NewMessagePage({
           inbox.
         </p>
 
-        <div className="mt-5 flex flex-col gap-3 rounded-2xl border border-line bg-white p-3 sm:mt-7 sm:gap-4 sm:p-4 sm:flex-row sm:items-center">
+        <div className="mt-5 flex flex-col gap-3 rounded-2xl border border-line bg-surface p-3 sm:mt-7 sm:gap-4 sm:p-4 sm:flex-row sm:items-center">
           <span
             aria-hidden="true"
             className="grid h-20 w-20 shrink-0 place-items-center rounded-xl text-4xl ring-1 ring-black/5"
@@ -91,7 +91,7 @@ export default async function NewMessagePage({
           </Link>
         </div>
 
-        <section className="mt-5 rounded-2xl border border-line bg-white p-4 sm:mt-6 sm:p-7">
+        <section className="mt-5 rounded-2xl border border-line bg-surface p-4 sm:mt-6 sm:p-7">
           {ownListing ? (
             <div className="rounded-xl border border-dashed border-line bg-paper-2/40 px-5 py-8 text-center">
               <p className="text-2xl" aria-hidden="true">
@@ -103,7 +103,7 @@ export default async function NewMessagePage({
               </p>
               <Link
                 href="/messages"
-                className="mt-4 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-paper transition hover:bg-clay"
+                className="mt-4 inline-flex items-center gap-2 rounded-full bg-clay px-5 py-2.5 text-sm font-medium text-on-dark transition hover:bg-clay-dark"
               >
                 Open your inbox
                 <span aria-hidden="true">→</span>

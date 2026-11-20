@@ -123,7 +123,7 @@ export default function CountryPicker({
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-label={`Country: ${selected ? selected.name : "all countries"}`}
-        className="flex h-14 w-full items-center gap-2.5 rounded-2xl border border-line bg-white px-4 text-left text-ink shadow-soft transition hover:border-ink/20 sm:h-16"
+        className="flex h-14 w-full items-center gap-2.5 rounded-2xl border border-line bg-surface px-4 text-left text-ink shadow-soft transition hover:border-ink/20 sm:h-16"
       >
         <span aria-hidden="true" className="text-lg leading-none">
           {selected ? flagFor(selected.code) : "🌍"}
@@ -151,7 +151,7 @@ export default function CountryPicker({
       </button>
 
       {open ? (
-        <div className="absolute left-0 top-full z-50 mt-2 w-[min(23rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-line bg-white shadow-lift">
+        <div className="absolute left-0 top-full z-50 mt-2 w-[min(23rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-line bg-surface shadow-lift">
           <div className="border-b border-line p-2.5">
             <label htmlFor="country-search" className="sr-only">
               Search countries
@@ -178,7 +178,7 @@ export default function CountryPicker({
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Search all countries…"
                 autoComplete="off"
-                className="h-10 w-full rounded-xl border border-line bg-paper-2/50 pl-9 pr-3 text-sm outline-none transition placeholder:text-ink-soft/60 focus:border-ink/35 focus:bg-white"
+                className="h-10 w-full rounded-xl border border-line bg-paper-2/50 pl-9 pr-3 text-sm outline-none transition placeholder:text-ink-soft/60 focus:border-ink/35 focus:bg-surface"
               />
             </div>
           </div>
@@ -195,14 +195,14 @@ export default function CountryPicker({
               onClick={() => choose("")}
               className={[
                 "flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm transition",
-                !value ? "bg-ink text-paper" : "hover:bg-paper-2",
+                !value ? "bg-clay text-on-dark" : "hover:bg-paper-2",
               ].join(" ")}
             >
               <span aria-hidden="true" className="text-base">
                 🌍
               </span>
               <span className="min-w-0 flex-1 truncate font-medium">All countries</span>
-              <span className={!value ? "text-[12px] text-paper/70" : "text-[12px] text-ink-soft"}>
+              <span className={!value ? "text-[12px] text-on-dark/70" : "text-[12px] text-ink-soft"}>
                 Global
               </span>
             </button>
@@ -213,13 +213,13 @@ export default function CountryPicker({
                 role="option"
                 aria-selected={false}
                 onClick={() => choose(guessed)}
-                className="mt-1 flex w-full items-center gap-3 rounded-xl bg-olive/10 px-3 py-2 text-left text-sm transition hover:bg-olive/15"
+                className="mt-1 flex w-full items-center gap-3 rounded-xl bg-accent-soft px-3 py-2 text-left text-sm transition hover:bg-accent-soft/70"
               >
                 <span aria-hidden="true" className="text-base">
                   {flagFor(guessedCountry.code)}
                 </span>
                 <span className="min-w-0 flex-1 truncate">
-                  <span className="block text-[11px] font-semibold uppercase tracking-[0.08em] text-olive">
+                  <span className="block text-[11px] font-semibold uppercase tracking-[0.08em] text-clay">
                     Detected
                   </span>
                   <span className="block truncate font-medium">{guessedCountry.name}</span>
@@ -240,7 +240,7 @@ export default function CountryPicker({
                   onClick={() => choose(country.code)}
                   className={[
                     "mt-1 flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm transition",
-                    active ? "bg-ink text-paper" : "hover:bg-paper-2",
+                    active ? "bg-clay text-on-dark" : "hover:bg-paper-2",
                   ].join(" ")}
                 >
                   <span aria-hidden="true" className="text-base">
@@ -250,14 +250,14 @@ export default function CountryPicker({
                   {count > 0 ? (
                     <span
                       className={
-                        active ? "shrink-0 text-[12px] text-paper/70" : "shrink-0 text-[12px] text-ink-soft"
+                        active ? "shrink-0 text-[12px] text-on-dark/70" : "shrink-0 text-[12px] text-ink-soft"
                       }
                     >
                       {count}
                     </span>
                   ) : null}
                   {active ? (
-                    <span aria-hidden="true" className="text-xs text-paper">
+                    <span aria-hidden="true" className="text-xs text-on-dark">
                       ✓
                     </span>
                   ) : null}

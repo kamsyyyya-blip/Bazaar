@@ -49,8 +49,8 @@ export default function SearchForm({
       className={[
         "relative flex w-full items-center",
         compact
-          ? "h-10 rounded-full border border-line bg-paper-2/70 focus-within:border-ink/25 focus-within:bg-white"
-          : "h-14 rounded-2xl border border-line bg-white shadow-soft sm:h-16",
+          ? "h-10 rounded-full border border-line bg-paper-2/70 focus-within:border-ink/25 focus-within:bg-surface"
+          : "h-14 rounded-2xl border border-line bg-surface shadow-soft sm:h-16",
       ].join(" ")}
     >
       <span
@@ -86,7 +86,7 @@ export default function SearchForm({
       <button
         type="submit"
         className={[
-          "absolute top-1/2 -translate-y-1/2 rounded-xl bg-ink text-paper transition hover:bg-clay",
+          "absolute top-1/2 -translate-y-1/2 rounded-xl bg-clay text-on-dark transition hover:bg-clay-dark",
           compact
             ? "right-1 grid h-8 w-8 place-items-center"
             : "right-2 h-10 px-5 text-sm font-medium sm:h-12 sm:px-6",

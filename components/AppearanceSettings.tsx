@@ -7,9 +7,9 @@ type ThemeChoice = "system" | "light" | "dark";
 const STORAGE_KEY = "bazaar-theme";
 
 const OPTIONS: Array<{ value: ThemeChoice; label: string; hint: string }> = [
+  { value: "light", label: "Light", hint: "Clean and bright" },
+  { value: "dark", label: "Dark", hint: "Midnight surfaces" },
   { value: "system", label: "System", hint: "Follow your device" },
-  { value: "light", label: "Light", hint: "Cream and paper" },
-  { value: "dark", label: "Dark", hint: "Dim and warm" },
 ];
 
 function applyTheme(choice: ThemeChoice): void {
@@ -21,11 +21,11 @@ function applyTheme(choice: ThemeChoice): void {
 }
 
 export default function AppearanceSettings() {
-  const [choice, setChoice] = useState<ThemeChoice>("system");
+  const [choice, setChoice] = useState<ThemeChoice>("light");
 
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
-    setChoice(stored === "light" || stored === "dark" ? stored : "system");
+    setChoice(stored === "light" || stored === "dark" || stored === "system" ? stored : "light");
   }, []);
 
   useEffect(() => {
@@ -56,12 +56,12 @@ export default function AppearanceSettings() {
             className={[
               "rounded-xl border px-2 py-3 text-center transition",
               active
-                ? "border-ink bg-ink text-paper"
-                : "border-line bg-white text-ink-soft hover:border-ink/25 hover:text-ink",
+                ? "border-clay bg-clay text-on-dark"
+                : "border-line bg-surface text-ink-soft hover:border-clay/40 hover:text-ink",
             ].join(" ")}
           >
             <span className="block text-sm font-medium">{option.label}</span>
-            <span className={active ? "mt-0.5 block text-[11px] text-paper/70" : "mt-0.5 block text-[11px]"}>
+            <span className={active ? "mt-0.5 block text-[11px] text-on-dark/80" : "mt-0.5 block text-[11px]"}>
               {option.hint}
             </span>
           </button>

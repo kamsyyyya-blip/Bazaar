@@ -13,7 +13,7 @@ export default function ProductCard({ product }: Props) {
     <Link
       href={`/listing/${product.slug}`}
       prefetch={false}
-      className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-white transition duration-300 hover:-translate-y-1 hover:border-ink/15 hover:shadow-lift"
+      className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-surface transition duration-300 hover:-translate-y-1 hover:border-ink/15 hover:shadow-lift"
     >
       <div
         className="relative aspect-[4/3] overflow-hidden"
@@ -42,7 +42,7 @@ export default function ProductCard({ product }: Props) {
         )}
 
         {product.badge ? (
-          <span className="absolute left-3 top-3 rounded-full bg-ink/85 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-paper backdrop-blur-sm">
+          <span className="absolute left-3 top-3 rounded-full bg-clay/85 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-on-dark backdrop-blur-sm">
             {product.badge}
           </span>
         ) : null}
@@ -64,7 +64,7 @@ export default function ProductCard({ product }: Props) {
           {product.seller} <span className="text-ink-soft/40">·</span> {product.county}
         </p>
         <div className="mt-auto flex items-center gap-1.5 pt-3 text-xs text-ink-soft">
-          <span aria-hidden="true" className="text-clay">
+          <span aria-hidden="true" className="text-highlight">
             ★
           </span>
           <span className="font-medium text-ink">{product.rating.toFixed(1)}</span>

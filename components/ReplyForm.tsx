@@ -31,17 +31,17 @@ export default function ReplyForm({ conversationId }: { conversationId: number }
           maxLength={1200}
           rows={3}
           placeholder="Write a reply…"
-          className="w-full resize-y rounded-xl border border-line bg-white px-3.5 py-3 text-sm leading-relaxed outline-none transition placeholder:text-ink-soft/60 focus:border-ink/35"
+          className="w-full resize-y rounded-xl border border-line bg-surface px-3.5 py-3 text-sm leading-relaxed outline-none transition placeholder:text-ink-soft/60 focus:border-ink/35"
         />
       </div>
 
       {state.error ? (
-        <p role="alert" aria-live="polite" className="rounded-xl bg-clay/10 px-3.5 py-2.5 text-sm text-clay-dark">
+        <p role="alert" aria-live="polite" className="rounded-xl bg-danger/10 px-3.5 py-2.5 text-sm text-danger">
           {state.error}
         </p>
       ) : null}
       {state.sent ? (
-        <p role="status" aria-live="polite" className="text-xs text-olive">
+        <p role="status" aria-live="polite" className="text-xs text-clay">
           Sent.
         </p>
       ) : null}
@@ -51,7 +51,7 @@ export default function ReplyForm({ conversationId }: { conversationId: number }
         <button
           type="submit"
           disabled={pending}
-          className="flex h-11 w-full items-center justify-center gap-2 rounded-full bg-ink px-5 text-sm font-medium text-paper transition hover:bg-clay disabled:cursor-wait disabled:opacity-60 sm:w-auto"
+          className="flex h-11 w-full items-center justify-center gap-2 rounded-full bg-clay px-5 text-sm font-medium text-on-dark transition hover:bg-clay-dark disabled:cursor-wait disabled:opacity-60 sm:w-auto"
         >
           {pending ? "Sending…" : "Send reply"}
           {!pending ? <span aria-hidden="true">→</span> : null}

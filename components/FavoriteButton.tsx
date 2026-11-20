@@ -22,7 +22,7 @@ export default function FavoriteButton({
         href={`/signin?next=${encodeURIComponent(`/listing/${slug}`)}`}
         aria-label="Sign in to save listing"
         title="Save listing"
-        className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-line bg-white text-ink transition hover:border-ink/30"
+        className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-line bg-surface text-ink transition hover:border-ink/30"
       >
         <Heart filled={false} />
       </Link>
@@ -39,12 +39,12 @@ export default function FavoriteButton({
           aria-pressed={saved}
           aria-label={saved ? "Remove from saved listings" : "Save listing"}
           title={saved ? "Remove from saved listings" : "Save listing"}
-          className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-line bg-white text-ink transition hover:border-ink/30 disabled:opacity-60"
+          className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-line bg-surface text-ink transition hover:border-ink/30 disabled:opacity-60"
         >
           <Heart filled={saved} />
         </button>
       </form>
-      {state.error ? <span role="alert" className="max-w-28 text-center text-[11px] text-clay-dark">{state.error}</span> : null}
+      {state.error ? <span role="alert" className="max-w-28 text-center text-[11px] text-danger">{state.error}</span> : null}
     </div>
   );
 }

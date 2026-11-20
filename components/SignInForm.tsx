@@ -12,7 +12,7 @@ type Props = {
 };
 
 const field =
-  "h-11 w-full rounded-xl border border-line bg-white px-3.5 text-sm outline-none transition placeholder:text-ink-soft/60 focus:border-ink/35";
+  "h-11 w-full rounded-xl border border-line bg-surface px-3.5 text-sm outline-none transition placeholder:text-ink-soft/60 focus:border-ink/35";
 
 export default function SignInForm({ defaultCountry = "", next = "/profile" }: Props) {
   const [state, action, pending] = useActionState(signInAction, {} as AuthState);
@@ -35,7 +35,7 @@ export default function SignInForm({ defaultCountry = "", next = "/profile" }: P
           type="button"
           onClick={() => setMode("signin")}
           aria-pressed={mode === "signin"}
-          className={`rounded-lg px-3 py-2 text-sm font-semibold transition ${mode === "signin" ? "bg-white text-ink shadow-sm" : "text-ink-soft hover:text-ink"}`}
+          className={`rounded-lg px-3 py-2 text-sm font-semibold transition ${mode === "signin" ? "bg-surface text-ink shadow-sm" : "text-ink-soft hover:text-ink"}`}
         >
           Sign in
         </button>
@@ -43,7 +43,7 @@ export default function SignInForm({ defaultCountry = "", next = "/profile" }: P
           type="button"
           onClick={() => setMode("signup")}
           aria-pressed={mode === "signup"}
-          className={`rounded-lg px-3 py-2 text-sm font-semibold transition ${mode === "signup" ? "bg-white text-ink shadow-sm" : "text-ink-soft hover:text-ink"}`}
+          className={`rounded-lg px-3 py-2 text-sm font-semibold transition ${mode === "signup" ? "bg-surface text-ink shadow-sm" : "text-ink-soft hover:text-ink"}`}
         >
           Create account
         </button>
@@ -128,12 +128,12 @@ export default function SignInForm({ defaultCountry = "", next = "/profile" }: P
       </div>
 
       {state.error ? (
-        <p role="alert" aria-live="polite" className="rounded-xl bg-clay/10 px-3.5 py-2.5 text-sm text-clay-dark">
+        <p role="alert" aria-live="polite" className="rounded-xl bg-danger/10 px-3.5 py-2.5 text-sm text-danger">
           {state.error}
         </p>
       ) : null}
       {state.message ? (
-        <p role="status" aria-live="polite" className="rounded-xl bg-olive/10 px-3.5 py-2.5 text-sm text-olive">
+        <p role="status" aria-live="polite" className="rounded-xl bg-accent-soft px-3.5 py-2.5 text-sm text-clay">
           {state.message}
         </p>
       ) : null}
@@ -141,7 +141,7 @@ export default function SignInForm({ defaultCountry = "", next = "/profile" }: P
       <button
         type="submit"
         disabled={pending}
-        className="flex h-12 w-full items-center justify-center rounded-full bg-ink px-6 text-sm font-medium text-paper transition hover:bg-clay disabled:cursor-wait disabled:opacity-60"
+        className="flex h-12 w-full items-center justify-center rounded-full bg-clay px-6 text-sm font-medium text-on-dark transition hover:bg-clay-dark disabled:cursor-wait disabled:opacity-60"
       >
         {pending ? "Please wait…" : mode === "signup" ? "Create account" : "Sign in"}
       </button>

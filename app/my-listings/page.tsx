@@ -33,13 +33,13 @@ export default async function MyListingsPage() {
             <h1 className="mt-2 text-2xl sm:text-4xl">My listings</h1>
             <p className="mt-2 text-sm text-ink-soft">{activeCount} active · {soldCount} sold</p>
           </div>
-          <Link href="/sell" className="inline-flex h-10 items-center rounded-full bg-ink px-5 text-sm font-semibold text-paper">List an item</Link>
+          <Link href="/sell" className="inline-flex h-10 items-center rounded-full bg-clay px-5 text-sm font-semibold text-on-dark">List an item</Link>
         </div>
 
         {listings.length ? (
           <ul className="mt-6 space-y-4">
             {listings.map((product) => (
-              <li key={product.slug} className="rounded-2xl border border-line bg-white p-4 sm:p-5">
+              <li key={product.slug} className="rounded-2xl border border-line bg-surface p-4 sm:p-5">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0">
                     <Link href={`/listing/${product.slug}`} className="font-display text-lg font-semibold hover:underline">{product.title}</Link>
@@ -56,7 +56,7 @@ export default async function MyListingsPage() {
                     </form>
                     <form action={deleteListingAction}>
                       <input type="hidden" name="slug" value={product.slug} />
-                      <button type="submit" className="min-h-10 rounded-full border border-clay/30 px-4 text-xs font-semibold text-clay-dark hover:bg-clay/5">Delete</button>
+                      <button type="submit" className="min-h-10 rounded-full border border-danger/30 px-4 text-xs font-semibold text-danger hover:bg-danger/5">Delete</button>
                     </form>
                   </div>
                 </div>
@@ -65,10 +65,10 @@ export default async function MyListingsPage() {
             ))}
           </ul>
         ) : (
-          <section className="mt-7 rounded-2xl border border-dashed border-line bg-white px-5 py-14 text-center">
+          <section className="mt-7 rounded-2xl border border-dashed border-line bg-surface px-5 py-14 text-center">
             <h2 className="text-xl">No manageable listings yet</h2>
             <p className="mt-2 text-sm text-ink-soft">Listings you create while signed in will appear here.</p>
-            <Link href="/sell" className="mt-5 inline-flex h-10 items-center rounded-full bg-ink px-5 text-sm font-semibold text-paper">Create your first listing</Link>
+            <Link href="/sell" className="mt-5 inline-flex h-10 items-center rounded-full bg-clay px-5 text-sm font-semibold text-on-dark">Create your first listing</Link>
           </section>
         )}
       </main>

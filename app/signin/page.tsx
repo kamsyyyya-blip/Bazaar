@@ -55,7 +55,7 @@ export default async function SignInPage({
                 <li key={item} className="flex items-start gap-3">
                   <span
                     aria-hidden="true"
-                    className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-olive/10 text-[11px] font-semibold text-olive"
+                    className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-accent-soft text-[11px] font-semibold text-clay"
                   >
                     ✓
                   </span>
@@ -73,7 +73,7 @@ export default async function SignInPage({
             </p>
           </div>
 
-          <div className="rounded-2xl border border-line bg-white p-4 shadow-soft sm:p-7">
+          <div className="rounded-2xl border border-line bg-surface p-4 shadow-soft sm:p-7">
             {nextLabel ? (
               <p className="mb-4 rounded-xl border border-line bg-paper-2/60 px-3.5 py-2.5 text-xs leading-relaxed text-ink-soft">
                 Sign in to continue to <span className="font-medium text-ink">{nextLabel}</span>. After signing in, you’ll
