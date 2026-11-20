@@ -63,6 +63,8 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
   const inCart = user && !ownListing
     ? (user.cart ?? []).includes(product.slug) || isInCart(user.email, product.slug)
     : false;
+  const messagePath = `/messages/new?listing=${encodeURIComponent(product.slug)}`;
+  const messageHref = user ? messagePath : `/signin?next=${encodeURIComponent(messagePath)}`;
 
   return (
     <>
@@ -214,6 +216,28 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
               ) : (
                 <AddToCartForm slug={product.slug} />
               )}
+              {!ownListing ? (
+                <Link
+                  href={messageHref}
+                  className="flex h-12 flex-1 items-center justify-center gap-2 rounded-full border border-line bg-surface px-5 text-sm font-semibold text-ink transition hover:border-ink/35 sm:flex-none"
+                >
+                  <svg
+                    aria-hidden="true"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M20 15a2 2 0 0 1-2 2H8l-4 3V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2Z" />
+                    <path d="M8 9h8M8 12h5" />
+                  </svg>
+                  Message seller
+                </Link>
+              ) : null}
               <FavoriteButton
                 slug={product.slug}
                 signedIn={Boolean(user)}

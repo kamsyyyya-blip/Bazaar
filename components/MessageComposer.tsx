@@ -1,22 +1,35 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useRef, useState } from "react";
 import { startConversationAction, type MessageState } from "@/app/actions/messages";
+import QuickReplies from "@/components/QuickReplies";
 
 export default function MessageComposer({ slug }: { slug: string }) {
   const [state, action, pending] = useActionState(startConversationAction, {} as MessageState);
+  const [body, setBody] = useState("");
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  function useQuickReply(text: string) {
+    setBody(text);
+    textareaRef.current?.focus();
+  }
 
   return (
-    <form action={action} className="space-y-3">
+    <form action={action} className="space-y-4">
       <input type="hidden" name="slug" value={slug} />
+
+      <QuickReplies onSelect={useQuickReply} />
 
       <div>
         <label htmlFor="message-body" className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">
           Your message
         </label>
         <textarea
+          ref={textareaRef}
           id="message-body"
           name="body"
+          value={body}
+          onChange={(event) => setBody(event.target.value)}
           required
           minLength={2}
           maxLength={1200}

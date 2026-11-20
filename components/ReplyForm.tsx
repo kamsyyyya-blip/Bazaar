@@ -1,22 +1,31 @@
 "use client";
 
-import { useActionState, useEffect, useRef } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { replyAction, type MessageState } from "@/app/actions/messages";
+import QuickReplies from "@/components/QuickReplies";
 
 export default function ReplyForm({ conversationId }: { conversationId: number }) {
   const [state, action, pending] = useActionState(replyAction, {} as MessageState);
+  const [body, setBody] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    if (state.sent && textareaRef.current) {
-      textareaRef.current.value = "";
-      textareaRef.current.focus();
+    if (state.sent) {
+      setBody("");
+      textareaRef.current?.focus();
     }
   }, [state]);
+
+  function useQuickReply(text: string) {
+    setBody(text);
+    textareaRef.current?.focus();
+  }
 
   return (
     <form action={action} className="space-y-3">
       <input type="hidden" name="conversationId" value={conversationId} />
+
+      <QuickReplies onSelect={useQuickReply} />
 
       <div>
         <label htmlFor="reply-body" className="sr-only">
@@ -26,6 +35,8 @@ export default function ReplyForm({ conversationId }: { conversationId: number }
           ref={textareaRef}
           id="reply-body"
           name="body"
+          value={body}
+          onChange={(event) => setBody(event.target.value)}
           required
           minLength={2}
           maxLength={1200}
