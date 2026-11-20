@@ -12,6 +12,7 @@ import {
 } from "@/lib/db";
 import { formatDateTime, formatPrice, initials } from "@/lib/format";
 import { currencyForCountry } from "@/lib/currency";
+import { getDurableProduct } from "@/lib/durable-products";
 
 export const metadata: Metadata = {
   title: "Conversation",
@@ -33,7 +34,7 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
 
   markConversationRead(conversation.id, user.email);
   const messages = listMessages(conversation.id);
-  const product = getProduct(conversation.productSlug);
+  const product = await getDurableProduct(conversation.productSlug) ?? getProduct(conversation.productSlug);
 
   return (
     <>

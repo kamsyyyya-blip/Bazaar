@@ -11,7 +11,7 @@ npm run dev
 
 Open http://localhost:3000.
 
-The database is created automatically on first request at `data/marketplace.db`. Only the 15 categories are seeded — there are **no mock listings, sellers or reviews**. Every listing comes from a real `/sell` submission, so the marketplace starts empty by design.
+The database is created automatically on first request at `data/marketplace.db`. Only the 16 categories are seeded — there are **no mock listings, sellers or reviews**. Every listing comes from a real `/sell` submission, so the marketplace starts empty by design.
 
 ```bash
 npm run build     # production build

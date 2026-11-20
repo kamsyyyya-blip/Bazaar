@@ -128,4 +128,12 @@ export const CATEGORIES: SeedCategory[] = [
     tintFrom: "#f7edf4",
     tintTo: "#e2c8dc",
   },
+  {
+    slug: "houses-rentals",
+    name: "Houses & Rentals",
+    emoji: "🏡",
+    blurb: "Houses, rooms, apartments and short lets",
+    tintFrom: "#e6f4ea",
+    tintTo: "#b7e4cd",
+  },
 ];

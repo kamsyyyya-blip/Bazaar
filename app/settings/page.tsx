@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Link from "next/link";
+import SettingsAccountSection from "@/components/SettingsAccountSection";
 import { redirect } from "next/navigation";
 import { signOutAction } from "@/app/actions/auth";
 import { getCurrentUser } from "@/lib/auth";
@@ -147,7 +148,7 @@ export default async function SettingsPage() {
         <Gap />
 
         <Group>
-          <SettingsRow id="personal-info" icon="user" tone="green" label="Personal info" href="/profile#profile-details" />
+          <SettingsAccountSection user={user} />
           <SettingsRow icon="case" tone="green" label="Business info" href={sellerLink} />
         </Group>
 
@@ -155,15 +156,15 @@ export default async function SettingsPage() {
 
         <Group>
           <SettingsRow icon="globe" tone="green" label="Change language" value="English" />
-          <SettingsRow icon="phone" tone="red" label="Phone numbers" value={user.phone ? "Added" : "Add"} href="/profile#profile-details" />
-          <SettingsRow icon="mail" tone="red" label="Change e-mail" value={user.email} href="/profile#profile-details" />
+          <SettingsRow icon="phone" tone="red" label="Phone numbers" value={user.phone ? "Added" : "Add"} href="#personal-info-panel" />
+          <SettingsRow icon="mail" tone="red" label="Change e-mail" value={user.email} href="#personal-info-panel" />
         </Group>
 
         <Gap />
 
         <Group>
           <SettingsRow icon="chat" tone="blue" label="Disable chats" value="Enabled" href="/messages" />
-          <SettingsRow icon="feedback" tone="blue" label="Disable feedback" value="Enabled" href="/profile#feedback" />
+          <SettingsRow icon="feedback" tone="blue" label="Disable feedback" value="Enabled" href="#feedback" />
           <SettingsRow icon="bell" tone="blue" label="Manage notifications" value={unread > 0 ? `${unread} unread` : undefined} href="/messages" />
         </Group>
 

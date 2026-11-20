@@ -51,7 +51,7 @@ export async function startConversationAction(
   let conversation: ReturnType<typeof ensureConversation>;
   try {
     conversation = ensureConversation({
-      productSlug: product.slug,
+      product,
       buyerEmail: user.email,
       buyerName: user.name,
     });

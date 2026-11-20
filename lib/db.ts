@@ -142,6 +142,7 @@ type ConversationRow = {
   product_tint_to: string;
   last_message?: string | null;
   last_message_at?: string | null;
+  last_sender_role?: "buyer" | "seller" | null;
   message_count?: number;
   unread?: number;
 };
@@ -180,6 +181,7 @@ export type Conversation = {
   lastMessageAt: string;
   messageCount: number;
   unread: number;
+  lastSenderRole: "buyer" | "seller" | null;
 };
 
 type ReviewRow = {
@@ -367,8 +369,9 @@ function initDb(): DatabaseSync {
     db.exec("ALTER TABLE users ADD COLUMN password_hash TEXT NOT NULL DEFAULT ''");
   }
 
-  const { n } = db.prepare("SELECT COUNT(*) AS n FROM categories").get() as { n: number };
-  if (n === 0) seedCategories(db);
+  // Keep the category list in sync with the seed catalogue without touching
+  // categories that already exist in a deployed database.
+  seedCategories(db);
 
   db.exec(`PRAGMA user_version = ${SCHEMA_VERSION}`);
   return db;
@@ -376,7 +379,7 @@ function initDb(): DatabaseSync {
 
 function seedCategories(db: DatabaseSync): void {
   const insertCategory = db.prepare(
-    `INSERT INTO categories (slug, name, emoji, blurb, tint_from, tint_to, sort_order)
+    `INSERT OR IGNORE INTO categories (slug, name, emoji, blurb, tint_from, tint_to, sort_order)
      VALUES (?, ?, ?, ?, ?, ?, ?)`,
   );
 
@@ -1091,6 +1094,7 @@ const SELECT_CONVERSATION_WITH_SUMMARY = `
          p.tint_to AS product_tint_to,
          m.body AS last_message,
          m.created_at AS last_message_at,
+         m.sender_role AS last_sender_role,
          (SELECT COUNT(*) FROM messages c WHERE c.conversation_id = cv.id) AS message_count,
          (SELECT COUNT(*) FROM messages u
            WHERE u.conversation_id = cv.id
@@ -1123,6 +1127,7 @@ function mapConversation(row: ConversationRow): Conversation {
     lastMessageAt: row.last_message_at ?? row.updated_at,
     messageCount: row.message_count ?? 0,
     unread: row.unread ?? 0,
+    lastSenderRole: row.last_sender_role ?? null,
   };
 }
 
@@ -1162,21 +1167,76 @@ export function findConversationForProduct(productSlug: string, email: string): 
   return row ? mapConversation(row) : null;
 }
 
+/** Makes a durable listing available to the local relational helpers. */
+function ensureLocalProduct(product: Product): Product | null {
+  const existing = getProduct(product.slug);
+  if (existing) return existing;
+
+  getDb()
+    .prepare(
+      `INSERT OR IGNORE INTO categories (slug, name, emoji, blurb, tint_from, tint_to, sort_order)
+       VALUES (?, ?, ?, ?, ?, ?, 999)`,
+    )
+    .run(
+      product.category,
+      product.categoryName,
+      product.emoji,
+      `Browse ${product.categoryName}`,
+      product.tintFrom,
+      product.tintTo,
+    );
+
+  try {
+    getDb()
+      .prepare(
+        `INSERT OR IGNORE INTO products
+           (slug, title, description, price, category, seller, location, county, country,
+            rating, reviews, emoji, badge, condition, verified, created_at, tint_from, tint_to)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      )
+      .run(
+        product.slug,
+        product.title,
+        product.description,
+        product.price,
+        product.category,
+        product.seller,
+        product.location,
+        product.county,
+        product.country,
+        product.rating,
+        product.reviews,
+        product.emoji,
+        product.badge ?? null,
+        product.condition,
+        product.verified ? 1 : 0,
+        product.createdAt,
+        product.tintFrom,
+        product.tintTo,
+      );
+  } catch (error) {
+    console.error("Could not cache durable listing for messaging", error);
+    return null;
+  }
+
+  return getProduct(product.slug);
+}
+
 /** Finds or creates the buyer → seller thread for a listing. */
 export function ensureConversation(input: {
-  productSlug: string;
+  product: Product;
   buyerEmail: string;
   buyerName: string;
 }): { id: number; created: boolean } | null {
+  const product = ensureLocalProduct(input.product);
+  if (!product) return null;
+
   const existing = getDb()
     .prepare(
       "SELECT id FROM conversations WHERE product_slug = ? AND buyer_email = ? COLLATE NOCASE",
     )
-    .get(input.productSlug, input.buyerEmail) as { id: number } | undefined;
+    .get(product.slug, input.buyerEmail) as { id: number } | undefined;
   if (existing) return { id: existing.id, created: false };
-
-  const product = getProduct(input.productSlug);
-  if (!product) return null;
 
   const now = new Date().toISOString();
   const result = getDb()
@@ -1185,7 +1245,7 @@ export function ensureConversation(input: {
          (product_slug, buyer_email, buyer_name, seller, created_at, updated_at, buyer_read_at)
        VALUES (?, ?, ?, ?, ?, ?, '')`,
     )
-    .run(input.productSlug, input.buyerEmail, input.buyerName, product.seller, now, now);
+    .run(product.slug, input.buyerEmail, input.buyerName, product.seller, now, now);
 
   return { id: Number(result.lastInsertRowid), created: true };
 }

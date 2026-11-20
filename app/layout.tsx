@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     template: "%s · Bazaar",
   },
   description:
-    "Buy and sell electronics, clothing, home goods, vehicles, pets and more from local sellers. Browse listings across 15 categories.",
+    "Buy and sell electronics, clothing, home goods, vehicles, pets, rentals and more from local sellers. Browse listings across 16 categories.",
 };
 
 // Runs before first paint so a saved dark theme never flashes light.
