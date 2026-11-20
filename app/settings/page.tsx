@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Link from "next/link";
+import AppearanceSettings from "@/components/AppearanceSettings";
 import SettingsAccountSection from "@/components/SettingsAccountSection";
 import { redirect } from "next/navigation";
 import { signOutAction } from "@/app/actions/auth";
@@ -142,6 +143,16 @@ export default async function SettingsPage() {
           <div className="min-w-0">
             <p className="truncate font-display text-base font-semibold text-ink">{user.name}</p>
             <p className="truncate text-xs text-ink-soft">{user.email}</p>
+          </div>
+        </section>
+
+        <Gap />
+
+        <section id="appearance" className="scroll-mt-16 bg-surface px-4 py-5">
+          <h2 className="font-display text-lg font-semibold text-ink">Appearance</h2>
+          <p className="mt-1 text-sm text-ink-soft">Choose how Bazaar looks on this device.</p>
+          <div className="mt-4">
+            <AppearanceSettings />
           </div>
         </section>
 

@@ -139,6 +139,7 @@ export default async function ProfilePage() {
             />
             <MobileTile href="/settings#feedback" label="Feedback" kind="feedback" />
             <MobileTile href="/settings#faq" label="FAQ" kind="faq" />
+            <MobileTile href="/settings#appearance" label="Appearance" kind="appearance" />
           </div>
           <Link
             href="/settings"

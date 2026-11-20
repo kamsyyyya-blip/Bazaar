@@ -70,8 +70,8 @@ export default async function MessagesPage({
     <>
       <SiteHeader />
 
-      <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
-        <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-sm text-ink-soft">
+      <main className="mx-auto max-w-6xl px-4 py-4 sm:px-6 lg:px-8 lg:py-14">
+        <nav aria-label="Breadcrumb" className="hidden flex-wrap items-center gap-2 text-sm text-ink-soft lg:flex">
           <Link href="/" className="transition hover:text-ink">
             Home
           </Link>
@@ -79,7 +79,7 @@ export default async function MessagesPage({
           <span className="text-ink">Messages</span>
         </nav>
 
-        <div className="mt-5 flex flex-col items-start justify-between gap-3 sm:mt-6 sm:flex-row sm:items-end sm:gap-4">
+        <div className="mt-5 hidden flex-col items-start justify-between gap-3 lg:flex lg:flex-row lg:items-end lg:gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-clay">Inbox</p>
             <h1 className="mt-2 text-2xl leading-tight sm:text-4xl">Your messages</h1>
@@ -100,7 +100,7 @@ export default async function MessagesPage({
           </Link>
         </div>
 
-        <section aria-label="Message tools" className="mt-5 rounded-2xl border border-line bg-surface p-2 sm:mt-6 sm:p-3">
+        <section aria-label="Message tools" className="mt-3 rounded-2xl border border-line bg-surface p-2 lg:mt-6 lg:p-3">
           <form action="/messages" method="get" role="search" className="relative">
             <span
               className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-soft/70"
@@ -239,7 +239,7 @@ export default async function MessagesPage({
             )}
           </section>
 
-          <aside className="space-y-5">
+          <aside className="hidden space-y-5 lg:block">
               <div className="rounded-2xl border border-line bg-surface p-4 sm:p-6">
               <div className="flex items-center gap-3">
                 <span
