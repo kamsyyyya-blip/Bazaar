@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-type Destination = "home" | "cart" | "sell" | "messages" | "profile";
+type Destination = "home" | "saved" | "sell" | "messages" | "profile";
 
 function Icon({ name }: { name: Destination }) {
   const common = {
@@ -21,8 +21,8 @@ function Icon({ name }: { name: Destination }) {
   switch (name) {
     case "home":
       return <svg {...common}><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" /></svg>;
-    case "cart":
-      return <svg {...common}><path d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.4L21 8H6" /><circle cx="10" cy="20" r="1" /><circle cx="18" cy="20" r="1" /></svg>;
+    case "saved":
+      return <svg {...common}><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z" /></svg>;
     case "sell":
       return <svg {...common} width={25} height={25} strokeWidth={2.1}><path d="M12 5v14M5 12h14" /></svg>;
     case "messages":
@@ -34,6 +34,7 @@ function Icon({ name }: { name: Destination }) {
 
 function activeFor(name: Destination, pathname: string): boolean {
   if (name === "home") return pathname === "/";
+  if (name === "saved") return pathname === "/favorites";
   if (name === "messages") return pathname.startsWith("/messages");
   if (name === "profile") return ["/profile", "/signin", "/settings"].includes(pathname);
   return pathname === `/${name}`;
@@ -69,7 +70,7 @@ export default function MobileBottomNav() {
   return (
     <nav className="mobile-bottom-nav md:hidden" aria-label="Primary navigation">
       <NavLink name="home" href="/" label="Home" />
-      <NavLink name="cart" href="/cart" label="Cart" />
+      <NavLink name="saved" href="/favorites" label="Saved" />
       <NavLink name="sell" href="/sell" label="Sell" emphasized />
       <NavLink name="messages" href="/messages" label="Messages" />
       <NavLink name="profile" href="/profile" label="Profile" />
