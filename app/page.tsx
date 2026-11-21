@@ -243,7 +243,7 @@ export default async function HomePage({
           </div>
         </section>
 
-        <div id="categories" className="mx-auto max-w-7xl scroll-mt-20 px-4 py-8 sm:px-6 lg:px-8">
+        <div id="categories" className="mx-auto max-w-7xl scroll-mt-20 px-4 pb-8 pt-3 sm:px-6 sm:py-8 lg:px-8">
           <div className="grid gap-7 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-8">
             <aside className="hidden lg:block">
               <div className="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto pb-2 pr-1">
@@ -253,7 +253,7 @@ export default async function HomePage({
 
             <div className="min-w-0">
               {/* Keep price and sort controls compact on phones. */}
-              <details className="mb-5 lg:hidden">
+              <details className="-mt-1 mb-5 lg:hidden">
                 <summary className="flex w-fit cursor-pointer list-none marker:hidden" aria-label="Filters">
                   <span className="grid h-9 w-9 place-items-center rounded-full bg-paper-2 text-ink-soft transition hover:bg-accent-soft hover:text-clay">
                     <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
@@ -334,7 +334,7 @@ export default async function HomePage({
                   {filtered ? (
                     <Link
                       href="/#trending"
-                      className="rounded-full border border-line bg-surface px-3.5 py-1.5 text-xs font-medium text-ink-soft transition hover:border-ink/25 hover:text-ink"
+                      className="rounded-full bg-paper-2 px-3.5 py-1.5 text-xs font-medium text-ink-soft transition hover:border-ink/25 hover:text-ink"
                     >
                       Clear filters
                     </Link>
@@ -374,7 +374,7 @@ export default async function HomePage({
                           <Link
                             href={pageHref(filters, currentPage - 1)}
                             prefetch={false}
-                            className="inline-flex min-h-10 items-center rounded-full border border-line bg-surface px-4 text-sm font-semibold text-ink-soft transition hover:border-ink/25 hover:text-ink"
+                            className="inline-flex min-h-10 items-center rounded-full bg-paper-2 px-4 text-sm font-semibold text-ink-soft transition hover:border-ink/25 hover:text-ink"
                           >
                             Previous
                           </Link>
@@ -386,7 +386,7 @@ export default async function HomePage({
                           <Link
                             href={pageHref(filters, currentPage + 1)}
                             prefetch={false}
-                            className="inline-flex min-h-10 items-center rounded-full border border-line bg-surface px-4 text-sm font-semibold text-ink-soft transition hover:border-ink/25 hover:text-ink"
+                            className="inline-flex min-h-10 items-center rounded-full bg-paper-2 px-4 text-sm font-semibold text-ink-soft transition hover:border-ink/25 hover:text-ink"
                           >
                             Next
                           </Link>
@@ -395,7 +395,7 @@ export default async function HomePage({
                     ) : null}
                   </>
                 ) : marketplaceEmpty ? (
-                  <div className="mt-6 rounded-xl border border-dashed border-line bg-surface/60 px-6 py-16 text-center">
+                  <div className="mt-6 rounded-3xl bg-paper-2/60 px-6 py-16 text-center">
                     <p className="text-4xl" aria-hidden="true">
                       🏷️
                     </p>
@@ -414,14 +414,14 @@ export default async function HomePage({
                       </Link>
                       <Link
                         href="/signin"
-                        className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-5 py-2.5 text-sm font-medium text-ink-soft transition hover:border-ink/25 hover:text-ink"
+                        className="inline-flex items-center gap-2 rounded-full bg-paper-2 px-5 py-2.5 text-sm font-medium text-ink-soft transition hover:border-ink/25 hover:text-ink"
                       >
                         Create an account
                       </Link>
                     </div>
                   </div>
                 ) : countryEmpty ? (
-                  <div className="mt-6 rounded-xl border border-dashed border-line bg-surface/60 px-6 py-16 text-center">
+                  <div className="mt-6 rounded-3xl bg-paper-2/60 px-6 py-16 text-center">
                     <p className="text-4xl" aria-hidden="true">
                       {flagFor(filters.country)}
                     </p>
@@ -441,7 +441,7 @@ export default async function HomePage({
                     </div>
                   </div>
                 ) : (
-                  <div className="mt-6 rounded-xl border border-dashed border-line bg-surface/60 px-6 py-16 text-center">
+                  <div className="mt-6 rounded-3xl bg-paper-2/60 px-6 py-16 text-center">
                     <p className="text-4xl" aria-hidden="true">
                       🔍
                     </p>

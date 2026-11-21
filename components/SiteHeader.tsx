@@ -26,7 +26,7 @@ export default async function SiteHeader({
   const unread = user ? countUnreadConversations(user.email) : 0;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-line bg-paper/90 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b-0 border-line bg-paper/90 backdrop-blur-md lg:border-b">
       <div className="mx-auto flex h-[68px] max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex shrink-0 items-center gap-2" aria-label="Bazaar home">
           <span className="grid h-8 w-8 place-items-center rounded-lg bg-ink text-sm font-semibold leading-none text-paper">
@@ -84,7 +84,7 @@ export default async function SiteHeader({
           {user ? (
             <Link
               href="/profile"
-              className="ml-0.5 flex items-center gap-2 rounded-full border border-line py-1 pl-1 pr-2 transition hover:border-ink/30 hover:bg-surface sm:pr-3"
+              className="ml-0.5 flex items-center gap-2 rounded-full bg-paper-2 py-1 pl-1 pr-2 transition hover:bg-accent-soft sm:px-3"
               title={`Signed in as ${user.name}`}
               aria-label="Your profile"
             >
@@ -100,7 +100,7 @@ export default async function SiteHeader({
           ) : (
             <Link
               href="/signin"
-              className="ml-0.5 rounded-full border border-line px-4 py-2 text-sm font-medium text-ink transition hover:border-ink/30 hover:bg-surface"
+              className="ml-0.5 rounded-full bg-paper-2 px-4 py-2 text-sm font-medium text-ink transition hover:bg-accent-soft"
             >
               Sign in
             </Link>
