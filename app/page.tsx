@@ -245,33 +245,6 @@ export default async function HomePage({
           </div>
         </section>
 
-        <section aria-labelledby="rentals-widget-heading" className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-5 rounded-3xl border border-line bg-surface p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
-            <div className="flex items-start gap-4">
-              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-accent-soft text-2xl" aria-hidden="true">
-                🏡
-              </span>
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-clay">Houses &amp; rentals</p>
-                <h2 id="rentals-widget-heading" className="mt-1 text-lg sm:text-xl">
-                  Looking for a place to stay?
-                </h2>
-                <p className="mt-1 max-w-xl text-sm text-ink-soft">
-                  Browse houses, rooms and apartments from local sellers — or list your own property.
-                </p>
-              </div>
-            </div>
-            <Link
-              href={browseHref(filters, { category: "houses-rentals", q: "" })}
-              prefetch={false}
-              className="inline-flex h-10 w-full shrink-0 items-center justify-center gap-2 rounded-full bg-clay px-5 text-sm font-semibold text-on-dark transition hover:bg-clay-dark sm:w-auto"
-            >
-              Browse rentals
-              <span aria-hidden="true">→</span>
-            </Link>
-          </div>
-        </section>
-
         <div id="categories" className="mx-auto max-w-7xl scroll-mt-20 px-4 py-8 sm:px-6 lg:px-8">
           <div className="grid gap-7 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-8">
             <aside className="hidden lg:block">
