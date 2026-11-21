@@ -71,15 +71,7 @@ export default async function MessagesPage({
       <SiteHeader />
 
       <main className="mx-auto max-w-6xl px-4 pb-12 pt-5 sm:px-6 sm:pt-7 lg:px-8 lg:pb-16 lg:pt-12">
-        <nav aria-label="Breadcrumb" className="hidden flex-wrap items-center gap-2 text-sm text-ink-soft lg:flex">
-          <Link href="/" className="transition hover:text-ink">
-            Home
-          </Link>
-          <span aria-hidden="true">/</span>
-          <span className="text-ink">Messages</span>
-        </nav>
-
-        <div className="mt-6 hidden flex-col items-start justify-between gap-3 lg:flex lg:flex-row lg:items-end lg:gap-4">
+        <div className="hidden flex-col items-start justify-between gap-3 lg:flex lg:flex-row lg:items-end lg:gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-clay">Inbox</p>
             <h1 className="mt-2 text-3xl sm:text-4xl">Your messages</h1>

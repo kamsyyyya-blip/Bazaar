@@ -27,15 +27,7 @@ export default async function CartPage() {
       <SiteHeader />
 
       <main className="mx-auto max-w-6xl px-4 pb-14 pt-6 sm:px-6 sm:pb-20 sm:pt-10 lg:px-8 lg:pt-14">
-        <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-ink-soft sm:text-sm">
-          <Link href="/" className="transition-colors hover:text-ink">
-            Home
-          </Link>
-          <span aria-hidden="true">/</span>
-          <span className="text-ink">Cart</span>
-        </nav>
-
-        <div className="mt-6 flex flex-col items-start justify-between gap-5 sm:mt-9 sm:flex-row sm:items-end sm:gap-6">
+        <div className="flex flex-col items-start justify-between gap-5 sm:flex-row sm:items-end sm:gap-6">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-clay">Cart</p>
             <h1 className="mt-3 text-3xl leading-tight sm:text-4xl">Your cart</h1>

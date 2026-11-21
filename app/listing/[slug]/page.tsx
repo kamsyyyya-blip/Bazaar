@@ -71,22 +71,7 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
       <SiteHeader />
 
       <main className="mx-auto max-w-7xl px-4 pb-14 pt-6 sm:px-6 sm:pb-20 sm:pt-10 lg:px-8 lg:pt-14">
-        <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-ink-soft sm:text-sm">
-          <Link href="/" className="transition-colors hover:text-ink">
-            Home
-          </Link>
-          <span aria-hidden="true">/</span>
-          <Link
-            href={`/?category=${product.category}&county=${encodeURIComponent(product.county)}#trending`}
-            className="transition-colors hover:text-ink"
-          >
-            {product.categoryName}
-          </Link>
-          <span aria-hidden="true">/</span>
-          <span className="text-ink">{product.title}</span>
-        </nav>
-
-        <div className="mt-6 grid gap-8 sm:mt-9 sm:gap-12 lg:grid-cols-2 lg:gap-16">
+        <div className="grid gap-8 sm:gap-12 lg:grid-cols-2 lg:gap-16">
           <div>
             <ImageGallery
               images={product.images}

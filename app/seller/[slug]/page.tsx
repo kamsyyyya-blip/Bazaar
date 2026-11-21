@@ -52,15 +52,7 @@ export default async function SellerPage({ params }: { params: Promise<{ slug: s
       <SiteHeader />
 
       <main className="mx-auto max-w-7xl px-4 pb-14 pt-6 sm:px-6 sm:pb-20 sm:pt-10 lg:px-8 lg:pt-14">
-        <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-ink-soft sm:text-sm">
-          <Link href="/" className="transition-colors hover:text-ink">
-            Home
-          </Link>
-          <span aria-hidden="true">/</span>
-          <span className="text-ink">{seller.name}</span>
-        </nav>
-
-        <section className="mt-7 border-b border-line pb-8 sm:mt-10 sm:pb-10">
+        <section className="border-b border-line pb-8 sm:pb-10">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
             <div className="flex min-w-0 items-end gap-4 sm:gap-5">
               <span

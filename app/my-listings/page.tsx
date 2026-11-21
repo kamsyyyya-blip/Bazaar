@@ -24,10 +24,7 @@ export default async function MyListingsPage() {
     <>
       <SiteHeader />
       <main className="mx-auto max-w-5xl px-4 pb-14 pt-7 sm:px-6 sm:pt-11 lg:px-8">
-        <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm text-ink-soft">
-          <Link href="/" className="hover:text-ink">Home</Link><span aria-hidden="true">/</span><span className="text-ink">My listings</span>
-        </nav>
-        <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
+        <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-clay">Seller studio</p>
             <h1 className="mt-2 text-3xl sm:text-4xl">My listings</h1>

@@ -29,12 +29,7 @@ export default async function FavoritesPage() {
     <>
       <SiteHeader />
       <main className="mx-auto max-w-7xl px-4 pb-14 pt-6 sm:px-6 sm:pb-20 sm:pt-10 lg:px-8 lg:pt-14">
-        <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-ink-soft sm:text-sm">
-          <Link href="/" className="transition-colors hover:text-ink">Home</Link>
-          <span aria-hidden="true">/</span>
-          <span className="text-ink">Saved listings</span>
-        </nav>
-        <div className="mt-6 border-b border-line pb-6 sm:mt-9 sm:pb-8">
+        <div className="border-b border-line pb-6 sm:pb-8">
           <h1 className="text-3xl leading-tight sm:text-4xl">Saved listings</h1>
           <p className="mt-2 text-sm text-ink-soft">
             {products.length} {products.length === 1 ? "listing" : "listings"} saved to your account.

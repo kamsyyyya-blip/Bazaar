@@ -41,19 +41,7 @@ export default async function NewMessagePage({
       <SiteHeader />
 
       <main className="mx-auto max-w-3xl px-4 pb-14 pt-6 sm:px-6 sm:pt-10 lg:px-8 lg:pt-12">
-        <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-sm text-ink-soft">
-          <Link href="/" className="transition hover:text-ink">
-            Home
-          </Link>
-          <span aria-hidden="true">/</span>
-          <Link href={`/listing/${product.slug}`} className="max-w-[16rem] truncate transition hover:text-ink">
-            {product.title}
-          </Link>
-          <span aria-hidden="true">/</span>
-          <span className="text-ink">Message seller</span>
-        </nav>
-
-        <h1 className="mt-6 text-2xl leading-tight sm:mt-7 sm:text-4xl">Message {product.seller}</h1>
+        <h1 className="text-2xl leading-tight sm:text-4xl">Message {product.seller}</h1>
         <p className="mt-2 max-w-xl text-sm leading-relaxed text-ink-soft">
           Ask about condition, measurements or a pickup time. Your email stays private and replies land in your Bazaar
           inbox.

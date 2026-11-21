@@ -41,19 +41,7 @@ export default async function ConversationPage({ params }: { params: Promise<{ i
       <SiteHeader />
 
       <main className="mx-auto max-w-3xl px-4 pb-14 pt-6 sm:px-6 sm:pt-10 lg:px-8 lg:pt-12">
-        <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-sm text-ink-soft">
-          <Link href="/" className="transition hover:text-ink">
-            Home
-          </Link>
-          <span aria-hidden="true">/</span>
-          <Link href="/messages" className="transition hover:text-ink">
-            Messages
-          </Link>
-          <span aria-hidden="true">/</span>
-          <span className="max-w-[18rem] truncate text-ink">{conversation.productTitle}</span>
-        </nav>
-
-        <div className="mt-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
+        <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-clay">Conversation</p>
             <h1 className="mt-2 text-2xl leading-tight sm:text-3xl">{conversation.seller}</h1>
