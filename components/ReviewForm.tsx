@@ -15,11 +15,11 @@ export default function ReviewForm({ slug, signedIn, next }: Props) {
 
   if (!signedIn) {
     return (
-      <div className="rounded-2xl border border-dashed border-line bg-paper-2/40 px-5 py-6 text-center">
-        <p className="text-sm text-ink-soft">Bought something from this seller? Share how it went.</p>
+      <div className="rounded-xl border border-line bg-surface px-5 py-6 text-center">
+        <p className="text-sm leading-relaxed text-ink-soft">Bought something from this seller? Share how it went.</p>
         <Link
           href={`/signin?next=${encodeURIComponent(next ?? `/listing/${slug}`)}`}
-          className="mt-3 inline-flex h-10 items-center justify-center rounded-full bg-clay px-5 text-sm font-medium text-on-dark transition hover:bg-clay-dark"
+          className="mt-4 inline-flex h-10 items-center justify-center rounded-full bg-clay px-5 text-sm font-medium tracking-tight text-on-dark transition-colors hover:bg-clay-dark"
         >
           Sign in to write a review
         </Link>
@@ -28,14 +28,14 @@ export default function ReviewForm({ slug, signedIn, next }: Props) {
   }
 
   return (
-    <form action={action} className="rounded-2xl border border-line bg-surface p-5">
+    <form action={action} className="rounded-xl border border-line bg-surface p-5 sm:p-6">
       <input type="hidden" name="slug" value={slug} />
-      <h3 className="font-display text-lg">Write a review</h3>
-      <p className="mt-1 text-xs text-ink-soft">Reviews are public and help other buyers in your area.</p>
+      <h3 className="text-lg">Write a review</h3>
+      <p className="mt-1 text-xs leading-relaxed text-ink-soft">Reviews are public and help other buyers in your area.</p>
 
-      <fieldset className="mt-4">
-        <legend className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">Your rating</legend>
-        <div className="mt-2 flex flex-wrap gap-1.5">
+      <fieldset className="mt-5">
+        <legend className="text-xs font-semibold uppercase tracking-[0.12em] text-ink-soft">Your rating</legend>
+        <div className="mt-3 flex flex-wrap gap-2">
           {[5, 4, 3, 2, 1].map((value) => (
             <label key={value} className="cursor-pointer">
               <input
@@ -45,7 +45,7 @@ export default function ReviewForm({ slug, signedIn, next }: Props) {
                 defaultChecked={value === 5}
                 className="peer sr-only"
               />
-              <span className="grid h-10 w-10 place-items-center rounded-full border border-line bg-surface text-sm font-medium text-ink-soft transition hover:border-ink/30 peer-checked:border-clay peer-checked:bg-clay peer-checked:text-on-dark peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-clay">
+              <span className="grid h-10 w-10 place-items-center rounded-full border border-line bg-surface text-sm font-medium text-ink-soft transition hover:border-clay hover:text-clay peer-checked:border-clay peer-checked:bg-clay peer-checked:text-on-dark peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-clay">
                 {value}
               </span>
               <span className="sr-only">
@@ -56,8 +56,8 @@ export default function ReviewForm({ slug, signedIn, next }: Props) {
         </div>
       </fieldset>
 
-      <div className="mt-4">
-        <label htmlFor="review-body" className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">
+      <div className="mt-5">
+        <label htmlFor="review-body" className="text-xs font-semibold uppercase tracking-[0.12em] text-ink-soft">
           Your experience
         </label>
         <textarea
@@ -68,17 +68,17 @@ export default function ReviewForm({ slug, signedIn, next }: Props) {
           maxLength={800}
           required
           placeholder="How was the item, the handover, the packing?"
-          className="mt-1.5 w-full resize-y rounded-xl border border-line bg-surface px-3.5 py-3 text-sm leading-relaxed outline-none transition placeholder:text-ink-soft/60 focus:border-ink/35"
+          className="mt-2 w-full resize-y rounded-lg border border-line bg-paper/60 px-3.5 py-3 text-sm leading-relaxed text-ink outline-none transition placeholder:text-ink-soft/60 focus:border-clay"
         />
       </div>
 
       {state.error ? (
-        <p role="alert" aria-live="polite" className="mt-3 rounded-xl bg-danger/10 px-3.5 py-2.5 text-sm text-danger">
+        <p role="alert" aria-live="polite" className="mt-3 rounded-lg bg-danger/10 px-3.5 py-2.5 text-sm text-danger">
           {state.error}
         </p>
       ) : null}
       {state.success ? (
-        <p role="status" aria-live="polite" className="mt-3 rounded-xl bg-accent-soft px-3.5 py-2.5 text-sm text-clay">
+        <p role="status" aria-live="polite" className="mt-3 rounded-lg bg-accent-soft px-3.5 py-2.5 text-sm text-clay">
           Thanks — your review is live.
         </p>
       ) : null}
@@ -86,7 +86,7 @@ export default function ReviewForm({ slug, signedIn, next }: Props) {
       <button
         type="submit"
         disabled={pending}
-        className="mt-4 flex h-11 items-center justify-center rounded-full bg-clay px-6 text-sm font-medium text-on-dark transition hover:bg-clay-dark disabled:cursor-wait disabled:opacity-60"
+        className="mt-5 flex h-11 w-full items-center justify-center rounded-full bg-clay px-6 text-sm font-medium tracking-tight text-on-dark transition-colors hover:bg-clay-dark disabled:cursor-wait disabled:opacity-60"
       >
         {pending ? "Posting…" : "Post review"}
       </button>

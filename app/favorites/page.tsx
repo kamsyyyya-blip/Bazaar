@@ -20,27 +20,42 @@ export default async function FavoritesPage() {
     getProduct(slug) ?? await getDurableProduct(slug),
   ));
   const products = saved.filter((product) => product !== null);
+  const favoriteFor = (slug: string) => ({
+    signedIn: Boolean(user),
+    initiallySaved: Boolean(user?.favorites?.includes(slug)),
+  });
 
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-        <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm text-ink-soft">
-          <Link href="/" className="hover:text-ink">Home</Link><span aria-hidden="true">/</span><span className="text-ink">Saved listings</span>
+      <main className="mx-auto max-w-7xl px-4 pb-14 pt-6 sm:px-6 sm:pb-20 sm:pt-10 lg:px-8 lg:pt-14">
+        <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-ink-soft sm:text-sm">
+          <Link href="/" className="transition-colors hover:text-ink">Home</Link>
+          <span aria-hidden="true">/</span>
+          <span className="text-ink">Saved listings</span>
         </nav>
-        <div className="mt-5">
-          <h1 className="text-2xl sm:text-4xl">Saved listings</h1>
-          <p className="mt-2 text-sm text-ink-soft">{products.length} {products.length === 1 ? "listing" : "listings"} saved to your account.</p>
+        <div className="mt-6 border-b border-line pb-6 sm:mt-9 sm:pb-8">
+          <h1 className="text-3xl leading-tight sm:text-4xl">Saved listings</h1>
+          <p className="mt-2 text-sm text-ink-soft">
+            {products.length} {products.length === 1 ? "listing" : "listings"} saved to your account.
+          </p>
         </div>
         {products.length ? (
-          <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-4">
-            {products.map((product) => <MarketplaceCard key={product.slug} product={product} />)}
+          <div className="mt-7 grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-5 md:grid-cols-3 xl:grid-cols-4">
+            {products.map((product) => (
+              <MarketplaceCard key={product.slug} product={product} favorite={favoriteFor(product.slug)} />
+            ))}
           </div>
         ) : (
-          <section className="mt-7 rounded-2xl border border-dashed border-line bg-surface px-5 py-14 text-center">
-            <h2 className="text-xl">Nothing saved yet</h2>
+          <section className="mt-9 border-y border-line py-14 text-center sm:py-20">
+            <h2 className="text-xl sm:text-2xl">Nothing saved yet</h2>
             <p className="mt-2 text-sm text-ink-soft">Tap the heart on a listing and it will be saved here.</p>
-            <Link href="/#trending" className="mt-5 inline-flex h-10 items-center rounded-full bg-clay px-5 text-sm font-semibold text-on-dark">Browse listings</Link>
+            <Link
+              href="/#trending"
+              className="mt-6 inline-flex h-10 items-center rounded-full bg-clay px-5 text-sm font-medium tracking-tight text-on-dark transition-colors hover:bg-clay-dark"
+            >
+              Browse listings
+            </Link>
           </section>
         )}
       </main>

@@ -70,15 +70,15 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
     <>
       <SiteHeader />
 
-      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
-        <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-sm text-ink-soft">
-          <Link href="/" className="transition hover:text-ink">
+      <main className="mx-auto max-w-7xl px-4 pb-14 pt-6 sm:px-6 sm:pb-20 sm:pt-10 lg:px-8 lg:pt-14">
+        <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-ink-soft sm:text-sm">
+          <Link href="/" className="transition-colors hover:text-ink">
             Home
           </Link>
           <span aria-hidden="true">/</span>
           <Link
             href={`/?category=${product.category}&county=${encodeURIComponent(product.county)}#trending`}
-            className="transition hover:text-ink"
+            className="transition-colors hover:text-ink"
           >
             {product.categoryName}
           </Link>
@@ -86,7 +86,7 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
           <span className="text-ink">{product.title}</span>
         </nav>
 
-        <div className="mt-5 grid gap-6 sm:mt-8 sm:gap-10 lg:grid-cols-2 lg:gap-14">
+        <div className="mt-6 grid gap-8 sm:mt-9 sm:gap-12 lg:grid-cols-2 lg:gap-16">
           <div>
             <ImageGallery
               images={product.images}
@@ -104,35 +104,31 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
           </div>
 
           <div className="flex flex-col">
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-clay">{product.categoryName}</p>
-            <h1 className="mt-2 text-2xl leading-tight sm:mt-3 sm:text-4xl">{product.title}</h1>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-clay">{product.categoryName}</p>
+            <h1 className="mt-3 text-3xl leading-[1.1] sm:mt-4 sm:text-4xl lg:text-[2.6rem]">{product.title}</h1>
 
-            <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-ink-soft">
+            <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-ink-soft">
               {ratingCount > 0 ? (
                 <span className="flex items-center gap-1.5">
-                  <span aria-hidden="true" className="text-highlight">
-                    ★
-                  </span>
+                  <span aria-hidden="true" className="text-highlight">★</span>
                   <span className="font-medium text-ink">{rating.toFixed(1)}</span>
                   <span>({ratingCount.toLocaleString("en-US")} ratings)</span>
                 </span>
               ) : (
-                <span className="rounded-full bg-accent-soft px-2 py-0.5 text-xs font-medium text-clay">
-                  New listing · no ratings yet
-                </span>
+                <span className="text-xs font-medium text-clay">New listing · no ratings yet</span>
               )}
               <span aria-hidden="true">·</span>
               <span>
                 by{" "}
                 {seller ? (
-                  <Link href={`/seller/${seller.slug}`} prefetch={false} className="font-medium text-ink underline-offset-4 hover:underline">
+                  <Link href={`/seller/${seller.slug}`} prefetch={false} className="font-medium text-ink underline-offset-4 transition-colors hover:text-clay hover:underline">
                     {product.seller}
                   </Link>
                 ) : (
                   <span className="font-medium text-ink">{product.seller}</span>
                 )}
                 {product.verified ? (
-                  <span className="ml-1.5 inline-flex items-center gap-1 rounded-full bg-accent-soft px-1.5 py-0.5 align-middle text-[11px] font-medium text-clay">
+                  <span className="ml-2 inline-flex items-center gap-1 align-middle text-xs font-medium text-clay">
                     <span aria-hidden="true">✓</span> Verified
                   </span>
                 ) : null}
@@ -143,19 +139,21 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
               </span>
             </div>
 
-            <p className="mt-6 text-2xl font-semibold tabular-nums">{formatPrice(product.price, currencyForCountry(product.country))}</p>
-            <p className="mt-1 text-xs text-ink-soft">Local pickup or shipping · {countryName(product.country)}</p>
+            <p className="mt-7 text-3xl font-semibold tracking-tight tabular-nums sm:text-4xl">
+              {formatPrice(product.price, currencyForCountry(product.country))}
+            </p>
+            <p className="mt-1.5 text-xs text-ink-soft">Local pickup or shipping · {countryName(product.country)}</p>
 
-            <p className="mt-7 border-t border-line pt-7 text-[16px] leading-relaxed text-ink-soft">
+            <p className="mt-8 border-t border-line pt-8 text-[15px] leading-7 text-ink-soft">
               {product.description}
             </p>
 
-            <dl className="mt-6 grid grid-cols-2 gap-x-4 gap-y-4 border-t border-line pt-5 text-sm sm:mt-7 sm:gap-x-6 sm:pt-7">
+            <dl className="mt-7 grid grid-cols-2 gap-x-5 gap-y-6 border-t border-line pt-7 text-sm sm:pt-8">
               <div>
-                <dt className="text-xs uppercase tracking-[0.1em] text-ink-soft">Sold by</dt>
-                <dd className="mt-1 font-medium">
+                <dt className="text-[11px] font-medium uppercase tracking-[0.12em] text-ink-soft">Sold by</dt>
+                <dd className="mt-2 font-medium text-ink">
                   {seller ? (
-                    <Link href={`/seller/${seller.slug}`} prefetch={false} className="underline-offset-4 hover:underline">
+                    <Link href={`/seller/${seller.slug}`} prefetch={false} className="underline-offset-4 transition-colors hover:text-clay hover:underline">
                       {product.seller}
                     </Link>
                   ) : (
@@ -164,8 +162,8 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
                 </dd>
               </div>
               <div>
-                <dt className="text-xs uppercase tracking-[0.1em] text-ink-soft">Ships from</dt>
-                <dd className="mt-1 font-medium">
+                <dt className="text-[11px] font-medium uppercase tracking-[0.12em] text-ink-soft">Ships from</dt>
+                <dd className="mt-2 font-medium text-ink">
                   {product.location}
                   <span className="block text-xs font-normal text-ink-soft">
                     {product.county} · {flagFor(product.country)} {countryName(product.country)}
@@ -173,34 +171,34 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
                 </dd>
               </div>
               <div>
-                <dt className="text-xs uppercase tracking-[0.1em] text-ink-soft">Category</dt>
-                <dd className="mt-1 font-medium">{product.categoryName}</dd>
+                <dt className="text-[11px] font-medium uppercase tracking-[0.12em] text-ink-soft">Category</dt>
+                <dd className="mt-2 font-medium text-ink">{product.categoryName}</dd>
               </div>
               <div>
-                <dt className="text-xs uppercase tracking-[0.1em] text-ink-soft">Condition</dt>
-                <dd className="mt-1 font-medium">{product.condition}</dd>
+                <dt className="text-[11px] font-medium uppercase tracking-[0.12em] text-ink-soft">Condition</dt>
+                <dd className="mt-2 font-medium text-ink">{product.condition}</dd>
               </div>
               <div>
-                <dt className="text-xs uppercase tracking-[0.1em] text-ink-soft">Seller status</dt>
-                <dd className="mt-1 font-medium">
+                <dt className="text-[11px] font-medium uppercase tracking-[0.12em] text-ink-soft">Seller status</dt>
+                <dd className="mt-2 font-medium text-ink">
                   {product.verified ? "Verified seller" : "New seller"}
                 </dd>
               </div>
               <div>
-                <dt className="text-xs uppercase tracking-[0.1em] text-ink-soft">Listed</dt>
-                <dd className="mt-1 font-medium">{formatDate(product.createdAt)}</dd>
+                <dt className="text-[11px] font-medium uppercase tracking-[0.12em] text-ink-soft">Listed</dt>
+                <dd className="mt-2 font-medium text-ink">{formatDate(product.createdAt)}</dd>
               </div>
             </dl>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-start">
               {product.status === "sold" ? (
-                <span className="flex h-12 flex-1 items-center justify-center rounded-full bg-paper-2 px-6 text-sm font-semibold text-ink-soft" aria-label="This item has sold">
+                <span className="flex h-12 flex-1 items-center justify-center rounded-full bg-paper-2 px-6 text-sm font-medium text-ink-soft" aria-label="This item has sold">
                   Sold
                 </span>
               ) : ownListing ? (
                 <Link
                   href="/messages"
-                  className="flex h-12 flex-1 items-center justify-center gap-2 rounded-full border border-ink/15 bg-surface px-6 text-sm font-medium transition hover:border-ink/35"
+                  className="flex h-12 flex-1 items-center justify-center gap-2 rounded-full border border-line bg-surface px-6 text-sm font-medium text-ink transition-colors hover:border-clay hover:text-clay"
                 >
                   Open your inbox
                   <span aria-hidden="true">→</span>
@@ -208,7 +206,7 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
               ) : inCart ? (
                 <Link
                   href="/cart"
-                  className="flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-clay px-6 text-sm font-semibold text-on-dark transition hover:bg-clay-dark"
+                  className="flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-clay px-6 text-sm font-semibold tracking-tight text-on-dark transition-colors hover:bg-clay-dark"
                 >
                   In your cart · View cart
                   <span aria-hidden="true">→</span>
@@ -219,7 +217,7 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
               {!ownListing ? (
                 <Link
                   href={messageHref}
-                  className="flex h-12 flex-1 items-center justify-center gap-2 rounded-full border border-line bg-surface px-5 text-sm font-semibold text-ink transition hover:border-ink/35 sm:flex-none"
+                  className="flex h-12 flex-1 items-center justify-center gap-2 rounded-full border border-line bg-surface px-5 text-sm font-medium text-ink transition-colors hover:border-clay hover:text-clay sm:flex-none"
                 >
                   <svg
                     aria-hidden="true"
@@ -245,8 +243,8 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
               />
             </div>
 
-            <p className="mt-4 flex items-center gap-2 text-xs text-ink-soft">
-              <span className="h-1.5 w-1.5 rounded-full bg-clay" />
+            <p className="mt-4 flex items-start gap-2 text-xs leading-relaxed text-ink-soft">
+              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-clay" />
               {ownListing
                 ? "This is your listing — buyer messages appear in your inbox."
                 : user
@@ -257,27 +255,36 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
         </div>
 
         {seller ? (
-          <section className="mt-10 border-t border-line pt-7 sm:mt-16 sm:pt-10">
-            <h2 className="mb-4 text-2xl">About the seller</h2>
+          <section className="mt-14 border-t border-line pt-8 sm:mt-20 sm:pt-10">
+            <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+              <h2 className="text-xl sm:text-2xl">About the seller</h2>
+              <Link
+                href={`/seller/${seller.slug}`}
+                prefetch={false}
+                className="text-sm font-medium text-ink-soft transition-colors hover:text-clay"
+              >
+                View profile →
+              </Link>
+            </div>
             <SellerWidget seller={seller} />
           </section>
         ) : null}
 
-        <section id="reviews" className="mt-10 scroll-mt-24 sm:mt-12">
-          <div className="grid gap-5 sm:gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <section id="reviews" className="mt-14 scroll-mt-24 sm:mt-20">
+          <div className="grid gap-8 sm:gap-12 lg:grid-cols-[minmax(0,1fr)_360px]">
             <div>
-              <div className="border-b border-line pb-4">
-                <h2 className="text-2xl">Reviews</h2>
-                <p className="mt-1 text-xs text-ink-soft">
+              <div className="border-b border-line pb-4 sm:pb-5">
+                <h2 className="text-xl sm:text-2xl">Reviews</h2>
+                <p className="mt-1.5 text-xs text-ink-soft">
                   {reviewCount} written {reviewCount === 1 ? "review" : "reviews"} ·{" "}
                   {ratingCount.toLocaleString("en-US")} ratings
                 </p>
               </div>
 
               {reviews.length > 0 ? (
-                <ul className="mt-2 divide-y divide-line">
+                <ul className="divide-y divide-line">
                   {reviews.map((review) => (
-                    <li key={review.id} className="py-5">
+                    <li key={review.id} className="py-6">
                       <div className="flex items-center gap-3">
                         <span
                           aria-hidden="true"
@@ -296,7 +303,7 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
                   ))}
                 </ul>
               ) : (
-                <p className="mt-5 rounded-2xl border border-dashed border-line bg-surface/60 px-5 py-10 text-center text-sm text-ink-soft">
+                <p className="mt-6 rounded-xl border border-dashed border-line bg-surface/60 px-5 py-10 text-center text-sm text-ink-soft">
                   No written reviews yet. Be the first to share your experience.
                 </p>
               )}
@@ -309,17 +316,17 @@ export default async function ListingPage({ params }: { params: Promise<{ slug: 
         </section>
 
         {related.length > 0 ? (
-          <section className="mt-12 sm:mt-20">
-            <div className="flex items-end justify-between gap-4">
-              <h2 className="text-2xl sm:text-3xl">More in {product.categoryName}</h2>
+          <section className="mt-14 sm:mt-24">
+            <div className="flex items-end justify-between gap-4 border-b border-line pb-5">
+              <h2 className="text-xl sm:text-2xl">More in {product.categoryName}</h2>
               <Link
                 href={`/?category=${product.category}#trending`}
-                className="text-sm font-medium text-ink-soft transition hover:text-ink"
+                className="shrink-0 text-sm font-medium text-ink-soft transition-colors hover:text-ink"
               >
                 See all →
               </Link>
             </div>
-            <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-6 grid gap-x-5 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
               {related.map((item) => (
                 <ProductCard key={item.slug} product={item} />
               ))}

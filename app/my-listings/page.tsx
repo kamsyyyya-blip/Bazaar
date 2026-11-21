@@ -23,40 +23,40 @@ export default async function MyListingsPage() {
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto max-w-5xl px-4 py-7 sm:px-6 sm:py-11 lg:px-8">
+      <main className="mx-auto max-w-5xl px-4 pb-14 pt-7 sm:px-6 sm:pt-11 lg:px-8">
         <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm text-ink-soft">
           <Link href="/" className="hover:text-ink">Home</Link><span aria-hidden="true">/</span><span className="text-ink">My listings</span>
         </nav>
-        <div className="mt-5 flex flex-wrap items-end justify-between gap-3">
+        <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-clay">Seller studio</p>
-            <h1 className="mt-2 text-2xl sm:text-4xl">My listings</h1>
+            <h1 className="mt-2 text-3xl sm:text-4xl">My listings</h1>
             <p className="mt-2 text-sm text-ink-soft">{activeCount} active · {soldCount} sold</p>
           </div>
-          <Link href="/sell" className="inline-flex h-10 items-center rounded-full bg-clay px-5 text-sm font-semibold text-on-dark">List an item</Link>
+          <Link href="/sell" className="inline-flex h-10 items-center rounded-full bg-clay px-5 text-sm font-semibold text-on-dark transition hover:bg-clay-dark">List an item</Link>
         </div>
 
         {listings.length ? (
-          <ul className="mt-6 space-y-4">
+          <ul className="mt-8 divide-y divide-line border-t border-line">
             {listings.map((product) => (
-              <li key={product.slug} className="rounded-2xl border border-line bg-surface p-4 sm:p-5">
-                <div className="flex flex-wrap items-start justify-between gap-3">
+              <li key={product.slug} className="py-5 sm:py-6">
+                <div className="flex flex-wrap items-start justify-between gap-4">
                   <div className="min-w-0">
-                    <Link href={`/listing/${product.slug}`} className="font-display text-lg font-semibold hover:underline">{product.title}</Link>
-                    <p className="mt-1 line-clamp-2 text-sm text-ink-soft">{product.description}</p>
+                    <Link href={`/listing/${product.slug}`} className="font-display text-lg font-semibold hover:text-clay">{product.title}</Link>
+                    <p className="mt-1 max-w-2xl line-clamp-2 text-sm leading-relaxed text-ink-soft">{product.description}</p>
                     <p className="mt-2 text-xs text-ink-soft">{product.categoryName} · {product.location}, {product.county} · {product.status === "sold" ? "Sold" : "Active"}</p>
                   </div>
                   <div className="flex shrink-0 items-center gap-2">
                     <form action={setListingStatusAction}>
                       <input type="hidden" name="slug" value={product.slug} />
                       <input type="hidden" name="status" value={product.status === "sold" ? "active" : "sold"} />
-                      <button type="submit" className="min-h-10 rounded-full border border-line px-4 text-xs font-semibold hover:border-ink/30">
+                      <button type="submit" className="min-h-10 rounded-full border border-line bg-surface px-4 text-xs font-semibold text-ink transition hover:border-ink/30">
                         Mark {product.status === "sold" ? "active" : "sold"}
                       </button>
                     </form>
                     <form action={deleteListingAction}>
                       <input type="hidden" name="slug" value={product.slug} />
-                      <button type="submit" className="min-h-10 rounded-full border border-danger/30 px-4 text-xs font-semibold text-danger hover:bg-danger/5">Delete</button>
+                      <button type="submit" className="min-h-10 rounded-full border border-danger/30 px-4 text-xs font-semibold text-danger transition hover:bg-danger/5">Delete</button>
                     </form>
                   </div>
                 </div>
@@ -65,10 +65,10 @@ export default async function MyListingsPage() {
             ))}
           </ul>
         ) : (
-          <section className="mt-7 rounded-2xl border border-dashed border-line bg-surface px-5 py-14 text-center">
+          <section className="mt-8 border-y border-line px-5 py-16 text-center">
             <h2 className="text-xl">No manageable listings yet</h2>
             <p className="mt-2 text-sm text-ink-soft">Listings you create while signed in will appear here.</p>
-            <Link href="/sell" className="mt-5 inline-flex h-10 items-center rounded-full bg-clay px-5 text-sm font-semibold text-on-dark">Create your first listing</Link>
+            <Link href="/sell" className="mt-5 inline-flex h-10 items-center rounded-full bg-clay px-5 text-sm font-semibold text-on-dark transition hover:bg-clay-dark">Create your first listing</Link>
           </section>
         )}
       </main>

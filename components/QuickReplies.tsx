@@ -15,14 +15,14 @@ export default function QuickReplies({
 }) {
   return (
     <div>
-      <p className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">Quick replies</p>
-      <div className="mt-2 flex flex-wrap gap-2">
+      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ink-soft">Quick replies</p>
+      <div className="no-scrollbar mt-2.5 flex flex-wrap gap-2">
         {QUICK_REPLIES.map((reply) => (
           <button
             key={reply}
             type="button"
             onClick={() => onSelect(reply)}
-            className="rounded-full border border-line bg-paper-2/60 px-3 py-1.5 text-xs font-medium text-ink-soft transition hover:border-clay/40 hover:text-ink active:bg-paper-2"
+            className="rounded-full border border-line bg-paper/60 px-3 py-1.5 text-xs font-medium text-ink-soft transition hover:border-clay/40 hover:bg-accent-soft/60 hover:text-clay active:bg-accent-soft"
           >
             {reply}
           </button>

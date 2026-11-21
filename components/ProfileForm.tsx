@@ -11,7 +11,9 @@ type Props = {
 };
 
 const field =
-  "h-11 w-full rounded-xl border border-line bg-surface px-3.5 text-sm outline-none transition placeholder:text-ink-soft/60 focus:border-ink/35 disabled:bg-paper-2/60 disabled:text-ink-soft";
+  "h-11 w-full rounded-lg border border-line bg-surface px-3.5 text-sm text-ink outline-none transition placeholder:text-ink-soft/60 focus:border-clay/60 disabled:bg-paper-2/60 disabled:text-ink-soft";
+
+const labelClass = "text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-soft";
 
 export default function ProfileForm({ user }: Props) {
   const [state, action, pending] = useActionState(updateProfileAction, {} as ProfileState);
@@ -21,7 +23,7 @@ export default function ProfileForm({ user }: Props) {
     <form action={action} className="space-y-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="profile-name" className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">
+          <label htmlFor="profile-name" className={labelClass}>
             Full name
           </label>
           <input
@@ -36,7 +38,7 @@ export default function ProfileForm({ user }: Props) {
         </div>
 
         <div>
-          <label htmlFor="profile-email" className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">
+          <label htmlFor="profile-email" className={labelClass}>
             Email
           </label>
           <input id="profile-email" value={user.email} disabled className={`${field} mt-1.5`} />
@@ -44,7 +46,7 @@ export default function ProfileForm({ user }: Props) {
         </div>
 
         <div>
-          <label htmlFor="profile-country" className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">
+          <label htmlFor="profile-country" className={labelClass}>
             Country
           </label>
           <CountrySelect
@@ -57,7 +59,7 @@ export default function ProfileForm({ user }: Props) {
         </div>
 
         <div>
-          <label htmlFor="profile-county" className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">
+          <label htmlFor="profile-county" className={labelClass}>
             State / province
           </label>
           <StateSelect
@@ -70,7 +72,7 @@ export default function ProfileForm({ user }: Props) {
         </div>
 
         <div>
-          <label htmlFor="profile-phone" className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">
+          <label htmlFor="profile-phone" className={labelClass}>
             Phone <span className="font-normal normal-case tracking-normal">(optional)</span>
           </label>
           <input
@@ -86,7 +88,7 @@ export default function ProfileForm({ user }: Props) {
       </div>
 
       <div>
-        <label htmlFor="profile-bio" className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">
+        <label htmlFor="profile-bio" className={labelClass}>
           About you
         </label>
         <textarea
@@ -96,22 +98,22 @@ export default function ProfileForm({ user }: Props) {
           rows={4}
           maxLength={280}
           placeholder="Tell buyers what you collect, sell or are hunting for."
-          className="mt-1.5 w-full resize-y rounded-xl border border-line bg-surface px-3.5 py-3 text-sm leading-relaxed outline-none transition placeholder:text-ink-soft/60 focus:border-ink/35"
+          className="mt-1.5 w-full resize-y rounded-lg border border-line bg-surface px-3.5 py-3 text-sm leading-relaxed text-ink outline-none transition placeholder:text-ink-soft/60 focus:border-clay/60"
         />
       </div>
 
       {state.error ? (
-        <p role="alert" aria-live="polite" className="rounded-xl bg-danger/10 px-3.5 py-2.5 text-sm text-danger">
+        <p role="alert" aria-live="polite" className="rounded-lg border border-danger/20 bg-danger/5 px-3.5 py-2.5 text-sm text-danger">
           {state.error}
         </p>
       ) : null}
       {state.success ? (
-        <p role="status" aria-live="polite" className="rounded-xl bg-accent-soft px-3.5 py-2.5 text-sm text-clay">
+        <p role="status" aria-live="polite" className="rounded-lg border border-clay/20 bg-accent-soft px-3.5 py-2.5 text-sm text-clay">
           {state.success}
         </p>
       ) : null}
 
-      <div className="flex flex-col items-stretch gap-2 sm:flex-row sm:items-center sm:gap-3">
+      <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
         <button
           type="submit"
           disabled={pending}

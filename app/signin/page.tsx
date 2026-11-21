@@ -36,23 +36,23 @@ export default async function SignInPage({
     <>
       <SiteHeader />
 
-      <main className="mx-auto max-w-5xl px-4 py-7 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
-        <div className="grid gap-7 sm:gap-10 lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-16">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-clay">Welcome to Bazaar</p>
-            <h1 className="mt-3 text-2xl leading-tight sm:text-4xl">Sign in to buy and sell locally.</h1>
-            <p className="mt-4 max-w-md text-[16px] leading-relaxed text-ink-soft">
+      <main className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14 lg:px-10 lg:py-20">
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-start lg:gap-20">
+          <section className="rise">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-clay">Welcome to Bazaar</p>
+            <h1 className="mt-4 max-w-xl text-4xl sm:text-5xl">Sign in to buy and sell locally.</h1>
+            <p className="mt-5 max-w-lg text-base leading-relaxed text-ink-soft">
               Create an account to save your location, message sellers and leave reviews. Sign in securely with your email
               and password.
             </p>
 
-            <ul className="mt-8 space-y-4 text-sm text-ink-soft">
+            <ul className="mt-10 divide-y divide-line border-y border-line text-sm text-ink-soft">
               {[
                 "Set your country so the right listings surface first.",
                 "Message sellers and keep the conversation in one place.",
                 "Review items you have bought and help your neighbours.",
               ].map((item) => (
-                <li key={item} className="flex items-start gap-3">
+                <li key={item} className="flex items-start gap-3 py-4">
                   <span
                     aria-hidden="true"
                     className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-accent-soft text-[11px] font-semibold text-clay"
@@ -64,31 +64,34 @@ export default async function SignInPage({
               ))}
             </ul>
 
-            <p className="mt-8 text-xs text-ink-soft">
+            <p className="mt-8 text-sm text-ink-soft">
               Just browsing?{" "}
-              <Link href="/#trending" className="font-medium text-ink underline decoration-line underline-offset-4 hover:text-clay">
+              <Link
+                href="/#trending"
+                className="font-medium text-ink underline decoration-line underline-offset-4 transition hover:text-clay hover:decoration-clay"
+              >
                 Keep exploring the marketplace
               </Link>
               .
             </p>
-          </div>
+          </section>
 
-          <div className="rounded-2xl border border-line bg-surface p-4 shadow-soft sm:p-7">
+          <section className="rise rise-2 rounded-2xl border border-line bg-surface p-5 shadow-soft sm:p-8">
             {nextLabel ? (
-              <p className="mb-4 rounded-xl border border-line bg-paper-2/60 px-3.5 py-2.5 text-xs leading-relaxed text-ink-soft">
+              <p className="mb-5 rounded-lg border border-line bg-paper px-3.5 py-2.5 text-xs leading-relaxed text-ink-soft">
                 Sign in to continue to <span className="font-medium text-ink">{nextLabel}</span>. After signing in, you’ll
                 return to that page.
               </p>
             ) : null}
-            <h2 className="font-display text-2xl">Sign in or create an account</h2>
-            <p className="mt-1 text-xs text-ink-soft">Sign in to an existing account or create a new one.</p>
-            <div className="mt-5">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-clay">Account access</p>
+            <h2 className="mt-2 font-display text-2xl">Sign in or create an account</h2>
+            <p className="mt-1.5 text-xs text-ink-soft">Sign in to an existing account or create a new one.</p>
+            <div className="mt-6">
               <SignInForm defaultCountry={defaultCountry} next={next} />
             </div>
-          </div>
+          </section>
         </div>
       </main>
-
     </>
   );
 }

@@ -26,19 +26,19 @@ export default async function CartPage() {
     <>
       <SiteHeader />
 
-      <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
-        <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-sm text-ink-soft">
-          <Link href="/" className="transition hover:text-ink">
+      <main className="mx-auto max-w-6xl px-4 pb-14 pt-6 sm:px-6 sm:pb-20 sm:pt-10 lg:px-8 lg:pt-14">
+        <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-ink-soft sm:text-sm">
+          <Link href="/" className="transition-colors hover:text-ink">
             Home
           </Link>
           <span aria-hidden="true">/</span>
           <span className="text-ink">Cart</span>
         </nav>
 
-        <div className="mt-5 flex flex-col items-start justify-between gap-3 sm:mt-6 sm:flex-row sm:items-end sm:gap-4">
+        <div className="mt-6 flex flex-col items-start justify-between gap-5 sm:mt-9 sm:flex-row sm:items-end sm:gap-6">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-clay">Cart</p>
-            <h1 className="mt-2 text-2xl leading-tight sm:text-4xl">Your cart</h1>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-clay">Cart</p>
+            <h1 className="mt-3 text-3xl leading-tight sm:text-4xl">Your cart</h1>
             <p className="mt-2 text-sm text-ink-soft">
               {items.length > 0
                 ? `${pluralize(items.length, "item")} saved. Message each seller to agree on payment and pickup.`
@@ -49,7 +49,7 @@ export default async function CartPage() {
           </div>
           <Link
             href="/#trending"
-            className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-full border border-line bg-surface px-4 text-sm font-semibold transition hover:border-ink/25 sm:w-auto"
+            className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-full border border-line bg-surface px-4 text-sm font-medium text-ink transition-colors hover:border-clay hover:text-clay sm:w-auto"
           >
             Keep browsing
             <span aria-hidden="true">→</span>
@@ -57,17 +57,14 @@ export default async function CartPage() {
         </div>
 
         {items.length > 0 ? (
-          <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
+          <div className="mt-9 grid gap-10 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-12">
             <section aria-label="Items in your cart">
-              <ul className="space-y-3">
+              <ul className="divide-y divide-line border-y border-line">
                 {items.map((product) => (
-                  <li
-                    key={product.slug}
-                    className="flex gap-3 rounded-2xl border border-line bg-surface p-3 transition hover:border-ink/20 sm:gap-4 sm:p-4"
-                  >
+                  <li key={product.slug} className="flex gap-4 py-5 sm:gap-5">
                     <Link
                       href={`/listing/${product.slug}`}
-                      className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl ring-1 ring-black/5 sm:h-24 sm:w-24"
+                      className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg border border-line bg-paper-2 sm:h-24 sm:w-24"
                       style={{
                         backgroundImage: `linear-gradient(135deg, ${product.tintFrom}, ${product.tintTo})`,
                       }}
@@ -93,7 +90,7 @@ export default async function CartPage() {
                         <div className="min-w-0">
                           <Link
                             href={`/listing/${product.slug}`}
-                            className="font-display text-lg leading-snug transition hover:text-clay"
+                            className="text-lg leading-snug text-ink underline-offset-4 transition-colors hover:text-clay hover:underline"
                           >
                             {product.title}
                           </Link>
@@ -101,15 +98,15 @@ export default async function CartPage() {
                             {product.seller} · {product.county} · {product.condition}
                           </p>
                         </div>
-                        <p className="shrink-0 font-semibold tabular-nums">
+                        <p className="shrink-0 font-semibold tracking-tight tabular-nums">
                           {formatPrice(product.price, currencyForCountry(product.country))}
                         </p>
                       </div>
 
-                      <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-3">
+                      <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-4">
                         <Link
                           href={`/listing/${product.slug}`}
-                          className="text-xs font-semibold text-ink-soft transition hover:text-ink"
+                          className="text-xs font-medium text-ink-soft underline-offset-4 transition-colors hover:text-clay hover:underline"
                         >
                           View listing →
                         </Link>
@@ -117,7 +114,7 @@ export default async function CartPage() {
                           <input type="hidden" name="slug" value={product.slug} />
                           <button
                             type="submit"
-                            className="text-xs font-semibold text-clay transition hover:text-danger"
+                            className="text-xs font-medium text-clay underline-offset-4 transition-colors hover:text-danger hover:underline"
                           >
                             Remove
                           </button>
@@ -129,9 +126,9 @@ export default async function CartPage() {
               </ul>
             </section>
 
-            <aside className="space-y-4">
-              <div className="rounded-2xl border border-line bg-surface p-4 sm:p-5">
-                <h2 className="font-display text-xl">Summary</h2>
+            <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
+              <div className="rounded-xl border border-line bg-surface p-5">
+                <h2 className="text-lg">Summary</h2>
                 <dl className="mt-4 space-y-3 text-sm">
                   <div className="flex items-center justify-between gap-3">
                     <dt className="text-ink-soft">Items</dt>
@@ -153,10 +150,10 @@ export default async function CartPage() {
             </aside>
           </div>
         ) : (
-          <section className="mt-6 rounded-2xl border border-line bg-surface p-5 text-center sm:mt-8 sm:p-12">
+          <section className="mt-9 border-y border-line py-14 text-center sm:py-20">
             <span
               aria-hidden="true"
-              className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-paper-2 text-ink-soft"
+              className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-paper-2 text-ink-soft"
             >
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
                 <path
@@ -168,8 +165,8 @@ export default async function CartPage() {
                 <circle cx="17.5" cy="20" r="1.2" />
               </svg>
             </span>
-            <h2 className="mt-4 font-display text-2xl">{user ? "Your cart is empty" : "Sign in to use your cart"}</h2>
-            <p className="mx-auto mt-2 max-w-md text-sm text-ink-soft">
+            <h2 className="mt-5 text-2xl">{user ? "Your cart is empty" : "Sign in to use your cart"}</h2>
+            <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-ink-soft">
               {user
                 ? "Browse what sellers near you have listed, then add anything you like to your cart."
                 : "Your saved items stay with your account, so you can pick up where you left off."}
@@ -177,7 +174,7 @@ export default async function CartPage() {
             <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
               <Link
                 href="/#trending"
-                className="inline-flex h-10 items-center gap-2 rounded-full bg-clay px-5 text-sm font-semibold text-on-dark transition hover:bg-clay-dark"
+                className="inline-flex h-10 items-center gap-2 rounded-full bg-clay px-5 text-sm font-medium tracking-tight text-on-dark transition-colors hover:bg-clay-dark"
               >
                 Browse listings
                 <span aria-hidden="true">→</span>
@@ -185,7 +182,7 @@ export default async function CartPage() {
               {!user ? (
                 <Link
                   href={`/signin?next=${encodeURIComponent("/cart")}`}
-                  className="inline-flex h-10 items-center gap-2 rounded-full border border-line bg-surface px-5 text-sm font-semibold transition hover:border-ink/25"
+                  className="inline-flex h-10 items-center gap-2 rounded-full border border-line bg-surface px-5 text-sm font-medium text-ink transition-colors hover:border-clay hover:text-clay"
                 >
                   Sign in
                 </Link>

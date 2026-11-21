@@ -54,14 +54,14 @@ export default function AppearanceSettings() {
             aria-checked={active}
             onClick={() => choose(option.value)}
             className={[
-              "rounded-xl border px-2 py-3 text-center transition",
+              "rounded-lg border px-3 py-3 text-center transition",
               active
-                ? "border-clay bg-clay text-on-dark"
+                ? "border-clay bg-accent-soft text-ink"
                 : "border-line bg-surface text-ink-soft hover:border-clay/40 hover:text-ink",
             ].join(" ")}
           >
             <span className="block text-sm font-medium">{option.label}</span>
-            <span className={active ? "mt-0.5 block text-[11px] text-on-dark/80" : "mt-0.5 block text-[11px]"}>
+            <span className={active ? "mt-1 block text-[11px] text-clay" : "mt-1 block text-[11px] text-ink-soft"}>
               {option.hint}
             </span>
           </button>

@@ -12,7 +12,9 @@ type Props = {
 };
 
 const field =
-  "h-11 w-full rounded-xl border border-line bg-surface px-3.5 text-sm outline-none transition placeholder:text-ink-soft/60 focus:border-ink/35";
+  "h-11 w-full rounded-lg border border-line bg-surface px-3.5 text-sm text-ink outline-none transition placeholder:text-ink-soft/60 focus:border-clay/60";
+
+const labelClass = "text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-soft";
 
 export default function SignInForm({ defaultCountry = "", next = "/profile" }: Props) {
   const [state, action, pending] = useActionState(signInAction, {} as AuthState);
@@ -30,12 +32,14 @@ export default function SignInForm({ defaultCountry = "", next = "/profile" }: P
       <input type="hidden" name="next" value={next} />
       <input type="hidden" name="mode" value={mode} />
 
-      <div className="grid grid-cols-2 rounded-xl bg-paper-2/70 p-1">
+      <div className="grid grid-cols-2 gap-1 rounded-lg border border-line bg-paper p-1">
         <button
           type="button"
           onClick={() => setMode("signin")}
           aria-pressed={mode === "signin"}
-          className={`rounded-lg px-3 py-2 text-sm font-semibold transition ${mode === "signin" ? "bg-surface text-ink shadow-sm" : "text-ink-soft hover:text-ink"}`}
+          className={`rounded-md px-3 py-2 text-sm font-medium transition ${
+            mode === "signin" ? "bg-surface text-ink shadow-sm" : "text-ink-soft hover:text-ink"
+          }`}
         >
           Sign in
         </button>
@@ -43,14 +47,16 @@ export default function SignInForm({ defaultCountry = "", next = "/profile" }: P
           type="button"
           onClick={() => setMode("signup")}
           aria-pressed={mode === "signup"}
-          className={`rounded-lg px-3 py-2 text-sm font-semibold transition ${mode === "signup" ? "bg-surface text-ink shadow-sm" : "text-ink-soft hover:text-ink"}`}
+          className={`rounded-md px-3 py-2 text-sm font-medium transition ${
+            mode === "signup" ? "bg-surface text-ink shadow-sm" : "text-ink-soft hover:text-ink"
+          }`}
         >
           Create account
         </button>
       </div>
 
       <div>
-        <label htmlFor="signin-email" className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">
+        <label htmlFor="signin-email" className={labelClass}>
           Email address
         </label>
         <input
@@ -67,7 +73,7 @@ export default function SignInForm({ defaultCountry = "", next = "/profile" }: P
       {mode === "signup" ? (
         <>
           <div>
-            <label htmlFor="signin-name" className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">
+            <label htmlFor="signin-name" className={labelClass}>
               Full name
             </label>
             <input
@@ -84,7 +90,7 @@ export default function SignInForm({ defaultCountry = "", next = "/profile" }: P
           </div>
 
           <div>
-            <label htmlFor="signin-country" className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">
+            <label htmlFor="signin-country" className={labelClass}>
               Country
             </label>
             <CountrySelect
@@ -97,7 +103,7 @@ export default function SignInForm({ defaultCountry = "", next = "/profile" }: P
           </div>
 
           <div>
-            <label htmlFor="signin-state" className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">
+            <label htmlFor="signin-state" className={labelClass}>
               State / province
             </label>
             <StateSelect
@@ -111,7 +117,7 @@ export default function SignInForm({ defaultCountry = "", next = "/profile" }: P
       ) : null}
 
       <div>
-        <label htmlFor="signin-password" className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">
+        <label htmlFor="signin-password" className={labelClass}>
           Password
         </label>
         <input
@@ -128,12 +134,12 @@ export default function SignInForm({ defaultCountry = "", next = "/profile" }: P
       </div>
 
       {state.error ? (
-        <p role="alert" aria-live="polite" className="rounded-xl bg-danger/10 px-3.5 py-2.5 text-sm text-danger">
+        <p role="alert" aria-live="polite" className="rounded-lg border border-danger/20 bg-danger/5 px-3.5 py-2.5 text-sm text-danger">
           {state.error}
         </p>
       ) : null}
       {state.message ? (
-        <p role="status" aria-live="polite" className="rounded-xl bg-accent-soft px-3.5 py-2.5 text-sm text-clay">
+        <p role="status" aria-live="polite" className="rounded-lg border border-clay/20 bg-accent-soft px-3.5 py-2.5 text-sm text-clay">
           {state.message}
         </p>
       ) : null}

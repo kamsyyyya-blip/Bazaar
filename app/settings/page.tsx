@@ -14,15 +14,7 @@ export const metadata: Metadata = {
   description: "Manage your Bazaar account, contact details and preferences.",
 };
 
-type Tone = "green" | "red" | "blue" | "dark";
 type IconKind = "user" | "case" | "globe" | "phone" | "mail" | "chat" | "feedback" | "bell" | "info" | "star" | "lock";
-
-const toneColor: Record<Tone, string> = {
-  green: "var(--color-clay)",
-  red: "var(--color-danger)",
-  blue: "var(--color-ink-soft)",
-  dark: "var(--color-footer)",
-};
 
 function Icon({ kind }: { kind: IconKind }) {
   const common = {
@@ -66,33 +58,31 @@ function Icon({ kind }: { kind: IconKind }) {
 function SettingsRow({
   id,
   icon,
-  tone,
   label,
   value,
   href,
 }: {
   id?: string;
   icon: IconKind;
-  tone: Tone;
   label: string;
   value?: string;
   href?: string;
 }) {
   const content = (
     <>
-      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl text-on-dark" style={{ backgroundColor: toneColor[tone] }}>
+      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-paper-2 text-ink">
         <Icon kind={icon} />
       </span>
-      <span className="min-w-0 flex-1 truncate text-sm font-semibold text-ink">{label}</span>
+      <span className="min-w-0 flex-1 truncate text-sm font-medium text-ink">{label}</span>
       {value ? <span className="max-w-[45%] truncate text-xs text-ink-soft">{value}</span> : null}
       {href ? <span aria-hidden="true" className="text-lg leading-none text-ink-soft">›</span> : null}
     </>
   );
 
-  const className = "flex min-h-[68px] w-full items-center gap-3 px-4 py-3 text-left transition";
+  const className = "flex min-h-[64px] w-full items-center gap-3 px-4 py-3 text-left transition";
   if (href) {
     return (
-      <Link id={id} href={href} className={`${className} hover:bg-paper-2/60 active:bg-paper-2`}>
+      <Link id={id} href={href} className={`${className} hover:bg-paper active:bg-paper-2`}>
         {content}
       </Link>
     );
@@ -105,11 +95,31 @@ function SettingsRow({
 }
 
 function Group({ children }: { children: ReactNode }) {
-  return <div className="divide-y divide-line border-y border-line bg-surface">{children}</div>;
+  return <div className="divide-y divide-line overflow-hidden rounded-xl border border-line bg-surface">{children}</div>;
 }
 
 function Gap() {
-  return <div className="h-2 bg-paper-2" aria-hidden="true" />;
+  return <div className="h-5" aria-hidden="true" />;
+}
+
+function Panel({
+  id,
+  title,
+  description,
+  children,
+}: {
+  id?: string;
+  title: string;
+  description?: string;
+  children: ReactNode;
+}) {
+  return (
+    <section id={id} className="scroll-mt-20 rounded-xl border border-line bg-surface px-5 py-5">
+      <h2 className="font-display text-base font-semibold text-ink">{title}</h2>
+      {description ? <p className="mt-1 text-sm text-ink-soft">{description}</p> : null}
+      {children}
+    </section>
+  );
 }
 
 export default async function SettingsPage() {
@@ -121,21 +131,28 @@ export default async function SettingsPage() {
   const sellerLink = `/seller/${sellerSlug(user.name)}`;
 
   return (
-    <div className="min-h-screen bg-paper-2 pb-28 lg:bg-surface lg:pb-16">
-      <header className="sticky top-0 z-40 border-b border-line bg-surface">
-        <div className="mx-auto flex h-14 max-w-2xl items-center gap-3 px-4">
-          <Link href="/profile" aria-label="Back to profile" className="grid h-9 w-9 place-items-center rounded-full text-xl text-ink">
+    <div className="min-h-screen bg-paper pb-28 lg:pb-16">
+      <header className="sticky top-0 z-40 border-b border-line bg-surface/95 backdrop-blur-md">
+        <div className="mx-auto flex h-14 max-w-3xl items-center gap-3 px-4 sm:px-6">
+          <Link
+            href="/profile"
+            aria-label="Back to profile"
+            className="grid h-9 w-9 place-items-center rounded-full border border-line text-xl leading-none text-ink transition hover:bg-paper-2"
+          >
             <span aria-hidden="true">‹</span>
           </Link>
           <h1 className="font-display text-lg font-semibold text-ink">Settings</h1>
+          <Link href="/profile" className="ml-auto text-sm font-medium text-ink-soft transition hover:text-clay">
+            Your profile
+          </Link>
         </div>
       </header>
 
-      <main className="mx-auto max-w-2xl">
-        <section className="flex items-center gap-3 bg-surface px-4 py-5">
+      <main className="mx-auto max-w-3xl px-4 py-6 sm:px-6 sm:py-10">
+        <section className="flex items-center gap-4 rounded-xl border border-line bg-surface px-5 py-5">
           <span
             aria-hidden="true"
-            className="grid h-12 w-12 shrink-0 place-items-center rounded-full text-sm font-bold text-on-dark"
+            className="grid h-12 w-12 shrink-0 place-items-center rounded-full text-sm font-semibold text-on-dark"
             style={{ backgroundColor: user.avatarColor || "var(--color-clay)" }}
           >
             {initials(user.name)}
@@ -144,99 +161,98 @@ export default async function SettingsPage() {
             <p className="truncate font-display text-base font-semibold text-ink">{user.name}</p>
             <p className="truncate text-xs text-ink-soft">{user.email}</p>
           </div>
-        </section>
-
-        <Gap />
-
-        <section id="appearance" className="scroll-mt-16 bg-surface px-4 py-5">
-          <h2 className="font-display text-lg font-semibold text-ink">Appearance</h2>
-          <p className="mt-1 text-sm text-ink-soft">Choose how Bazaar looks on this device.</p>
-          <div className="mt-4">
-            <AppearanceSettings />
-          </div>
-        </section>
-
-        <Gap />
-
-        <Group>
-          <SettingsAccountSection user={user} />
-          <SettingsRow icon="case" tone="green" label="Business info" href={sellerLink} />
-        </Group>
-
-        <Gap />
-
-        <Group>
-          <SettingsRow icon="globe" tone="green" label="Change language" value="English" />
-          <SettingsRow icon="phone" tone="red" label="Phone numbers" value={user.phone ? "Added" : "Add"} href="#personal-info-panel" />
-          <SettingsRow icon="mail" tone="red" label="Change e-mail" value={user.email} href="#personal-info-panel" />
-        </Group>
-
-        <Gap />
-
-        <Group>
-          <SettingsRow icon="chat" tone="blue" label="Disable chats" value="Enabled" href="/messages" />
-          <SettingsRow icon="feedback" tone="blue" label="Disable feedback" value="Enabled" href="#feedback" />
-          <SettingsRow icon="bell" tone="blue" label="Manage notifications" value={unread > 0 ? `${unread} unread` : undefined} href="/messages" />
-        </Group>
-
-        <Gap />
-
-        <Group>
-          <SettingsRow icon="info" tone="dark" label="About Bazaar" />
-          <SettingsRow icon="star" tone="dark" label="Rate us" />
-          <SettingsRow icon="lock" tone="dark" label="Change password" />
-        </Group>
-
-        <Gap />
-
-        <section id="feedback" className="scroll-mt-16 bg-surface px-4 py-5">
-          <h2 className="font-display text-lg font-semibold text-ink">Feedback</h2>
-          <p className="mt-2 text-sm text-ink-soft">
-            {reviewCount === 0 ? "No feedback yet." : `${reviewCount} ${reviewCount === 1 ? "review" : "reviews"} written.`}
-          </p>
-          <Link href={sellerLink} className="mt-3 inline-flex text-sm font-semibold text-clay hover:underline">
-            View seller page →
+          <Link href="/profile" className="ml-auto hidden text-sm font-medium text-ink-soft transition hover:text-clay sm:inline">
+            View profile
           </Link>
         </section>
 
         <Gap />
 
-        <section id="faq" className="scroll-mt-16 bg-surface px-4 py-5">
-          <h2 className="font-display text-lg font-semibold text-ink">Frequently Asked Questions</h2>
+        <Panel id="appearance" title="Appearance" description="Choose how Bazaar looks on this device.">
+          <div className="mt-4">
+            <AppearanceSettings />
+          </div>
+        </Panel>
+
+        <Gap />
+
+        <Group>
+          <SettingsAccountSection user={user} />
+          <SettingsRow icon="case" label="Business info" href={sellerLink} />
+        </Group>
+
+        <Gap />
+
+        <Group>
+          <SettingsRow icon="globe" label="Change language" value="English" />
+          <SettingsRow icon="phone" label="Phone numbers" value={user.phone ? "Added" : "Add"} href="#personal-info-panel" />
+          <SettingsRow icon="mail" label="Change e-mail" value={user.email} href="#personal-info-panel" />
+        </Group>
+
+        <Gap />
+
+        <Group>
+          <SettingsRow icon="chat" label="Disable chats" value="Enabled" href="/messages" />
+          <SettingsRow icon="feedback" label="Disable feedback" value="Enabled" href="#feedback" />
+          <SettingsRow icon="bell" label="Manage notifications" value={unread > 0 ? `${unread} unread` : undefined} href="/messages" />
+        </Group>
+
+        <Gap />
+
+        <Group>
+          <SettingsRow icon="info" label="About Bazaar" />
+          <SettingsRow icon="star" label="Rate us" />
+          <SettingsRow icon="lock" label="Change password" />
+        </Group>
+
+        <Gap />
+
+        <Panel id="feedback" title="Feedback">
+          <p className="mt-2 text-sm text-ink-soft">
+            {reviewCount === 0 ? "No feedback yet." : `${reviewCount} ${reviewCount === 1 ? "review" : "reviews"} written.`}
+          </p>
+          <Link href={sellerLink} className="mt-3 inline-flex text-sm font-medium text-clay hover:underline">
+            View seller page →
+          </Link>
+        </Panel>
+
+        <Gap />
+
+        <Panel id="faq" title="Frequently Asked Questions">
           <div className="mt-3 divide-y divide-line">
             <details className="py-3">
-              <summary className="cursor-pointer text-sm font-semibold text-ink">How do I publish an advert?</summary>
+              <summary className="cursor-pointer text-sm font-medium text-ink">How do I publish an advert?</summary>
               <p className="mt-2 text-sm leading-relaxed text-ink-soft">
                 Choose Sell, add a title, price, location and up to five photos, then publish. Your advert goes live immediately.
               </p>
             </details>
             <details className="py-3">
-              <summary className="cursor-pointer text-sm font-semibold text-ink">How do buyers contact me?</summary>
+              <summary className="cursor-pointer text-sm font-medium text-ink">How do buyers contact me?</summary>
               <p className="mt-2 text-sm leading-relaxed text-ink-soft">
                 Buyers message you through your Bazaar inbox, so your email address stays private.
               </p>
             </details>
             <details className="py-3">
-              <summary className="cursor-pointer text-sm font-semibold text-ink">Which currency will buyers see?</summary>
+              <summary className="cursor-pointer text-sm font-medium text-ink">Which currency will buyers see?</summary>
               <p className="mt-2 text-sm leading-relaxed text-ink-soft">
                 Prices are shown in the currency of the country you choose for each advert.
               </p>
             </details>
           </div>
-        </section>
+        </Panel>
 
         <Gap />
 
-        <div className="bg-surface px-4 py-5">
+        <section className="rounded-xl border border-line bg-surface px-5 py-5">
           <form action={signOutAction}>
             <button
               type="submit"
-              className="h-11 w-full rounded-full border border-line text-sm font-semibold text-danger transition hover:border-danger/40 hover:bg-danger/5"
+              className="h-11 w-full rounded-full border border-line text-sm font-medium text-ink-soft transition hover:border-clay/40 hover:text-clay"
             >
               Sign out
             </button>
           </form>
-        </div>
+        </section>
       </main>
     </div>
   );

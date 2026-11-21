@@ -40,7 +40,7 @@ export default async function NewMessagePage({
     <>
       <SiteHeader />
 
-      <main className="mx-auto max-w-4xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
+      <main className="mx-auto max-w-3xl px-4 pb-14 pt-6 sm:px-6 sm:pt-10 lg:px-8 lg:pt-12">
         <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-sm text-ink-soft">
           <Link href="/" className="transition hover:text-ink">
             Home
@@ -53,16 +53,16 @@ export default async function NewMessagePage({
           <span className="text-ink">Message seller</span>
         </nav>
 
-        <h1 className="mt-5 text-2xl leading-tight sm:mt-6 sm:text-4xl">Message {product.seller}</h1>
-        <p className="mt-2 max-w-xl text-sm text-ink-soft">
+        <h1 className="mt-6 text-2xl leading-tight sm:mt-7 sm:text-4xl">Message {product.seller}</h1>
+        <p className="mt-2 max-w-xl text-sm leading-relaxed text-ink-soft">
           Ask about condition, measurements or a pickup time. Your email stays private and replies land in your Bazaar
           inbox.
         </p>
 
-        <div className="mt-5 flex flex-col gap-3 rounded-2xl border border-line bg-surface p-3 sm:mt-7 sm:gap-4 sm:p-4 sm:flex-row sm:items-center">
+        <div className="mt-6 flex flex-col gap-4 border-y border-line py-5 sm:flex-row sm:items-center">
           <span
             aria-hidden="true"
-            className="grid h-20 w-20 shrink-0 place-items-center rounded-xl text-4xl ring-1 ring-black/5"
+            className="grid h-20 w-20 shrink-0 place-items-center rounded-2xl text-4xl ring-1 ring-line/70"
             style={{
               backgroundImage: `linear-gradient(135deg, ${product.tintFrom}, ${product.tintTo})`,
             }}
@@ -77,7 +77,7 @@ export default async function NewMessagePage({
             {seller ? (
               <Link
                 href={`/seller/${seller.slug}`}
-                className="mt-1.5 inline-flex text-xs font-medium text-ink underline-offset-4 hover:underline"
+                className="mt-1.5 inline-flex text-xs font-medium text-clay underline-offset-4 hover:underline"
               >
                 View seller page →
               </Link>
@@ -85,15 +85,15 @@ export default async function NewMessagePage({
           </div>
           <Link
             href={`/listing/${product.slug}`}
-            className="inline-flex h-10 w-full shrink-0 items-center justify-center rounded-full border border-line px-4 text-sm font-medium text-ink-soft transition hover:border-ink/25 hover:text-ink sm:w-auto"
+            className="inline-flex h-10 w-full shrink-0 items-center justify-center rounded-full border border-line bg-surface px-4 text-sm font-medium text-ink-soft transition hover:border-ink/25 hover:text-ink sm:w-auto"
           >
             Back to listing
           </Link>
         </div>
 
-        <section className="mt-5 rounded-2xl border border-line bg-surface p-4 sm:mt-6 sm:p-7">
+        <section className="mt-8 border-t border-line pt-7">
           {ownListing ? (
-            <div className="rounded-xl border border-dashed border-line bg-paper-2/40 px-5 py-8 text-center">
+            <div className="border-b border-line px-2 py-12 text-center">
               <p className="text-2xl" aria-hidden="true">
                 🏷️
               </p>
@@ -103,7 +103,7 @@ export default async function NewMessagePage({
               </p>
               <Link
                 href="/messages"
-                className="mt-4 inline-flex items-center gap-2 rounded-full bg-clay px-5 py-2.5 text-sm font-medium text-on-dark transition hover:bg-clay-dark"
+                className="mt-5 inline-flex items-center gap-2 rounded-full bg-clay px-5 py-2.5 text-sm font-medium text-on-dark transition hover:bg-clay-dark"
               >
                 Open your inbox
                 <span aria-hidden="true">→</span>
@@ -114,11 +114,10 @@ export default async function NewMessagePage({
           )}
         </section>
 
-        <p className="mt-4 text-center text-[12px] text-ink-soft">
+        <p className="mt-8 text-center text-[12px] text-ink-soft">
           Only share what you&rsquo;re comfortable with. Never send bank details or one-time codes.
         </p>
       </main>
-
     </>
   );
 }

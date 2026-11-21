@@ -33,26 +33,26 @@ export default function SettingsAccountSection({ user }: { user: User }) {
         aria-expanded={open}
         aria-controls="personal-info-panel"
         onClick={() => setOpen((value) => !value)}
-        className="flex min-h-[68px] w-full items-center gap-3 px-4 py-3 text-left transition hover:bg-paper-2/60 active:bg-paper-2"
+        className="flex min-h-[64px] w-full items-center gap-3 px-4 py-3 text-left transition hover:bg-paper active:bg-paper-2"
       >
-        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl text-on-dark" style={{ backgroundColor: "var(--color-clay)" }}>
+        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-paper-2 text-ink">
           <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="8" r="4" />
             <path d="M4 21a8 8 0 0 1 16 0" />
           </svg>
         </span>
-        <span className="min-w-0 flex-1 truncate text-sm font-semibold text-ink">Personal info</span>
+        <span className="min-w-0 flex-1 truncate text-sm font-medium text-ink">Personal info</span>
         <span aria-hidden="true" className={`text-lg leading-none text-ink-soft transition ${open ? "rotate-90" : ""}`}>
           ›
         </span>
       </button>
 
       {open ? (
-        <section id="personal-info-panel" className="scroll-mt-16 border-t border-line bg-surface px-4 py-5">
-          <h2 className="font-display text-lg font-semibold text-ink">Your personal info</h2>
+        <section id="personal-info-panel" className="scroll-mt-20 border-t border-line bg-paper/60 px-4 py-5 sm:px-5">
+          <h2 className="font-display text-base font-semibold text-ink">Your personal info</h2>
           <p className="mt-1 text-sm text-ink-soft">Keep your contact and location details up to date.</p>
 
-          <dl className="mt-4 grid gap-3 rounded-xl border border-line bg-paper-2/50 p-4 text-sm sm:grid-cols-2">
+          <dl className="mt-4 grid gap-3 rounded-lg border border-line bg-surface p-4 text-sm sm:grid-cols-2">
             <div>
               <dt className="text-xs text-ink-soft">Full name</dt>
               <dd className="mt-0.5 truncate font-semibold text-ink">{user.name}</dd>

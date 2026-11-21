@@ -20,7 +20,7 @@ export default async function SellPage() {
     <>
       <SiteHeader />
 
-      <main className="mx-auto max-w-2xl px-0 py-0 sm:px-4 sm:py-8">
+      <main className="mx-auto max-w-3xl px-0 pb-12 sm:px-4 sm:pb-14 sm:pt-8">
         <SellForm
           categories={categories}
           user={user}

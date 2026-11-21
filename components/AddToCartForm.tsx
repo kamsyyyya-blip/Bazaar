@@ -17,7 +17,7 @@ export default function AddToCartForm({ slug }: { slug: string }) {
         <button
           type="submit"
           disabled={pending}
-          className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-clay px-6 text-sm font-semibold text-on-dark transition hover:bg-clay-dark disabled:cursor-wait disabled:opacity-70"
+          className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-clay px-6 text-sm font-semibold tracking-tight text-on-dark transition-colors hover:bg-clay-dark disabled:cursor-wait disabled:opacity-70"
         >
           {pending ? "Adding…" : state.success ? "Added to cart" : "Add to cart"}
           {!pending ? <span aria-hidden="true">{state.success ? "✓" : "→"}</span> : null}
@@ -26,7 +26,7 @@ export default function AddToCartForm({ slug }: { slug: string }) {
       {state.error ? <p role="alert" className="text-sm text-danger">{state.error}</p> : null}
       {state.success ? (
         <p role="status" className="text-sm text-clay">
-          Added to your cart. <Link href="/cart" className="font-semibold underline">View cart</Link>
+          Added to your cart. <Link href="/cart" className="font-semibold underline underline-offset-4">View cart</Link>
         </p>
       ) : null}
     </div>

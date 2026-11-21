@@ -18,6 +18,7 @@ import { currencyForCountry } from "@/lib/currency";
 import { pluralize } from "@/lib/format";
 import { detectCountry } from "@/lib/geo";
 import { listAllDurableProducts } from "@/lib/durable-products";
+import { getCurrentUser } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 const LISTINGS_PER_PAGE = 24;
@@ -106,6 +107,11 @@ export default async function HomePage({
   const activeCategory = categories.find((item) => item.slug === filters.category);
   const filtered = hasActiveFilters(filters);
   const marketplaceEmpty = matchingProducts.length === 0 && !filtered;
+  const user = await getCurrentUser();
+  const favoriteFor = (slug: string) => ({
+    signedIn: Boolean(user),
+    initiallySaved: Boolean(user?.favorites?.includes(slug)),
+  });
   const heading = filters.q
     ? `Results for “${filters.q}”`
     : marketplaceEmpty
@@ -131,11 +137,12 @@ export default async function HomePage({
       />
 
       <main>
-        {/* compact search band — no hero */}
-        <section className="border-b border-line/70 bg-paper-2/40">
-          <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
-            <h1 className="text-3xl leading-tight sm:text-4xl">What are you looking for today?</h1>
-            <p className="mt-2 max-w-xl text-sm text-ink-soft">
+        {/* editorial search band — image-led discovery starts immediately */}
+        <section id="search" className="scroll-mt-20 border-b border-line bg-paper">
+          <div className="mx-auto max-w-7xl px-4 pb-8 pt-10 sm:px-6 lg:px-8 lg:pb-12 lg:pt-14">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-clay">Bazaar marketplace</p>
+            <h1 className="mt-3 max-w-3xl text-3xl font-semibold sm:text-5xl">Good things, close to home.</h1>
+            <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-soft">
               {marketplaceEmpty ? (
                 <>No listings yet — be the first to sell something in your area. It takes about a minute.</>
               ) : countryEmpty ? (
@@ -188,22 +195,33 @@ export default async function HomePage({
               </p>
             ) : null}
 
-            <div className="mt-5 md:hidden">
-              <h2 className="mb-3 text-sm font-semibold text-ink">Popular categories</h2>
-              <div className="grid grid-cols-4 gap-1.5 sm:gap-2">
+            <div className="mt-7 md:hidden">
+              <h2 className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-ink-soft">
+                Popular categories
+              </h2>
+              <div className="no-scrollbar -mx-4 flex gap-4 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6">
                 {categories.map((item) => (
                   <Link
                     key={item.slug}
                     href={browseHref(filters, { category: item.slug, q: "" })}
                     prefetch={false}
-                    className="group flex aspect-square min-w-0 flex-col items-center justify-center gap-1 rounded-xl border border-line bg-surface px-1 py-1.5 text-center shadow-sm transition hover:-translate-y-0.5 hover:border-ink/20 hover:shadow-soft focus-visible:outline-offset-2 sm:gap-1.5 sm:rounded-2xl sm:px-2 sm:py-2"
+                    className={[
+                      "flex w-16 shrink-0 flex-col items-center gap-2 text-center",
+                      filters.category === item.slug ? "text-clay" : "text-ink-soft",
+                    ].join(" ")}
                   >
-                    <span aria-hidden="true" className="text-xl leading-none transition-transform group-hover:scale-110 sm:text-2xl">
+                    <span
+                      aria-hidden="true"
+                      className={[
+                        "grid h-16 w-16 place-items-center rounded-full border text-2xl transition",
+                        filters.category === item.slug
+                          ? "border-clay bg-accent-soft"
+                          : "border-line bg-paper-2",
+                      ].join(" ")}
+                    >
                       {item.emoji}
                     </span>
-                    <span className="line-clamp-2 text-[10px] font-semibold leading-tight text-ink-soft group-hover:text-ink sm:text-xs">
-                      {item.name}
-                    </span>
+                    <span className="line-clamp-2 text-[11px] font-medium leading-tight">{item.name}</span>
                   </Link>
                 ))}
               </div>
@@ -242,10 +260,40 @@ export default async function HomePage({
           </div>
         </section>
 
+        <nav aria-label="Categories" className="no-scrollbar hidden overflow-x-auto border-b border-line lg:block">
+          <div className="mx-auto flex max-w-7xl items-center gap-7 px-8">
+            <Link
+              href={browseHref(filters, { category: "", q: "" })}
+              prefetch={false}
+              className={[
+                "shrink-0 border-b-2 py-4 text-sm transition",
+                filters.category ? "border-transparent text-ink-soft hover:text-ink" : "border-clay font-medium text-ink",
+              ].join(" ")}
+            >
+              All
+            </Link>
+            {categories.map((item) => (
+              <Link
+                key={item.slug}
+                href={browseHref(filters, { category: item.slug, q: "" })}
+                prefetch={false}
+                className={[
+                  "shrink-0 border-b-2 py-4 text-sm transition",
+                  filters.category === item.slug
+                    ? "border-clay font-medium text-ink"
+                    : "border-transparent text-ink-soft hover:text-ink",
+                ].join(" ")}
+              >
+                {item.name}
+              </Link>
+            ))}
+          </div>
+        </nav>
+
         <section aria-labelledby="rentals-widget-heading" className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-5 rounded-2xl border border-clay/25 bg-surface p-5 shadow-soft sm:flex-row sm:items-center sm:justify-between sm:p-6">
+          <div className="flex flex-col gap-5 rounded-3xl border border-line bg-surface p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
             <div className="flex items-start gap-4">
-              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-clay text-2xl text-on-dark" aria-hidden="true">
+              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-accent-soft text-2xl" aria-hidden="true">
                 🏡
               </span>
               <div>
@@ -319,7 +367,8 @@ export default async function HomePage({
                 <section id="recommended" className="scroll-mt-20">
                   <div className="flex items-end justify-between gap-4">
                     <div>
-                      <h2 className="text-xl sm:text-2xl">Popular finds</h2>
+                      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-clay">Editor’s picks</p>
+                      <h2 className="mt-1 text-2xl">Popular finds</h2>
                       <p className="mt-1 text-xs text-ink-soft">Listings buyers are discovering on Bazaar.</p>
                     </div>
                     <Link
@@ -333,9 +382,9 @@ export default async function HomePage({
                     </Link>
                   </div>
 
-                  <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-4">
+                  <div className="mt-5 grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 xl:grid-cols-4">
                     {featuredAds.map((product) => (
-                      <MarketplaceCard key={product.slug} product={product} />
+                      <MarketplaceCard key={product.slug} product={product} favorite={favoriteFor(product.slug)} />
                     ))}
                   </div>
                 </section>
@@ -344,7 +393,10 @@ export default async function HomePage({
               <section id="trending" className={`scroll-mt-20 ${filtered ? "" : "mt-12"}`}>
                 <div className="flex flex-wrap items-end justify-between gap-3">
                   <div>
-                    <h2 className="text-xl sm:text-2xl">{heading}</h2>
+                    <p className="text-xs font-semibold uppercase tracking-[0.14em] text-clay">
+                      {filtered ? "Search results" : "Fresh listings"}
+                    </p>
+                    <h2 className="mt-1 text-2xl">{heading}</h2>
                     <p className="mt-1 text-xs text-ink-soft" aria-live="polite">
                       {pluralize(matchingProducts.length, "listing")}
                       {activeCategory ? ` in ${activeCategory.name}` : ""}
@@ -383,7 +435,7 @@ export default async function HomePage({
                   <>
                     <div className="mt-5 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-4">
                       {products.map((product) => (
-                        <MarketplaceCard key={product.slug} product={product} />
+                        <MarketplaceCard key={product.slug} product={product} favorite={favoriteFor(product.slug)} />
                       ))}
                     </div>
                     <p className="mt-8 text-center text-xs text-ink-soft">
@@ -487,11 +539,11 @@ export default async function HomePage({
 
         {/* compact seller band */}
         <section id="sell" className="mx-auto max-w-7xl scroll-mt-20 px-4 pb-16 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-4 rounded-2xl border border-line bg-surface px-6 py-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-5 rounded-3xl bg-ink px-6 py-8 text-paper sm:flex-row sm:items-center sm:justify-between sm:px-10">
             <div>
-              <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-clay">For sellers</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-clay">For sellers</p>
               <h2 className="mt-1 text-2xl">Sell your things on Bazaar</h2>
-              <p className="mt-1 text-sm text-ink-soft">
+              <p className="mt-1 text-sm text-paper/70">
                 No listing fee · Talk with interested buyers directly through Bazaar.
               </p>
             </div>

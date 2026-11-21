@@ -1,56 +1,55 @@
 @import "tailwindcss";
 
 @theme {
-  /* Midnight & Mint — light tokens */
-  --color-paper: #f9fafb;
-  --color-paper-2: #f3f4f6;
-  --color-ink: #111827;
-  --color-ink-soft: #6b7280;
-  --color-line: #e5e7eb;
-  --color-clay: #10b981;
-  --color-clay-dark: #059669;
-  --color-olive: #10b981;
+  /* Bazaar — premium marketplace palette */
+  --color-paper: #fafaf8;
+  --color-paper-2: #f3f2ee;
+  --color-ink: #222222;
+  --color-ink-soft: #777777;
+  --color-line: #eaeaea;
+  --color-clay: #c96f50;
+  --color-clay-dark: #b25c3f;
+  --color-olive: #c96f50;
   --color-surface: #ffffff;
-  --color-accent-soft: #d1fae5;
-  --color-highlight: #f59e0b;
-  --color-danger: #dc2626;
+  --color-accent-soft: #f7e9e2;
+  --color-highlight: #c99652;
+  --color-danger: #b42318;
   --color-on-dark: #ffffff;
-  --color-footer: #111827;
+  --color-footer: #1d1d1b;
 
-  --shadow-soft: 0 1px 2px rgb(17 24 39 / 0.04), 0 12px 28px -20px rgb(17 24 39 / 0.2);
-  --shadow-lift: 0 2px 4px rgb(17 24 39 / 0.04), 0 22px 45px -24px rgb(17 24 39 / 0.22);
+  --shadow-soft: 0 1px 2px rgb(34 34 34 / 0.04), 0 12px 30px -22px rgb(34 34 34 / 0.18);
+  --shadow-lift: 0 2px 6px rgb(34 34 34 / 0.05), 0 24px 48px -26px rgb(34 34 34 / 0.22);
 
-  /* Heavier weights so body copy and labels read bolder everywhere. */
-  --font-weight-medium: 600;
-  --font-weight-semibold: 700;
-  --font-weight-bold: 800;
+  /* Calm, editorial type scale. */
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
 
-  /* A slightly larger type scale across every page. */
-  --text-xs: 0.875rem;
-  --text-xs--line-height: 1.25rem;
-  --text-sm: 1rem;
-  --text-sm--line-height: 1.5rem;
-  --text-base: 1.125rem;
-  --text-base--line-height: 1.75rem;
-  --text-lg: 1.25rem;
-  --text-lg--line-height: 1.875rem;
-  --text-xl: 1.5rem;
-  --text-xl--line-height: 2rem;
-  --text-2xl: 1.75rem;
-  --text-2xl--line-height: 2.25rem;
-  --text-3xl: 2rem;
-  --text-3xl--line-height: 2.375rem;
-  --text-4xl: 2.5rem;
-  --text-4xl--line-height: 2.75rem;
-  --text-5xl: 3.25rem;
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1rem;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.25rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.6rem;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.75rem;
+  --text-xl: 1.25rem;
+  --text-xl--line-height: 1.75rem;
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: 2rem;
+  --text-3xl: 1.875rem;
+  --text-3xl--line-height: 2.25rem;
+  --text-4xl: 2.25rem;
+  --text-4xl--line-height: 2.5rem;
+  --text-5xl: 3rem;
   --text-5xl--line-height: 1.1;
-  --text-6xl: 4rem;
+  --text-6xl: 3.75rem;
   --text-6xl--line-height: 1.05;
 }
 
 @theme inline {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-display: var(--font-fraunces), ui-serif, Georgia, "Times New Roman", serif;
+  --font-display: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
 :root {
@@ -59,27 +58,26 @@
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --color-paper: #111827;
-  --color-paper-2: #1f2937;
-  --color-ink: #f9fafb;
-  --color-ink-soft: #9ca3af;
-  --color-line: #374151;
-  --color-clay: #10b981;
-  --color-clay-dark: #059669;
-  --color-olive: #10b981;
-  --color-surface: #1f2937;
-  --color-accent-soft: #064e3b;
-  --color-highlight: #fbbf24;
+  --color-paper: #181817;
+  --color-paper-2: #201f1d;
+  --color-ink: #f5f4f0;
+  --color-ink-soft: #a8a6a0;
+  --color-line: #353431;
+  --color-clay: #dc9070;
+  --color-clay-dark: #c96f50;
+  --color-olive: #dc9070;
+  --color-surface: #201f1d;
+  --color-accent-soft: #3a2b23;
+  --color-highlight: #e0b070;
   --color-danger: #f87171;
-  --color-on-dark: #ffffff;
-  --color-footer: #111827;
-  --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.4), 0 16px 32px -22px rgb(0 0 0 / 0.8);
-  --shadow-lift: 0 2px 6px rgb(0 0 0 / 0.45), 0 26px 50px -26px rgb(0 0 0 / 0.85);
+  --color-on-dark: #1d1d1b;
+  --color-footer: #111110;
+  --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.35), 0 16px 32px -24px rgb(0 0 0 / 0.8);
+  --shadow-lift: 0 2px 6px rgb(0 0 0 / 0.4), 0 26px 50px -26px rgb(0 0 0 / 0.85);
 }
 
 @layer base {
   html {
-    /* Keep page/route changes instant; smooth scrolling caused unwanted jumps. */
     scroll-behavior: auto;
     -webkit-text-size-adjust: 100%;
   }
@@ -87,7 +85,8 @@
   body {
     background-color: var(--color-paper);
     color: var(--color-ink);
-    font-weight: 600;
+    font-weight: 400;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: clip;
@@ -98,7 +97,8 @@
   h3 {
     font-family: var(--font-display);
     font-weight: 600;
-    letter-spacing: -0.025em;
+    letter-spacing: -0.035em;
+    line-height: 1.15;
   }
 
   ::selection {
@@ -106,7 +106,6 @@
     color: var(--color-ink);
   }
 
-  /* The form has its own submit button; hide Chromium's overlapping clear icon. */
   input[type="search"]::-webkit-search-cancel-button,
   input[type="search"]::-webkit-search-decoration {
     -webkit-appearance: none;
@@ -116,6 +115,14 @@
   :focus-visible {
     outline: 2px solid var(--color-clay);
     outline-offset: 3px;
+  }
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
 
@@ -164,7 +171,7 @@
   max-width: 100%;
   overflow: hidden;
   font-size: 0.66rem;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -185,7 +192,7 @@
   border-radius: 9999px;
   background: var(--color-clay);
   color: var(--color-on-dark);
-  box-shadow: 0 5px 16px rgb(17 24 39 / 0.18);
+  box-shadow: 0 5px 16px rgb(34 34 34 / 0.16);
 }
 
 .mobile-bottom-nav__sell[data-active="true"] .mobile-bottom-nav__sell-icon {
@@ -204,8 +211,7 @@
   }
 }
 
-/* Mobile profile keeps the long account sections hidden until a deep link
-   such as /profile#profile-details specifically asks for them. */
+/* Mobile profile keeps long account sections hidden until a deep link asks for them. */
 @media (max-width: 1023px) {
   #profile-details:target {
     display: block !important;

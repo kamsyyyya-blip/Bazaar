@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
-import { countCartItems, countProductsBySeller, countUnreadConversations } from "@/lib/db";
+import { countUnreadConversations } from "@/lib/db";
 import type { SortKey } from "@/lib/filters";
 import SearchForm from "./SearchForm";
 
@@ -24,108 +24,41 @@ export default async function SiteHeader({
 }) {
   const user = await getCurrentUser();
   const unread = user ? countUnreadConversations(user.email) : 0;
-  const published = user ? countProductsBySeller(user.name) : 0;
-  const cartCount = user
-    ? Math.max((user.cart ?? []).length, countCartItems(user.email))
-    : 0;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-line/80 bg-paper/85 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex shrink-0 items-center gap-2.5">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-clay font-display text-lg text-on-dark">
+    <header className="sticky top-0 z-50 border-b border-line bg-paper/90 backdrop-blur-md">
+      <div className="mx-auto flex h-[68px] max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8">
+        <Link href="/" className="flex shrink-0 items-center gap-2" aria-label="Bazaar home">
+          <span className="grid h-8 w-8 place-items-center rounded-lg bg-ink text-sm font-semibold leading-none text-paper">
             b
           </span>
-          <span className="font-display text-xl tracking-tight">Bazaar</span>
+          <span className="text-lg font-semibold tracking-[-0.045em] text-ink">Bazaar</span>
         </Link>
 
-        <div className="hidden max-w-md flex-1 md:block">
+        <div className="hidden max-w-lg flex-1 md:block">
           <SearchForm compact defaultValue={query} county={county} country={country} max={max} sort={sort} />
         </div>
 
-        <nav className="ml-auto flex items-center gap-1 text-sm">
+        <nav className="ml-auto flex items-center gap-0.5 sm:gap-1.5" aria-label="Account navigation">
           <Link
-            href="/cart"
-            aria-label={cartCount > 0 ? `Cart (${cartCount} item${cartCount === 1 ? "" : "s"})` : "Cart"}
-            className="relative hidden h-10 w-10 items-center justify-center rounded-full text-ink-soft transition hover:bg-paper-2 hover:text-ink sm:flex sm:h-auto sm:w-auto sm:gap-1.5 sm:px-3 sm:py-2"
+            href="/#search"
+            aria-label="Search listings"
+            className="grid h-10 w-10 place-items-center rounded-full text-ink-soft transition hover:bg-paper-2 hover:text-ink md:hidden"
           >
-            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.4L21 8H6" />
-              <circle cx="10" cy="20" r="1" />
-              <circle cx="18" cy="20" r="1" />
-            </svg>
-            <span className="hidden sm:inline">Cart</span>
-            {cartCount > 0 ? (
-              <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-clay px-1 text-[10px] font-semibold text-on-dark sm:static sm:h-5 sm:min-w-5 sm:text-[11px]">
-                {cartCount}
-              </span>
-            ) : null}
-          </Link>
-          <Link
-            href="/sell"
-            aria-label="Start selling"
-            title="Start selling"
-            className="hidden h-9 w-9 shrink-0 place-items-center rounded-full border border-ink/15 text-ink transition hover:border-ink/40 hover:bg-surface sm:grid"
-          >
-            <svg
-              aria-hidden="true"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M12 5v14M5 12h14" strokeLinecap="round" />
+            <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5" strokeLinecap="round" />
             </svg>
           </Link>
-
-          {user ? (
-            <Link
-              href="/my-listings"
-              prefetch={false}
-              aria-label={
-                published > 0
-                  ? `Manage your listings (${published} published)`
-                  : "You have no published listings"
-              }
-              title={
-                published > 0
-                  ? `${published} published ${published === 1 ? "listing" : "listings"}`
-                  : "No published listings yet"
-              }
-              className="relative flex items-center gap-1.5 rounded-full px-2.5 py-2 text-ink-soft transition hover:bg-paper-2 hover:text-ink"
-            >
-              <svg
-                aria-hidden="true"
-                width="17"
-                height="17"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
-              >
-                <path
-                  d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0l-7.2-7.2A2 2 0 0 1 3 12V4a1 1 0 0 1 1-1h8a2 2 0 0 1 1.4.6l7.2 7.2a2 2 0 0 1 0 2.8Z"
-                  strokeLinejoin="round"
-                />
-                <circle cx="7.5" cy="7.5" r="1.2" />
-              </svg>
-              <span className={published > 0 ? "inline" : "hidden"}>{published}</span>
-              {published > 0 ? (
-                <span className="sr-only">{published === 1 ? "published listing" : "published listings"}</span>
-              ) : null}
-            </Link>
-          ) : null}
 
           {user ? (
             <Link
               href="/favorites"
               aria-label={`Saved listings${user.favorites?.length ? ` (${user.favorites.length})` : ""}`}
               title="Saved listings"
-              className="hidden h-10 w-10 items-center justify-center rounded-full text-ink-soft transition hover:bg-paper-2 hover:text-ink sm:flex"
+              className="hidden h-10 w-10 place-items-center rounded-full text-ink-soft transition hover:bg-paper-2 hover:text-ink sm:grid"
             >
-              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z" />
               </svg>
             </Link>
@@ -133,16 +66,16 @@ export default async function SiteHeader({
 
           <Link
             href="/messages"
-            className="relative ml-1 hidden items-center gap-1.5 rounded-full px-2.5 py-2 text-ink-soft transition hover:bg-paper-2 hover:text-ink sm:flex"
             aria-label={`Messages${unread > 0 ? ` (${unread} unread)` : ""}`}
+            title="Messages"
+            className="relative grid h-10 w-10 place-items-center rounded-full text-ink-soft transition hover:bg-paper-2 hover:text-ink"
           >
-            <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+            <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
               <path d="M21 12a8 8 0 0 1-8 8H7l-4 3v-4.6A8 8 0 0 1 13 4a8 8 0 0 1 8 8Z" strokeLinejoin="round" />
               <path d="M9 11h8M9 14.5h5" strokeLinecap="round" />
             </svg>
-            <span className="hidden sm:inline">Messages</span>
             {unread > 0 ? (
-              <span className="grid h-4 min-w-4 place-items-center rounded-full bg-clay px-1 text-[11px] font-semibold leading-none text-on-dark">
+              <span className="absolute right-1 top-1 grid h-4 min-w-4 place-items-center rounded-full bg-clay px-1 text-[10px] font-semibold leading-none text-on-dark">
                 {unread > 9 ? "9+" : unread}
               </span>
             ) : null}
@@ -151,8 +84,9 @@ export default async function SiteHeader({
           {user ? (
             <Link
               href="/profile"
-              className="ml-1 flex items-center gap-2 rounded-full border border-ink/15 py-1 pl-1 pr-2 transition hover:border-ink/40 hover:bg-surface sm:pr-3"
+              className="ml-0.5 flex items-center gap-2 rounded-full border border-line py-1 pl-1 pr-2 transition hover:border-ink/30 hover:bg-surface sm:pr-3"
               title={`Signed in as ${user.name}`}
+              aria-label="Your profile"
             >
               <span
                 aria-hidden="true"
@@ -161,17 +95,23 @@ export default async function SiteHeader({
               >
                 {initials(user.name)}
               </span>
-              <span className="hidden max-w-[7rem] truncate sm:inline">{user.name.split(" ")[0]}</span>
-              <span className="sr-only">Your profile</span>
+              <span className="hidden max-w-[7rem] truncate text-sm sm:inline">{user.name.split(" ")[0]}</span>
             </Link>
           ) : (
             <Link
               href="/signin"
-              className="ml-1 rounded-full bg-clay px-4 py-2 font-medium text-on-dark transition hover:bg-clay-dark"
+              className="ml-0.5 rounded-full border border-line px-4 py-2 text-sm font-medium text-ink transition hover:border-ink/30 hover:bg-surface"
             >
               Sign in
             </Link>
           )}
+
+          <Link
+            href="/sell"
+            className="ml-1 hidden h-10 items-center rounded-full bg-clay px-5 text-sm font-medium text-on-dark transition hover:bg-clay-dark sm:inline-flex"
+          >
+            Sell
+          </Link>
         </nav>
       </div>
     </header>
