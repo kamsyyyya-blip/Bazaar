@@ -123,7 +123,7 @@ export default function CountryPicker({
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-label={`Country: ${selected ? selected.name : "all countries"}`}
-        className="flex h-14 w-full items-center gap-2.5 rounded-2xl border border-line bg-surface px-4 text-left text-ink shadow-soft transition hover:border-ink/20 sm:h-16"
+        className="flex h-14 w-full items-center gap-2.5 rounded-2xl bg-paper-2 px-4 text-left text-ink transition hover:bg-accent-soft/60 sm:h-16"
       >
         <span aria-hidden="true" className="text-lg leading-none">
           {selected ? flagFor(selected.code) : "🌍"}

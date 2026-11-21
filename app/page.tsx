@@ -10,7 +10,6 @@ import { countryName, flagFor, HOME_COUNTRY } from "@/lib/countries";
 import {
   listCategories,
   listCountryCounts,
-  listFeatured,
   listProducts,
 } from "@/lib/db";
 import { browseHref, hasActiveFilters, pageHref, parseFilters, priceFilters } from "@/lib/filters";
@@ -60,7 +59,6 @@ export default async function HomePage({
   const countryCounts = Object.fromEntries(
     listCountryCounts().map((country) => [country.code, country.count]),
   ) as Record<string, number>;
-  const featured = listFeatured(4).filter((product) => !CLEARED_HOME_LISTINGS.has(product.slug));
   const productsFromDb = listProducts({ ...filters, maxPrice: filters.max, imageMode: "cover" });
   const durableProducts = await durableProductsPromise;
   const durableBySlug = new Map(durableProducts.map((product) => [product.slug, product]));
@@ -99,8 +97,6 @@ export default async function HomePage({
   const pageStart = (currentPage - 1) * LISTINGS_PER_PAGE;
   const products = matchingProducts
     .slice(pageStart, pageStart + LISTINGS_PER_PAGE)
-    .map((product) => ({ ...product, images: product.images.slice(0, 1) }));
-  const featuredAds = (featured.length > 0 ? featured : matchingProducts.slice(0, 4))
     .map((product) => ({ ...product, images: product.images.slice(0, 1) }));
   const categoryTotal = categories.reduce((total, category) => total + category.count, 0);
   const countryEmpty = Boolean(filters.country) && (countryCounts[filters.country] ?? 0) === 0;
@@ -141,7 +137,7 @@ export default async function HomePage({
         <section id="search" className="scroll-mt-20 bg-paper lg:border-b lg:border-line">
           <div className="mx-auto max-w-7xl px-4 pb-8 pt-8 sm:px-6 lg:px-8 lg:pb-10 lg:pt-10">
             <div className="flex max-w-5xl flex-col gap-2.5 lg:flex-row">
-              <div className="min-w-0 flex-1">
+              <div className="hidden min-w-0 flex-1 md:block">
                 <SearchForm
                   defaultValue={filters.q}
                   category={filters.category}
@@ -290,34 +286,7 @@ export default async function HomePage({
                 </div>
               </details>
 
-              {!filtered && featuredAds.length > 0 ? (
-                <section id="recommended" className="scroll-mt-20">
-                  <div className="flex items-end justify-between gap-4">
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-clay">Editor’s picks</p>
-                      <h2 className="mt-1 text-2xl">Popular finds</h2>
-                      <p className="mt-1 text-xs text-ink-soft">Listings buyers are discovering on Bazaar.</p>
-                    </div>
-                    <Link
-                      href="/#trending"
-                      className="group hidden shrink-0 items-center gap-1 text-sm font-medium text-ink-soft transition hover:text-ink sm:inline-flex"
-                    >
-                      See all
-                      <span className="transition group-hover:translate-x-0.5" aria-hidden="true">
-                        →
-                      </span>
-                    </Link>
-                  </div>
-
-                  <div className="mt-5 grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 xl:grid-cols-4">
-                    {featuredAds.map((product) => (
-                      <MarketplaceCard key={product.slug} product={product} favorite={favoriteFor(product.slug)} />
-                    ))}
-                  </div>
-                </section>
-              ) : null}
-
-              <section id="trending" className={`scroll-mt-20 ${filtered ? "" : "mt-12"}`}>
+              <section id="trending" className="scroll-mt-20">
                 <div className="flex flex-wrap items-end justify-between gap-3">
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.14em] text-clay">

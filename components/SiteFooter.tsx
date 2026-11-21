@@ -7,7 +7,6 @@ const LINKS = [
     items: [
       { label: "All listings", href: "/#trending" },
       { label: "Categories", href: "/#categories" },
-      { label: "Editor’s picks", href: "/#recommended" },
       { label: "New arrivals", href: "/?sort=newest#trending" },
     ],
   },
@@ -77,7 +76,7 @@ export default function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-white/50 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-12 flex flex-col gap-3 text-xs text-white/50 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} Bazaar. A local marketplace.</p>
           <p className="flex items-center gap-4">
             <span>Privacy</span>

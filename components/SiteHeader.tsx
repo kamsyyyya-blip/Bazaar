@@ -27,30 +27,23 @@ export default async function SiteHeader({
 
   return (
     <header className="sticky top-0 z-50 border-b-0 border-line bg-paper/90 backdrop-blur-md lg:border-b">
-      <div className="mx-auto flex h-[68px] max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-[68px] max-w-7xl items-center gap-3 px-4 sm:gap-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex shrink-0 items-center gap-2" aria-label="Bazaar home">
           <span className="grid h-8 w-8 place-items-center rounded-lg bg-ink text-sm font-semibold leading-none text-paper">
             b
           </span>
-          <span className="text-lg font-semibold tracking-[-0.045em] text-ink">Bazaar</span>
+          <span className="text-base font-semibold tracking-[-0.045em] text-ink sm:text-lg">Bazaar</span>
         </Link>
+
+        <div className="min-w-0 flex-1 md:hidden">
+          <SearchForm compact defaultValue={query} county={county} country={country} max={max} sort={sort} />
+        </div>
 
         <div className="hidden max-w-lg flex-1 md:block">
           <SearchForm compact defaultValue={query} county={county} country={country} max={max} sort={sort} />
         </div>
 
-        <nav className="ml-auto flex items-center gap-0.5 sm:gap-1.5" aria-label="Account navigation">
-          <Link
-            href="/#search"
-            aria-label="Search listings"
-            className="grid h-10 w-10 place-items-center rounded-full text-ink-soft transition hover:bg-paper-2 hover:text-ink md:hidden"
-          >
-            <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-              <circle cx="11" cy="11" r="7" />
-              <path d="m20 20-3.5-3.5" strokeLinecap="round" />
-            </svg>
-          </Link>
-
+        <nav className="ml-auto hidden items-center gap-0.5 md:flex md:gap-1.5" aria-label="Account navigation">
           {user ? (
             <Link
               href="/favorites"

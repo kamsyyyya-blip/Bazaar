@@ -20,7 +20,7 @@ export default function FavoriteButton({
   const overlayClass = "absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-surface/90 text-ink shadow-soft backdrop-blur transition hover:scale-105 hover:bg-surface disabled:opacity-60";
   const buttonClass = overlay
     ? overlayClass
-    : "inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-line bg-surface text-ink transition hover:border-clay/50 hover:text-clay disabled:opacity-60";
+    : "inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-paper-2 text-ink transition hover:bg-accent-soft hover:text-clay disabled:opacity-60";
 
   if (!signedIn) {
     return (

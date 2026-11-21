@@ -49,8 +49,8 @@ export default function SearchForm({
       className={[
         "relative flex w-full items-center",
         compact
-          ? "h-10 rounded-full border border-line bg-paper-2/70 focus-within:border-ink/25 focus-within:bg-surface"
-          : "h-14 rounded-2xl border border-line bg-surface shadow-soft sm:h-16",
+          ? "h-10 rounded-full bg-paper-2 focus-within:bg-surface"
+          : "h-14 rounded-2xl bg-paper-2 focus-within:bg-surface sm:h-16",
       ].join(" ")}
     >
       <span
