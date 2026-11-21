@@ -40,7 +40,7 @@ export default function SortSelect({ value, q, category, county, country, maxPri
       <select
         value={value}
         onChange={handleChange}
-        className="h-10 appearance-none rounded-full border border-line bg-surface pl-4 pr-9 text-sm font-medium text-ink outline-none transition hover:border-ink/20"
+        className="h-9 appearance-none rounded-full bg-surface pl-4 pr-9 text-sm font-medium text-ink outline-none transition hover:bg-paper-2"
       >
         {OPTIONS.map((option) => (
           <option key={option.value} value={option.value}>

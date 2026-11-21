@@ -138,7 +138,7 @@ export default async function HomePage({
 
       <main>
         {/* compact search band — discovery stays front and centre */}
-        <section id="search" className="scroll-mt-20 border-b border-line bg-paper">
+        <section id="search" className="scroll-mt-20 bg-paper lg:border-b lg:border-line">
           <div className="mx-auto max-w-7xl px-4 pb-8 pt-8 sm:px-6 lg:px-8 lg:pb-10 lg:pt-10">
             <div className="flex max-w-5xl flex-col gap-2.5 lg:flex-row">
               <div className="min-w-0 flex-1">
@@ -198,10 +198,8 @@ export default async function HomePage({
                     <span
                       aria-hidden="true"
                       className={[
-                        "grid h-16 w-16 place-items-center rounded-full border text-2xl transition",
-                        filters.category === item.slug
-                          ? "border-clay bg-accent-soft"
-                          : "border-line bg-paper-2",
+                        "grid h-16 w-16 place-items-center rounded-full text-2xl transition",
+                        filters.category === item.slug ? "bg-accent-soft" : "bg-paper-2",
                       ].join(" ")}
                     >
                       {item.emoji}
@@ -219,7 +217,7 @@ export default async function HomePage({
                 </span>
                 <Link
                   href={browseHref(filters, { county: "" })}
-                  className="rounded-full border border-line bg-surface px-2.5 py-1 font-medium transition hover:border-ink/25 hover:text-ink"
+                  className="rounded-full bg-paper-2 px-2.5 py-1 font-medium text-ink-soft transition hover:bg-accent-soft hover:text-ink"
                 >
                   Clear state
                 </Link>
@@ -236,7 +234,7 @@ export default async function HomePage({
                 </span>
                 <Link
                   href={browseHref(filters, { country: "" })}
-                  className="rounded-full border border-line bg-surface px-2.5 py-1 font-medium transition hover:border-ink/25 hover:text-ink"
+                  className="rounded-full bg-paper-2 px-2.5 py-1 font-medium text-ink-soft transition hover:bg-accent-soft hover:text-ink"
                 >
                   All countries
                 </Link>
@@ -255,39 +253,40 @@ export default async function HomePage({
 
             <div className="min-w-0">
               {/* Keep price and sort controls compact on phones. */}
-              <details className="mb-6 rounded-xl border border-line bg-surface lg:hidden">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-semibold text-ink marker:hidden">
-                  <span>Filters</span>
-                  <svg aria-hidden="true" className="shrink-0 transition-transform [details[open]_&]:rotate-180" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="m6 9 6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
+              <details className="mb-5 lg:hidden">
+                <summary className="flex w-fit cursor-pointer list-none marker:hidden" aria-label="Filters">
+                  <span className="grid h-9 w-9 place-items-center rounded-full bg-paper-2 text-ink-soft transition hover:bg-accent-soft hover:text-clay">
+                    <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                      <path d="M4 6h16M7 12h10M10 18h4" />
+                    </svg>
+                  </span>
+                  <span className="sr-only">Filters</span>
                 </summary>
-                <div className="border-t border-line px-3 py-3">
+                <div className="mt-3 rounded-2xl bg-paper-2/70 p-3">
                   <div className="flex flex-wrap items-center gap-2">
-                  {priceOptions.map((option) => (
-                    <Link
-                      key={option.value}
-                      href={browseHref(filters, { max: filters.max === option.value ? undefined : option.value })}
-                      className={[
-                        "rounded-full border px-3 py-1.5 text-xs font-medium transition",
-                        filters.max === option.value
-                          ? "border-clay/30 bg-accent-soft text-ink"
-                          : "border-line bg-surface text-ink-soft hover:border-ink/25 hover:text-ink",
-                      ].join(" ")}
-                    >
-                      {option.label}
-                    </Link>
-                  ))}
-                  <span className="mx-0.5 hidden h-5 w-px bg-line sm:block" />
-                  <SortSelect
-                    value={filters.sort}
-                    q={filters.q}
-                    category={filters.category}
-                    county={filters.county}
-                    country={filters.country}
-                    maxPrice={filters.max}
-                  />
-                </div>
+                    {priceOptions.map((option) => (
+                      <Link
+                        key={option.value}
+                        href={browseHref(filters, { max: filters.max === option.value ? undefined : option.value })}
+                        className={[
+                          "rounded-full px-3 py-1.5 text-xs font-medium transition",
+                          filters.max === option.value
+                            ? "bg-accent-soft text-ink"
+                            : "bg-surface text-ink-soft hover:text-ink",
+                        ].join(" ")}
+                      >
+                        {option.label}
+                      </Link>
+                    ))}
+                    <SortSelect
+                      value={filters.sort}
+                      q={filters.q}
+                      category={filters.category}
+                      county={filters.county}
+                      country={filters.country}
+                      maxPrice={filters.max}
+                    />
+                  </div>
                 </div>
               </details>
 
