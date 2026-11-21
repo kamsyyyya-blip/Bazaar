@@ -245,36 +245,6 @@ export default async function HomePage({
           </div>
         </section>
 
-        <nav aria-label="Categories" className="no-scrollbar hidden overflow-x-auto border-b border-line lg:block">
-          <div className="mx-auto flex max-w-7xl items-center gap-7 px-8">
-            <Link
-              href={browseHref(filters, { category: "", q: "" })}
-              prefetch={false}
-              className={[
-                "shrink-0 border-b-2 py-4 text-sm transition",
-                filters.category ? "border-transparent text-ink-soft hover:text-ink" : "border-clay font-medium text-ink",
-              ].join(" ")}
-            >
-              All
-            </Link>
-            {categories.map((item) => (
-              <Link
-                key={item.slug}
-                href={browseHref(filters, { category: item.slug, q: "" })}
-                prefetch={false}
-                className={[
-                  "shrink-0 border-b-2 py-4 text-sm transition",
-                  filters.category === item.slug
-                    ? "border-clay font-medium text-ink"
-                    : "border-transparent text-ink-soft hover:text-ink",
-                ].join(" ")}
-              >
-                {item.name}
-              </Link>
-            ))}
-          </div>
-        </nav>
-
         <section aria-labelledby="rentals-widget-heading" className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-5 rounded-3xl border border-line bg-surface p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
             <div className="flex items-start gap-4">
@@ -400,7 +370,7 @@ export default async function HomePage({
                 </div>
 
                 {!marketplaceEmpty ? (
-                  <div className="mt-4 flex gap-5 overflow-x-auto border-b border-line">
+                  <div className="mt-4 hidden gap-5 overflow-x-auto border-b border-line lg:flex">
                     <Tab href={browseHref(filters, { category: "" })} active={!filters.category}>
                       All
                     </Tab>
