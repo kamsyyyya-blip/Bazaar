@@ -137,25 +137,10 @@ export default async function HomePage({
       />
 
       <main>
-        {/* editorial search band — image-led discovery starts immediately */}
+        {/* compact search band — discovery stays front and centre */}
         <section id="search" className="scroll-mt-20 border-b border-line bg-paper">
-          <div className="mx-auto max-w-7xl px-4 pb-8 pt-10 sm:px-6 lg:px-8 lg:pb-12 lg:pt-14">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-clay">Bazaar marketplace</p>
-            <h1 className="mt-3 max-w-3xl text-3xl font-semibold sm:text-5xl">Good things, close to home.</h1>
-            <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-soft">
-              {marketplaceEmpty ? (
-                <>No listings yet — be the first to sell something in your area. It takes about a minute.</>
-              ) : countryEmpty ? (
-                <>
-                  No listings in {countryName(filters.country)} yet. Try another country, or be the first to list
-                  something here.
-                </>
-              ) : (
-                <>Search the whole market, or pick a category.</>
-              )}
-            </p>
-
-            <div className="mt-5 flex max-w-5xl flex-col gap-2.5 lg:flex-row">
+          <div className="mx-auto max-w-7xl px-4 pb-8 pt-8 sm:px-6 lg:px-8 lg:pb-10 lg:pt-10">
+            <div className="flex max-w-5xl flex-col gap-2.5 lg:flex-row">
               <div className="min-w-0 flex-1">
                 <SearchForm
                   defaultValue={filters.q}

@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-type Destination = "home" | "search" | "sell" | "saved" | "profile";
+type Destination = "home" | "messages" | "sell" | "saved" | "profile";
 
 function Icon({ name }: { name: Destination }) {
   const common = {
@@ -22,8 +21,8 @@ function Icon({ name }: { name: Destination }) {
   switch (name) {
     case "home":
       return <svg {...common}><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" /></svg>;
-    case "search":
-      return <svg {...common}><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>;
+    case "messages":
+      return <svg {...common}><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z" /></svg>;
     case "saved":
       return <svg {...common}><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z" /></svg>;
     case "sell":
@@ -33,9 +32,9 @@ function Icon({ name }: { name: Destination }) {
   }
 }
 
-function activeFor(name: Destination, pathname: string, hash: string): boolean {
-  if (name === "home") return pathname === "/" && hash !== "#search";
-  if (name === "search") return pathname === "/" && hash === "#search";
+function activeFor(name: Destination, pathname: string): boolean {
+  if (name === "home") return pathname === "/";
+  if (name === "messages") return pathname.startsWith("/messages");
   if (name === "saved") return pathname === "/favorites";
   if (name === "profile") return ["/profile", "/signin", "/settings"].includes(pathname);
   return pathname === `/${name}`;
@@ -48,16 +47,7 @@ function NavLink({ name, href, label, emphasized = false }: {
   emphasized?: boolean;
 }) {
   const pathname = usePathname();
-  const [hash, setHash] = useState("");
-
-  useEffect(() => {
-    const update = () => setHash(window.location.hash);
-    update();
-    window.addEventListener("hashchange", update);
-    return () => window.removeEventListener("hashchange", update);
-  }, []);
-
-  const active = activeFor(name, pathname, hash);
+  const active = activeFor(name, pathname);
 
   return (
     <Link
@@ -80,7 +70,7 @@ export default function MobileBottomNav() {
   return (
     <nav className="mobile-bottom-nav md:hidden" aria-label="Primary navigation">
       <NavLink name="home" href="/" label="Home" />
-      <NavLink name="search" href="/#search" label="Search" />
+      <NavLink name="messages" href="/messages" label="Messages" />
       <NavLink name="sell" href="/sell" label="Sell" emphasized />
       <NavLink name="saved" href="/favorites" label="Saved" />
       <NavLink name="profile" href="/profile" label="Profile" />
