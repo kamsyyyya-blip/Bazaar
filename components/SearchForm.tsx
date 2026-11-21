@@ -73,7 +73,7 @@ export default function SearchForm({
         autoComplete="off"
         className={[
           "h-full w-full bg-transparent outline-none placeholder:text-ink-soft/60",
-          compact ? "pl-10 pr-10 text-sm" : "pl-12 pr-32 text-[16px]",
+          compact ? "pl-10 pr-10 text-base" : "pl-12 pr-32 text-[16px]",
         ].join(" ")}
       />
 

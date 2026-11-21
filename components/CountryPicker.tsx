@@ -178,7 +178,7 @@ export default function CountryPicker({
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Search all countries…"
                 autoComplete="off"
-                className="h-10 w-full rounded-xl border border-line bg-paper-2/50 pl-9 pr-3 text-sm outline-none transition placeholder:text-ink-soft/60 focus:border-ink/35 focus:bg-surface"
+                className="h-10 w-full rounded-xl bg-paper-2 pl-9 pr-3 text-base outline-none transition placeholder:text-ink-soft/60 focus:bg-surface"
               />
             </div>
           </div>
